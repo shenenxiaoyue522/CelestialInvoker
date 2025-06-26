@@ -23,13 +23,19 @@ public class CSeriesRegistrate extends L2Registrate {
 
     public <T extends Item> MetalItemEntry<T> metal(String id, NonNullFunction<Item.Properties, T> factory) {
         ItemEntry<T> ingot = this.item(id + "_ingot", factory)
+                .model((ctx, pvd) ->
+                        pvd.generated(ctx, pvd.mcLoc("item/metal")))
                 .tag(ItemTags.create(new ResourceLocation("forge:ingots/" + id)))
                 .register();
         ItemEntry<T> nugget = this.item(id + "_nugget", factory)
+                .model((ctx, pvd) ->
+                        pvd.generated(ctx, pvd.mcLoc("item/metal")))
                 .tag(ItemTags.create(new ResourceLocation("forge:nuggets/" + id)))
                 .register();
         BlockEntry<Block> block = this.block(id + "_block", p -> new Block(BlockBehaviour.Properties
                         .of().sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F)))
+                .blockstate((ctx, pvd) ->
+                        pvd.simpleBlock(ctx.get(), pvd.models().cubeAll(ctx.getName(), new ResourceLocation(getModid(), "block/metal"))))
                 .item().tag(ItemTags.create(new ResourceLocation("forge:storage_blocks/" + id)))
                 .build().register();
         return new MetalItemEntry<>(ingot, nugget, block);
