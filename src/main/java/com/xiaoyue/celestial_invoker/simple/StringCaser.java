@@ -24,8 +24,8 @@ public class StringCaser {
     }
 
     private static String toProperCase(String s) {
-        String var10000 = s.substring(0, 1).toUpperCase();
-        return var10000 + s.substring(1);
+        String sub = s.substring(0, 1).toUpperCase();
+        return sub + s.substring(1);
     }
 
     public static String caseSpaceCapitalize(String id) {

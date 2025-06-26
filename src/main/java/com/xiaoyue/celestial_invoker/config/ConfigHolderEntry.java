@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.generic;
+package com.xiaoyue.celestial_invoker.config;
 
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.config.ModConfig.Type;
@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface ConfigHolderEntry {
+
     String category() default "";
 
     ModConfig.Type type() default Type.COMMON;

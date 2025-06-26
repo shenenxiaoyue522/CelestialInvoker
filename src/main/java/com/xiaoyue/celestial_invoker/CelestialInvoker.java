@@ -2,7 +2,6 @@ package com.xiaoyue.celestial_invoker;
 
 import com.mojang.logging.LogUtils;
 import com.xiaoyue.celestial_invoker.config.ConfigLoader;
-import com.xiaoyue.celestial_invoker.data.ConfigLangGen;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.data.event.GatherDataEvent;
