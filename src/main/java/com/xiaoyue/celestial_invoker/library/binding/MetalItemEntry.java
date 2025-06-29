@@ -6,4 +6,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 public record MetalItemEntry<T extends Item>(ItemEntry<T> ingot, ItemEntry<T> nugget, BlockEntry<Block> block) {
+
+    public Item blockItem() {
+        return block.asItem();
+    }
 }

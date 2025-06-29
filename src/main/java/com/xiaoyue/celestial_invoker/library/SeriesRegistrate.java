@@ -1,20 +1,37 @@
 package com.xiaoyue.celestial_invoker.library;
 
+import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.xiaoyue.celestial_invoker.library.binding.MetalItemEntry;
 import dev.xkmc.l2library.base.L2Registrate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public class CSeriesRegistrate extends L2Registrate {
-    public CSeriesRegistrate(String modid) {
+import java.util.List;
+import java.util.function.Consumer;
+
+@SuppressWarnings("unused")
+public class SeriesRegistrate extends L2Registrate {
+    public SeriesRegistrate(String modid) {
         super(modid);
+    }
+
+    public RegistryEntry<CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
+        return this.buildModCreativeTab(name, RegistrateLangProvider.toEnglishName(name), config);
+    }
+
+    public RegistryEntry<CreativeModeTab> buildTabWithItems(String name, String def, List<ItemStack> items) {
+        return this.buildModCreativeTab(name, def,b -> b.displayItems(
+                (p, o) -> o.acceptAll(items)));
     }
 
     public MetalItemEntry<Item> metal(String id) {
