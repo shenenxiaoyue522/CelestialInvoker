@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.library.binding;
+package com.xiaoyue.celestial_invoker.content.binding;
 
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;

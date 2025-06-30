@@ -1,8 +1,8 @@
-package com.xiaoyue.celestial_invoker.library;
+package com.xiaoyue.celestial_invoker.content;
 
 import com.tterrag.registrate.providers.ProviderType;
-import com.xiaoyue.celestial_invoker.library.generator.RegistrateLootModifierProvider;
-import com.xiaoyue.celestial_invoker.library.generator.RegistrateRecordDataProvider;
+import com.xiaoyue.celestial_invoker.content.generator.RegistrateLootModifierProvider;
+import com.xiaoyue.celestial_invoker.content.generator.RegistrateRecordDataProvider;
 
 public class GeneratorTypes {
 

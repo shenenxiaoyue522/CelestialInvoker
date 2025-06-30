@@ -1,8 +1,8 @@
-package com.xiaoyue.celestial_invoker.library.generator;
+package com.xiaoyue.celestial_invoker.content.generator;
 
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.providers.RegistrateProvider;
-import com.xiaoyue.celestial_invoker.library.GeneratorTypes;
+import com.xiaoyue.celestial_invoker.content.GeneratorTypes;
 import dev.xkmc.l2library.serial.config.RecordDataProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.fml.LogicalSide;
