@@ -29,7 +29,7 @@ public class SimpleItemBuilder<B extends SimpleItemBuilder<B>> {
         this.builder = builder;
     }
 
-    public static Impl builder() {
+    public static Impl impl() {
         return new Impl();
     }
 

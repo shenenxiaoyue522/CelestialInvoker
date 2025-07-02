@@ -20,7 +20,7 @@ public class SimpleEffectBuilder<B extends SimpleEffectBuilder<B>> {
         this.builder = builder;
     }
 
-    public static Impl builder() {
+    public static Impl impl() {
         return new Impl();
     }
 
