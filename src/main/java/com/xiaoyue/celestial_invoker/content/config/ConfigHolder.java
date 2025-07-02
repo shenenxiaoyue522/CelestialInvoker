@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.config;
+package com.xiaoyue.celestial_invoker.content.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
@@ -39,6 +39,6 @@ public class ConfigHolder<C> {
             builder.comment(text);
             map.TEXT_MAP.put(title + this.id, this);
         });
-        this.entry = (C)this.action.apply(builder);
+        this.entry = this.action.apply(builder);
     }
 }

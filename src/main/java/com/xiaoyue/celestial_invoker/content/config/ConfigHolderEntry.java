@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.config;
+package com.xiaoyue.celestial_invoker.content.config;
 
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.config.ModConfig.Type;

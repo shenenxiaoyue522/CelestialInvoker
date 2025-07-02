@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.config;
+package com.xiaoyue.celestial_invoker.content.config;
 
 import com.xiaoyue.celestial_invoker.simple.StringCaser;
 import net.minecraftforge.common.ForgeConfigSpec;

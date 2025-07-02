@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.config;
+package com.xiaoyue.celestial_invoker.content.config;
 
 import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
 import com.xiaoyue.celestial_invoker.simple.StringCaser;
@@ -40,7 +40,7 @@ public class ConfigLoader {
                 Type clazz = data.clazz();
                 String name = data.memberName();
                 Class<?> annoCls = Class.forName(clazz.getClassName());
-                ConfigHolder<?> holder = cast(annoCls.getDeclaredField(name).get((Object)null));
+                ConfigHolder<?> holder = cast(annoCls.getDeclaredField(name).get(null));
                 ConfigHolder.CACHE.addConfig(category, holder, type);
             }
             return ConfigHolder.CACHE;

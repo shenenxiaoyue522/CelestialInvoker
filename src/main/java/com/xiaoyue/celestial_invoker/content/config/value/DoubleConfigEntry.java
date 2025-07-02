@@ -1,6 +1,6 @@
-package com.xiaoyue.celestial_invoker.config.value;
+package com.xiaoyue.celestial_invoker.content.config.value;
 
-import com.xiaoyue.celestial_invoker.config.ConfigHolder;
+import com.xiaoyue.celestial_invoker.content.config.ConfigHolder;
 import com.xiaoyue.celestial_invoker.simple.StringCaser;
 import net.minecraftforge.common.ForgeConfigSpec;
 

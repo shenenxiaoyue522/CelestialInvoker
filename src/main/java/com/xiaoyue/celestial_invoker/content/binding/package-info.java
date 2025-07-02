@@ -1,0 +1,1 @@
+package com.xiaoyue.celestial_invoker.content.binding;
