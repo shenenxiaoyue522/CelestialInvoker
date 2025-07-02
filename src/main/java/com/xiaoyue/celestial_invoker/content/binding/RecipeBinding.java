@@ -8,12 +8,13 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 
 import java.util.function.BiFunction;
 
 public class RecipeBinding {
 
-    public static void metalCraft(RegistrateRecipeProvider pvd, String path, MetalItemEntry<?> entry) {
+    public static void metalCraft(RegistrateRecipeProvider pvd, String path, MetalItemEntry<?,?> entry) {
         unlock(pvd, ShapedRecipeBuilder.shaped(RecipeCategory.MISC, entry.block())::unlockedBy, entry.ingot().get())
                 .pattern("XXX").pattern("XXX").pattern("XXX")
                 .define('X', entry.ingot())
@@ -25,6 +26,13 @@ public class RecipeBinding {
                 .requires(entry.block()).save(pvd, prefix(entry.ingot().getId(), path + "ingot_from_block/"));
         unlock(pvd, ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, entry.nugget(), 9)::unlockedBy, entry.ingot().get())
                 .requires(entry.ingot()).save(pvd, prefix(entry.ingot().getId(), path + "nugget_from_ingot/"));
+    }
+
+    public static void storgeCraft(RegistrateRecipeProvider pvd, ResourceLocation path, Item input, ItemLike output) {
+        unlock(pvd, ShapedRecipeBuilder.shaped(RecipeCategory.MISC, output)::unlockedBy, input)
+                .pattern("XXX").pattern("XXX").pattern("XXX")
+                .define('X', input)
+                .save(pvd, path);
     }
 
     public static <T> T unlock(RegistrateRecipeProvider pvd, BiFunction<String, InventoryChangeTrigger.TriggerInstance, T> func, Item item) {
