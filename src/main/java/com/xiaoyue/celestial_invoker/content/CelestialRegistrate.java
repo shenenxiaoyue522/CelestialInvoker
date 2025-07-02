@@ -24,12 +24,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
-public class SeriesRegistrate extends L2Registrate {
-    public SeriesRegistrate(String modid) {
+public class CelestialRegistrate extends L2Registrate {
+    public CelestialRegistrate(String modid) {
         super(modid);
     }
 
-    public <T extends MobEffect> NoConfigBuilder<MobEffect, T, SeriesRegistrate> simpleEffect(String name, NonNullSupplier<T> sup, String desc) {
+    public <T extends MobEffect> NoConfigBuilder<MobEffect, T, CelestialRegistrate> simpleEffect(String name, NonNullSupplier<T> sup, String desc) {
         this.addRawLang("effect." + this.getModid() + "." + name + ".description", desc);
         return this.entry(name, (cb) -> new NoConfigBuilder<>(this, this, name, cb, ForgeRegistries.Keys.MOB_EFFECTS, sup));
     }
@@ -43,28 +43,28 @@ public class SeriesRegistrate extends L2Registrate {
                 (p, o) -> o.acceptAll(items)));
     }
 
-    public MetalItemEntry<Item> metal(String id) {
-        return this.metal(id, Item::new);
+    public MetalItemEntry<Item, Block> slimeMetal(String id) {
+        return this.metal(id, Item::new, p -> new Block(BlockBehaviour.Properties
+                .of().sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F)));
     }
 
-    public <T extends Item> MetalItemEntry<T> metal(String id, NonNullFunction<Item.Properties, T> factory) {
-        ItemEntry<T> ingot = this.item(id + "_ingot", factory)
+    public <T extends Item, B extends Block> MetalItemEntry<T, B> metal(String id, NonNullFunction<Item.Properties, T> item, NonNullFunction<BlockBehaviour.Properties, B> block) {
+        ItemEntry<T> ingot = this.item(id + "_ingot", item)
                 .model((ctx, pvd) ->
                         pvd.generated(ctx, pvd.modLoc("item/metal/" + ctx.getName())))
                 .tag(ItemTags.create(new ResourceLocation("forge:ingots/" + id)))
                 .register();
-        ItemEntry<T> nugget = this.item(id + "_nugget", factory)
+        ItemEntry<T> nugget = this.item(id + "_nugget", item)
                 .model((ctx, pvd) ->
                         pvd.generated(ctx, pvd.modLoc("item/metal/" + ctx.getName())))
                 .tag(ItemTags.create(new ResourceLocation("forge:nuggets/" + id)))
                 .register();
-        BlockEntry<Block> block = this.block(id + "_block", p -> new Block(BlockBehaviour.Properties
-                        .of().sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F)))
+        BlockEntry<B> storge = this.block(id + "_block", block)
                 .blockstate((ctx, pvd) ->
                         pvd.simpleBlock(ctx.get(), pvd.models().cubeAll(ctx.getName(),
                                 new ResourceLocation(getModid(), "block/metal/" + ctx.getName()))))
                 .item().tag(ItemTags.create(new ResourceLocation("forge:storage_blocks/" + id)))
                 .build().register();
-        return new MetalItemEntry<>(ingot, nugget, block);
+        return new MetalItemEntry<>(ingot, nugget, storge);
     }
 }
