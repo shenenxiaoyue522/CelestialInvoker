@@ -13,7 +13,7 @@ import java.util.function.BiFunction;
 @SuppressWarnings("unchecked")
 public abstract class SimpleEffectBuilder<B extends SimpleEffectBuilder<B>> {
 
-    public boolean fixed;
+    public boolean fixed, hidden = false;
     public List<AttrModifierEntry> attrs;
     public BiConsumer<LivingEntity, Integer> effectTick;
     public EffectApplyCallback onEffectApply;
@@ -25,6 +25,11 @@ public abstract class SimpleEffectBuilder<B extends SimpleEffectBuilder<B>> {
 
     public B fixed() {
         this.fixed = true;
+        return (B) this;
+    }
+
+    public B hidden() {
+        this.hidden = true;
         return (B) this;
     }
 
