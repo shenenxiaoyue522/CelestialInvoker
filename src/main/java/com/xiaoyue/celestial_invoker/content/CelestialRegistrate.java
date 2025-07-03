@@ -40,10 +40,6 @@ public class CelestialRegistrate extends L2Registrate {
         return this.entry(name, (cb) -> new NoConfigBuilder<>(this, this, name, cb, ForgeRegistries.Keys.MOB_EFFECTS, sup));
     }
 
-    public RegistryEntry<CreativeModeTab> simpleCreativeTab(String name, ItemStack icon) {
-        return this.buildCreativeTab(name, b -> b.icon(() -> icon));
-    }
-
     public RegistryEntry<CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
         String def = name.equals("tab") ? RegistrateLangProvider.toEnglishName(getModid()) :
                 RegistrateLangProvider.toEnglishName(this.getModid() + "_" + name);
