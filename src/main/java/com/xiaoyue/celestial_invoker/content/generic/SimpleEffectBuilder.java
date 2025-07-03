@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
-public class SimpleEffectBuilder<B extends SimpleEffectBuilder<B>> {
+@SuppressWarnings("unchecked")
+public abstract class SimpleEffectBuilder<B extends SimpleEffectBuilder<B>> {
 
     public boolean fixed;
     public List<AttrModifierEntry> attrs;
@@ -18,45 +19,36 @@ public class SimpleEffectBuilder<B extends SimpleEffectBuilder<B>> {
     public EffectApplyCallback onEffectApply;
     public BiFunction<Integer, Integer, Boolean> isEffective;
 
-    private final B builder;
-
-    public SimpleEffectBuilder(B builder) {
-        this.builder = builder;
-    }
-
     public static Impl impl() {
         return new Impl();
     }
 
     public B fixed() {
         this.fixed = true;
-        return builder;
+        return (B) this;
     }
 
     public B attr(AttrModifierEntry... attrs) {
         this.attrs = Arrays.stream(attrs).toList();
-        return builder;
+        return (B) this;
     }
 
     public B effectTick(BiConsumer<LivingEntity, Integer> effectTick) {
         this.effectTick = effectTick;
-        return builder;
+        return (B) this;
     }
 
     public B onEffectApply(EffectApplyCallback onEffectApply) {
         this.onEffectApply = onEffectApply;
-        return builder;
+        return (B) this;
     }
 
     public B isEffective(BiFunction<Integer, Integer, Boolean> isEffective) {
         this.isEffective = isEffective;
-        return builder;
+        return (B) this;
     }
 
     public static class Impl extends SimpleEffectBuilder<Impl> {
-        public Impl() {
-            super(new Impl());
-        }
     }
 
     @FunctionalInterface

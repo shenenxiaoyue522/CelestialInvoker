@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public class SimpleItemBuilder<B extends SimpleItemBuilder<B>> {
+@SuppressWarnings("unchecked")
+public abstract class SimpleItemBuilder<B extends SimpleItemBuilder<B>> {
 
     public float defaultDamage, defaultSpeed = 0;
     public BiConsumer<ItemStack, List<Component>> info;
@@ -23,55 +24,46 @@ public class SimpleItemBuilder<B extends SimpleItemBuilder<B>> {
     public Function<DamageSource, Boolean> canHurt;
     public Function<ItemStack, Boolean> foil;
 
-    private final B builder;
-
-    public SimpleItemBuilder(B builder) {
-        this.builder = builder;
-    }
-
     public static Impl impl() {
         return new Impl();
     }
 
     public B defaultDamage(float defaultDamage) {
         this.defaultDamage = defaultDamage;
-        return builder;
+        return (B) this;
     }
 
     public B defaultSpeed(float defaultSpeed) {
         this.defaultSpeed = defaultSpeed;
-        return builder;
+        return (B) this;
     }
 
     public B info(BiConsumer<ItemStack, List<Component>> info) {
         this.info = info;
-        return builder;
+        return (B) this;
     }
 
     public B attribute(AttributeAdderCallback attribute) {
         this.attribute = attribute;
-        return builder;
+        return (B) this;
     }
 
     public B onInventory(InventoryTickCallback callback) {
         this.inventoryTick = callback;
-        return builder;
+        return (B) this;
     }
 
     public B setCanHurt(Function<DamageSource, Boolean> canHurt) {
         this.canHurt = canHurt;
-        return builder;
+        return (B) this;
     }
 
     public B foil(Function<ItemStack, Boolean> foil) {
         this.foil = foil;
-        return builder;
+        return (B) this;
     }
 
     public static class Impl extends SimpleItemBuilder<Impl> {
-        public Impl() {
-            super(new Impl());
-        }
     }
 
     @FunctionalInterface

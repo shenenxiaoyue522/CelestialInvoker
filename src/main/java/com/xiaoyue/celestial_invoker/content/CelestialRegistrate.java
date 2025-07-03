@@ -1,6 +1,7 @@
 package com.xiaoyue.celestial_invoker.content;
 
 import com.tterrag.registrate.builders.NoConfigBuilder;
+import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
@@ -8,6 +9,7 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import com.xiaoyue.celestial_invoker.content.binding.MetalItemEntry;
+import com.xiaoyue.celestial_invoker.content.tooltip.TooltipLoader;
 import dev.xkmc.l2library.base.L2Registrate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -27,6 +29,10 @@ import java.util.function.Consumer;
 public class CelestialRegistrate extends L2Registrate {
     public CelestialRegistrate(String modid) {
         super(modid);
+    }
+
+    public void generatorModTooltip() {
+        this.addDataGenerator(ProviderType.LANG, new TooltipLoader(getModid())::generator);
     }
 
     public <T extends MobEffect> NoConfigBuilder<MobEffect, T, CelestialRegistrate> simpleEffect(String name, NonNullSupplier<T> sup, String desc) {

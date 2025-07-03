@@ -12,8 +12,8 @@ import java.util.Locale;
 public class ConfigLoader {
 
     public static String getConfigTypeText(ModConfig.Type type) {
-        String var10000 = getActiveModId();
-        return StringCaser.caseSpaceCapitalize(var10000 + "." + type.extension() + ".configuration");
+        String modId = getActiveModId();
+        return StringCaser.caseSpaceCapitalize(modId + "." + type.extension() + ".configuration");
     }
 
     public static String getActiveModId() {
