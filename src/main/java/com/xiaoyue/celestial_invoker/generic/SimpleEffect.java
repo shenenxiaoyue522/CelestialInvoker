@@ -15,6 +15,8 @@ public class SimpleEffect extends MobEffect {
 
     protected SimpleEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
+        this.builder.attrs.forEach(entry ->
+                this.addAttributeModifier(entry.attr, entry.uuid.toString(), entry.value, entry.operation));
     }
 
     @Override

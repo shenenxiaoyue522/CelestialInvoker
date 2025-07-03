@@ -1,15 +1,19 @@
 package com.xiaoyue.celestial_invoker.content.generic;
 
+import com.xiaoyue.celestial_invoker.content.binding.AttrModifierEntry;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 public class SimpleEffectBuilder<B extends SimpleEffectBuilder<B>> {
 
     public boolean fixed;
+    public List<AttrModifierEntry> attrs;
     public BiConsumer<LivingEntity, Integer> effectTick;
     public EffectApplyCallback onEffectApply;
     public BiFunction<Integer, Integer, Boolean> isEffective;
@@ -26,6 +30,11 @@ public class SimpleEffectBuilder<B extends SimpleEffectBuilder<B>> {
 
     public B fixed() {
         this.fixed = true;
+        return builder;
+    }
+
+    public B attr(AttrModifierEntry... attrs) {
+        this.attrs = Arrays.stream(attrs).toList();
         return builder;
     }
 
