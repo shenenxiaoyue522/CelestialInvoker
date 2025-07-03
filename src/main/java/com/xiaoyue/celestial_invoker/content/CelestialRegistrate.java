@@ -16,13 +16,11 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
@@ -40,15 +38,13 @@ public class CelestialRegistrate extends L2Registrate {
         return this.entry(name, (cb) -> new NoConfigBuilder<>(this, this, name, cb, ForgeRegistries.Keys.MOB_EFFECTS, sup));
     }
 
-    public RegistryEntry<CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
-        String def = name.equals("tab") ? RegistrateLangProvider.toEnglishName(getModid()) :
+    public String getTabName(String name) {
+        return name.equals("tab") ? RegistrateLangProvider.toEnglishName(getModid()) :
                 RegistrateLangProvider.toEnglishName(this.getModid() + "_" + name);
-        return this.buildModCreativeTab(name, def, config);
     }
 
-    public RegistryEntry<CreativeModeTab> buildTabWithItems(String name, String def, List<ItemStack> items) {
-        return this.buildModCreativeTab(name, def,b -> b.displayItems(
-                (p, o) -> o.acceptAll(items)));
+    public RegistryEntry<CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
+        return this.buildModCreativeTab(name, getTabName(name), config);
     }
 
     public MetalItemEntry<Item, Block> slimeMetal(String id) {
