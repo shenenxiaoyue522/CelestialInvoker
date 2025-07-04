@@ -5,6 +5,7 @@ import dev.xkmc.l2library.util.math.MathHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import java.util.Map;
 import java.util.UUID;
@@ -12,7 +13,7 @@ import java.util.function.BiConsumer;
 
 public class AttrModifierEntry {
 
-    public Attribute attr;
+    public Attribute attr = Attributes.ATTACK_DAMAGE;
     public String name;
     public UUID uuid;
     public double value;
@@ -47,7 +48,7 @@ public class AttrModifierEntry {
         this.name = res;
         this.uuid = MathHelper.getUUIDFromString(res);
         return this;
-    };
+    }
 
     public AttrModifierEntry value(double value) {
         this.value = value;
