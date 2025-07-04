@@ -29,7 +29,9 @@ public class SimpleItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> list, TooltipFlag pIsAdvanced) {
-        builder.info.accept(pStack, list);
+        if (builder.info != null) {
+            builder.info.accept(pStack, list);
+        }
     }
 
     @Override
@@ -44,22 +46,33 @@ public class SimpleItem extends Item {
             map.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, name, 4 - (4 - builder.defaultSpeed),
                     AttributeModifier.Operation.ADDITION));
         }
-        builder.attribute.onCallback(stack, slot, map);
+        if (builder.attribute != null) {
+            builder.attribute.onCallback(stack, slot, map);
+        }
         return map;
     }
 
     @Override
     public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
-        builder.inventoryTick.onCallback(stack, level, player);
+        if (builder.inventoryTick != null) {
+            builder.inventoryTick.onCallback(stack, level, player);
+        }
     }
 
     @Override
     public boolean canBeHurtBy(DamageSource pDamageSource) {
-        return builder.canHurt.apply(pDamageSource);
+        if (builder.canHurt != null) {
+            return builder.canHurt.apply(pDamageSource);
+        }
+        return true;
     }
 
     @Override
     public boolean isFoil(ItemStack pStack) {
-        return builder.foil.apply(pStack);
+        if (builder.attribute != null) {
+
+            return builder.foil.apply(pStack);
+        }
+        return false;
     }
 }

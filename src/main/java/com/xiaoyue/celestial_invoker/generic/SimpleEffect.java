@@ -18,8 +18,10 @@ public class SimpleEffect extends MobEffect {
 
     protected SimpleEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
-        this.builder.attrs.forEach(entry ->
-                this.addAttributeModifier(entry.attr, entry.uuid.toString(), entry.value, entry.operation));
+        if (builder.attrs != null) {
+            this.builder.attrs.forEach(entry ->
+                    this.addAttributeModifier(entry.attr, entry.uuid.toString(), entry.value, entry.operation));
+        }
     }
 
     @Override
@@ -32,17 +34,24 @@ public class SimpleEffect extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
-        builder.effectTick.accept(pLivingEntity, pAmplifier);
+        if (builder.effectTick != null) {
+            builder.effectTick.accept(pLivingEntity, pAmplifier);
+        }
     }
 
     @Override
     public void applyInstantenousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, int pAmplifier, double pHealth) {
-        builder.onEffectApply.onCallback(pSource, pIndirectSource, pLivingEntity, pAmplifier);
+        if (builder.onEffectApply != null) {
+            builder.onEffectApply.onCallback(pSource, pIndirectSource, pLivingEntity, pAmplifier);
+        }
     }
 
     @Override
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return builder.isEffective.apply(pDuration, pAmplifier);
+        if (builder.isEffective != null) {
+            return builder.isEffective.apply(pDuration, pAmplifier);
+        }
+        return true;
     }
 
     @Override
