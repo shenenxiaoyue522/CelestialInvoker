@@ -38,11 +38,11 @@ public class SimpleItem extends Item {
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         Multimap<Attribute, AttributeModifier> map = LinkedHashMultimap.create();
         String name = CelestialInvoker.loc("default_melee_attribute").toString();
-        if (builder.defaultDamage != 0) {
+        if (builder.defaultDamage != 0 && slot.equals(EquipmentSlot.MAINHAND)) {
             map.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, name, builder.defaultDamage,
                     AttributeModifier.Operation.ADDITION));
         }
-        if (builder.defaultSpeed != 0) {
+        if (builder.defaultSpeed != 0 && slot.equals(EquipmentSlot.MAINHAND)) {
             map.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, name, 4 - (4 - builder.defaultSpeed),
                     AttributeModifier.Operation.ADDITION));
         }
