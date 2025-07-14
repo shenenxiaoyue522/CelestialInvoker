@@ -70,17 +70,9 @@ public interface ISimpleItem {
         return false;
     }
 
-    class Impl extends Item implements ISimpleItem {
-        private final SimpleItemBuilder.Impl builder;
-
-        public Impl(Properties pProperties, SimpleItemBuilder.Impl builder) {
+    abstract class Factory extends Item implements ISimpleItem {
+        public Factory(Properties pProperties) {
             super(pProperties);
-            this.builder = builder;
-        }
-
-        @Override
-        public SimpleItemBuilder<?> getBuilder() {
-            return builder;
         }
 
         @Override
