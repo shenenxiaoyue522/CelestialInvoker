@@ -25,7 +25,7 @@ public class CelestialInvoker
     public static void gatherData(GatherDataEvent event) {
         DataGenerator gen = event.getGenerator();
         boolean client = event.includeClient();
-//        gen.addProvider(client, new ConfigLangGen(gen.getPackOutput(), MODID));
+//O        gen.addProvider(client, new ConfigLangGen(gen.getPackOutput(), MDID));
     }
 
     public static ResourceLocation loc(String s) {

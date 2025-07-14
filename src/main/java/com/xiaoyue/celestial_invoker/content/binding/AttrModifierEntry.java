@@ -14,10 +14,10 @@ import java.util.function.BiConsumer;
 public class AttrModifierEntry {
 
     public Attribute attr = Attributes.ATTACK_DAMAGE;
-    public String name;
-    public UUID uuid;
-    public double value;
-    public AttributeModifier.Operation operation;
+    public String name = "celestial_series:default_modifier_name";
+    public UUID uuid = UUID.randomUUID();
+    public double value = 0;
+    public AttributeModifier.Operation operation = AttributeModifier.Operation.ADDITION;
 
     public static AttrModifierEntry builder() {
         return new AttrModifierEntry();
@@ -38,15 +38,16 @@ public class AttrModifierEntry {
         return this;
     }
 
-    public AttrModifierEntry randomUUID() {
-        this.uuid = UUID.randomUUID();
-        return this;
-    }
-
     public AttrModifierEntry nameWithUUID(ResourceLocation name) {
         String res = name.toString();
         this.name = res;
         this.uuid = MathHelper.getUUIDFromString(res);
+        return this;
+    }
+
+    public AttrModifierEntry nameWithUUID(String name) {
+        this.name = name;
+        this.uuid = MathHelper.getUUIDFromString(name);
         return this;
     }
 

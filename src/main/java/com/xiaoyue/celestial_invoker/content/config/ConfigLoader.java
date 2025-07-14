@@ -29,7 +29,7 @@ public class ConfigLoader {
     }
 
     public static ConfigHolder<?> cast(Object obj) {
-        return (ConfigHolder) obj;
+        return (ConfigHolder<?>) obj;
     }
 
     public static ConfigHolderMap mapConfig(String modid) {

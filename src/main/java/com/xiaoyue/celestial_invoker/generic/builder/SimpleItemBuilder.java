@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic;
+package com.xiaoyue.celestial_invoker.generic.builder;
 
 import com.google.common.collect.Multimap;
 import net.minecraft.network.chat.Component;
@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-@SuppressWarnings("unchecked")
 public abstract class SimpleItemBuilder<B extends SimpleItemBuilder<B>> {
 
     public float defaultDamage, defaultSpeed = 0;
@@ -28,39 +27,44 @@ public abstract class SimpleItemBuilder<B extends SimpleItemBuilder<B>> {
         return new Impl();
     }
 
+    @SuppressWarnings("unchecked")
+    public B self() {
+        return (B) this;
+    }
+
     public B defaultDamage(float defaultDamage) {
         this.defaultDamage = defaultDamage;
-        return (B) this;
+        return self();
     }
 
     public B defaultSpeed(float defaultSpeed) {
         this.defaultSpeed = defaultSpeed;
-        return (B) this;
+        return self();
     }
 
     public B info(BiConsumer<ItemStack, List<Component>> info) {
         this.info = info;
-        return (B) this;
+        return self();
     }
 
     public B attribute(AttributeAdderCallback attribute) {
         this.attribute = attribute;
-        return (B) this;
+        return self();
     }
 
     public B onInventory(InventoryTickCallback callback) {
         this.inventoryTick = callback;
-        return (B) this;
+        return self();
     }
 
     public B setCanHurt(Function<DamageSource, Boolean> canHurt) {
         this.canHurt = canHurt;
-        return (B) this;
+        return self();
     }
 
     public B foil(Function<ItemStack, Boolean> foil) {
         this.foil = foil;
-        return (B) this;
+        return self();
     }
 
     public static class Impl extends SimpleItemBuilder<Impl> {

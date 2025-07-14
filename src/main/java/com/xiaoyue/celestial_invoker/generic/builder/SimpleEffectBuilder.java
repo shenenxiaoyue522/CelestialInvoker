@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic;
+package com.xiaoyue.celestial_invoker.generic.builder;
 
 import com.xiaoyue.celestial_invoker.content.binding.AttrModifierEntry;
 import net.minecraft.world.entity.Entity;
@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
-@SuppressWarnings("unchecked")
 public abstract class SimpleEffectBuilder<B extends SimpleEffectBuilder<B>> {
 
     public boolean fixed, hidden = false;
@@ -23,34 +22,39 @@ public abstract class SimpleEffectBuilder<B extends SimpleEffectBuilder<B>> {
         return new Impl();
     }
 
+    @SuppressWarnings("unchecked")
+    public B self() {
+        return (B) this;
+    }
+
     public B fixed() {
         this.fixed = true;
-        return (B) this;
+        return self();
     }
 
     public B hidden() {
         this.hidden = true;
-        return (B) this;
+        return self();
     }
 
     public B attr(AttrModifierEntry... attrs) {
         this.attrs = Arrays.stream(attrs).toList();
-        return (B) this;
+        return self();
     }
 
     public B effectTick(BiConsumer<LivingEntity, Integer> effectTick) {
         this.effectTick = effectTick;
-        return (B) this;
+        return self();
     }
 
     public B onEffectApply(EffectApplyCallback onEffectApply) {
         this.onEffectApply = onEffectApply;
-        return (B) this;
+        return self();
     }
 
     public B isEffective(BiFunction<Integer, Integer, Boolean> isEffective) {
         this.isEffective = isEffective;
-        return (B) this;
+        return self();
     }
 
     public static class Impl extends SimpleEffectBuilder<Impl> {

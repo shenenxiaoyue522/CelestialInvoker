@@ -2,7 +2,6 @@ package com.xiaoyue.celestial_invoker.content.generator;
 
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.providers.RegistrateProvider;
-import com.xiaoyue.celestial_invoker.content.GeneratorTypes;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.GlobalLootModifierProvider;
 import net.minecraftforge.fml.LogicalSide;

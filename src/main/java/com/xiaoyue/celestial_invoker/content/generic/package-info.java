@@ -1,1 +1,0 @@
-package com.xiaoyue.celestial_invoker.content.generic;

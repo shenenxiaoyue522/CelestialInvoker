@@ -3,7 +3,7 @@ package com.xiaoyue.celestial_invoker.generic;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
-import com.xiaoyue.celestial_invoker.content.generic.SimpleItemBuilder;
+import com.xiaoyue.celestial_invoker.generic.builder.SimpleItemBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -69,8 +69,7 @@ public class SimpleItem extends Item {
 
     @Override
     public boolean isFoil(ItemStack pStack) {
-        if (builder.attribute != null) {
-
+        if (builder.foil != null) {
             return builder.foil.apply(pStack);
         }
         return false;

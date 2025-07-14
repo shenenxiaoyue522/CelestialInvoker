@@ -45,9 +45,17 @@ public class TooltipLoader {
                 Type clazz = data.clazz();
                 Class<?> annoCls = Class.forName(clazz.getClassName());
                 Field field = annoCls.getDeclaredField(data.memberName());
-                TooltipEntry tooltip = (TooltipEntry) field.get(null);
-                tooltip.setKey(tooltipKey);
-                map.put(tooltipKey, tooltip);
+                if (field.get(null) instanceof TooltipEntry entry) {
+                    entry.setKey(tooltipKey);
+                    map.put(tooltipKey, entry);
+                } else if (field.get(null) instanceof TooltipHolder holder) {
+                    for (int i = 0; i < holder.size(); i++) {
+                        TooltipEntry entry = holder.get(i);
+                        tooltipKey = tooltipKey + "_" + i;
+                        entry.setKey(tooltipKey);
+                        map.put(tooltipKey, entry);
+                    }
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
