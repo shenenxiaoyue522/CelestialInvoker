@@ -12,7 +12,7 @@ import net.minecraft.world.level.ItemLike;
 
 import java.util.function.BiFunction;
 
-public class RecipeBinding {
+public class BindingHandler {
 
     public static void metalCraft(RegistrateRecipeProvider pvd, String path, MetalItemEntry<?,?> entry) {
         unlock(pvd, ShapedRecipeBuilder.shaped(RecipeCategory.MISC, entry.block())::unlockedBy, entry.ingot().get())
