@@ -1,9 +1,9 @@
-package com.xiaoyue.celestial_invoker.generic;
+package com.xiaoyue.celestial_invoker.content.generic;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
-import com.xiaoyue.celestial_invoker.generic.builder.SimpleItemBuilder;
+import com.xiaoyue.celestial_invoker.content.generic.builder.SimpleItemBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;

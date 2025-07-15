@@ -30,6 +30,10 @@ public final class TooltipEntry {
         return Component.translatable(key, obj);
     }
 
+    public MutableComponent withGray() {
+        return Component.translatable(key, obj).withStyle(ChatFormatting.GRAY);
+    }
+
     public static MutableComponent chance(double v) {
         return Component.literal(Math.round(v * 100f) + "%").withStyle(ChatFormatting.AQUA);
     }

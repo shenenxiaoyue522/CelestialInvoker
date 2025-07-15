@@ -7,12 +7,24 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.Tags;
 
 import java.util.function.BiFunction;
 
 public class BindingHandler {
+
+    public static TagKey<Item> getTagFromArmorSlot(ArmorItem.Type type) {
+        return switch (type) {
+            case HELMET -> Tags.Items.ARMORS_HELMETS;
+            case CHESTPLATE -> Tags.Items.ARMORS_CHESTPLATES;
+            case LEGGINGS -> Tags.Items.ARMORS_LEGGINGS;
+            case BOOTS -> Tags.Items.ARMORS_BOOTS;
+        };
+    }
 
     public static void metalCraft(RegistrateRecipeProvider pvd, String path, MetalItemEntry<?,?> entry) {
         unlock(pvd, ShapedRecipeBuilder.shaped(RecipeCategory.MISC, entry.block())::unlockedBy, entry.ingot().get())

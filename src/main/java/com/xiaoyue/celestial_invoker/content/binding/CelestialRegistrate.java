@@ -17,15 +17,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.SoundDefinition;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
@@ -70,6 +74,17 @@ public class CelestialRegistrate extends L2Registrate {
 
     public RegistryEntry<CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
         return this.buildModCreativeTab(name, getTabName(name), config);
+    }
+
+    public <T extends Item> Map<ArmorItem.Type, RegistryEntry<T>> armors(String name, String path, NonNullFunction<Item.Properties, T> item) {
+        Map<ArmorItem.Type, RegistryEntry<T>> map = new TreeMap<>();
+        for (ArmorItem.Type type : ArmorItem.Type.values()) {
+            RegistryEntry<T> armor = this.item(name + "_" + type.getName(), item).model((ctx, pvd) ->
+                            pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName())))
+                    .tag(Tags.Items.ARMORS, BindingHandler.getTagFromArmorSlot(type)).register();
+            map.put(type, armor);
+        }
+        return map;
     }
 
     public MetalItemEntry<Item, Block> slimeMetal(String id) {

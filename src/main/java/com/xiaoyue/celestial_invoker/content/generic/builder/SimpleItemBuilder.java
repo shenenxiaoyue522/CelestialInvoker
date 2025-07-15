@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.generic.builder;
+package com.xiaoyue.celestial_invoker.content.generic.builder;
 
 import com.google.common.collect.Multimap;
 import net.minecraft.network.chat.Component;

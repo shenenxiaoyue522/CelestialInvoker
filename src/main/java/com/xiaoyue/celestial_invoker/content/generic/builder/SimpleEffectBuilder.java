@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.generic.builder;
+package com.xiaoyue.celestial_invoker.content.generic.builder;
 
 import com.xiaoyue.celestial_invoker.content.binding.AttrModifierEntry;
 import net.minecraft.world.entity.Entity;

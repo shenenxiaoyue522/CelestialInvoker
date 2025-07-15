@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.binding;
+package com.xiaoyue.celestial_invoker.content.binding.world;
 
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.Holder;
