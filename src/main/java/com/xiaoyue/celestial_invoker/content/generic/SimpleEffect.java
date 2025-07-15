@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 public class SimpleEffect extends MobEffect {
     public SimpleEffectBuilder<?> builder;
 
-    protected SimpleEffect(MobEffectCategory pCategory, int pColor) {
+    public SimpleEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
         if (builder.attrs != null) {
             this.builder.attrs.forEach(entry ->
