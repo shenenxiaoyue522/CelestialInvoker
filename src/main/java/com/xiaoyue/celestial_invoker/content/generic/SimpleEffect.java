@@ -14,10 +14,11 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class SimpleEffect extends MobEffect {
-    public SimpleEffectBuilder<?> builder;
+    public final SimpleEffectBuilder<?> builder;
 
-    public SimpleEffect(MobEffectCategory pCategory, int pColor) {
+    public SimpleEffect(MobEffectCategory pCategory, int pColor, SimpleEffectBuilder<?> builder) {
         super(pCategory, pColor);
+        this.builder = builder;
         if (builder.attrs != null) {
             this.builder.attrs.forEach(entry ->
                     this.addAttributeModifier(entry.attr, entry.uuid.toString(), entry.value, entry.operation));
