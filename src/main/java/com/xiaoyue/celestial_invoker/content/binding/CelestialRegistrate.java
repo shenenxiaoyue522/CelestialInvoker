@@ -64,7 +64,8 @@ public class CelestialRegistrate extends L2Registrate {
 
     public <T extends MobEffect> NoConfigBuilder<MobEffect, T, CelestialRegistrate> simpleEffect(String name, NonNullSupplier<T> sup, String desc) {
         this.addRawLang("effect." + this.getModid() + "." + name + ".description", desc);
-        return this.entry(name, cb -> new NoConfigBuilder<>(this, this, name, cb, ForgeRegistries.Keys.MOB_EFFECTS, sup));
+        return this.entry(name, cb -> new NoConfigBuilder<>(this, this, name, cb, ForgeRegistries.Keys.MOB_EFFECTS, sup)
+                .lang(MobEffect::getDescriptionId));
     }
 
     public String getTabName(String name) {
