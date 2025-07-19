@@ -9,7 +9,7 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import com.xiaoyue.celestial_invoker.content.generator.GeneratorTypes;
-import com.xiaoyue.celestial_invoker.content.tooltip.TooltipLoader;
+import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import dev.xkmc.l2library.base.L2Registrate;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -43,7 +43,7 @@ public class CelestialRegistrate extends L2Registrate {
     }
 
     public void addDatapackEntriesGen(RegistrySetBuilder builder) {
-        this.addDataGenerator(GeneratorTypes.DATA_ENTRIES(builder), p -> {});
+        this.addDataGenerator(GeneratorTypes.dataEntries(builder), p -> {});
     }
 
     public RegistryEntry<SoundEvent> sound(String name, float range, SoundDefinition def) {

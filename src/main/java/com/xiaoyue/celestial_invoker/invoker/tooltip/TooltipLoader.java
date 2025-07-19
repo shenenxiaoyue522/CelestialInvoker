@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.tooltip;
+package com.xiaoyue.celestial_invoker.invoker.tooltip;
 
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.xiaoyue.celestial_invoker.data.TooltipLoaderGen;

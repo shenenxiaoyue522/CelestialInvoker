@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.data;
 
-import com.xiaoyue.celestial_invoker.content.tooltip.TooltipLoader;
+import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 

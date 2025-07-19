@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.tooltip;
+package com.xiaoyue.celestial_invoker.invoker.tooltip;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
