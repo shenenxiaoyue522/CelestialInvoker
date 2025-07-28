@@ -27,7 +27,7 @@ public class RegistrateRecordDataProvider extends RecordDataProvider implements 
 
     @Override
     public void add(BiConsumer<String, Record> cons) {
-        owner.genData(GeneratorTypes.RECORD_DATA, this);
+        owner.genData(CelestialProviders.RECORD_DATA, this);
         map.forEach(cons);
     }
 }

@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker;
 
 import com.mojang.logging.LogUtils;
-import com.xiaoyue.celestial_invoker.invoker.config.ConfigLoader;
+import com.xiaoyue.celestial_invoker.content.binding.CelestialRegistrate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -16,16 +16,16 @@ public class CelestialInvoker
 {
     public static final String MODID = "celestial_invoker";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final CelestialRegistrate REGISTRATE = new CelestialRegistrate(MODID);
     
     public CelestialInvoker() {
-        ConfigLoader.mapConfig(MODID).initConfigs(ModConfig.Type.COMMON);
+        REGISTRATE.mapConfig().initConfigs(ModConfig.Type.COMMON);
     }
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         DataGenerator gen = event.getGenerator();
         boolean client = event.includeClient();
-//O        gen.addProvider(client, new ConfigLangGen(gen.getPackOutput(), MODID));
     }
 
     public static ResourceLocation loc(String s) {

@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -12,12 +13,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -33,6 +39,13 @@ public class FeatureHelper {
         this.placedKey = ResourceKey.create(Registries.PLACED_FEATURE, location);
         this.biomeKey = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, location);
         this.builder = new RegistrySetBuilder();
+    }
+
+    public FeatureHelper(ResourceLocation location, RegistrySetBuilder builder) {
+        this.configuredKey = ResourceKey.create(Registries.CONFIGURED_FEATURE, location);
+        this.placedKey = ResourceKey.create(Registries.PLACED_FEATURE, location);
+        this.biomeKey = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, location);
+        this.builder = builder;
     }
 
     public static FeatureHelper builder(ResourceLocation location) {
@@ -56,6 +69,10 @@ public class FeatureHelper {
         return this;
     }
 
+    public static List<PlacementModifier> placementOre(PlacementModifier countModifier, PlacementModifier heightRange) {
+        return List.of(countModifier, InSquarePlacement.spread(), heightRange, BiomeFilter.biome());
+    }
+
     public FeatureHelper biome(BiFunction<BootstapContext<BiomeModifier>, Holder.Reference<PlacedFeature>, BiomeModifier> function) {
         builder.add(ForgeRegistries.Keys.BIOME_MODIFIERS, c -> {
             var placed = c.lookup(Registries.PLACED_FEATURE).getOrThrow(placedKey);
@@ -66,5 +83,11 @@ public class FeatureHelper {
 
     public RegistrySetBuilder build() {
         return builder;
+    }
+
+    public void generator(GatherDataEvent event, String modid) {
+        DataGenerator gen = event.getGenerator();
+        var provider = new DatapackBuiltinEntriesProvider(gen.getPackOutput(), event.getLookupProvider(), builder, Set.of(modid));
+        gen.addProvider(event.includeServer(), provider);
     }
 }

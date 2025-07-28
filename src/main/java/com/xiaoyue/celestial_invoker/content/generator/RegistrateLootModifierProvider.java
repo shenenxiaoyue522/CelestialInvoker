@@ -21,7 +21,7 @@ public class RegistrateLootModifierProvider extends GlobalLootModifierProvider i
 
     @Override
     protected void start() {
-        owner.genData(GeneratorTypes.LOOT_MODIFIER, this);
+        owner.genData(CelestialProviders.LOOT_MODIFIER, this);
     }
 
     @Override

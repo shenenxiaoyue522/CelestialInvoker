@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic;
+package com.xiaoyue.celestial_invoker.content.generic.item;
 
 import com.xiaoyue.celestial_invoker.content.generic.builder.SimpleItemBuilder;
 

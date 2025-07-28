@@ -29,6 +29,6 @@ public class RegistrateSoundEventProvider extends SoundDefinitionsProvider imple
 
     @Override
     public void registerSounds() {
-        owner.genData(GeneratorTypes.SOUND_EVENT, this);
+        owner.genData(CelestialProviders.SOUND_EVENT, this);
     }
 }

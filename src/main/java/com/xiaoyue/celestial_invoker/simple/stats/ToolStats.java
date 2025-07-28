@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.binding.tier;
+package com.xiaoyue.celestial_invoker.simple.stats;
 
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;

@@ -17,7 +17,7 @@ import java.util.function.BiFunction;
 
 public class BindingHandler {
 
-    public static TagKey<Item> getTagFromArmorSlot(ArmorItem.Type type) {
+    public static TagKey<Item> getArmorSlotTag(ArmorItem.Type type) {
         return switch (type) {
             case HELMET -> Tags.Items.ARMORS_HELMETS;
             case CHESTPLATE -> Tags.Items.ARMORS_CHESTPLATES;
@@ -27,13 +27,8 @@ public class BindingHandler {
     }
 
     public static void metalCraft(RegistrateRecipeProvider pvd, String path, MetalItemEntry<?,?> entry) {
-        unlock(pvd, ShapedRecipeBuilder.shaped(RecipeCategory.MISC, entry.block())::unlockedBy, entry.ingot().get())
-                .pattern("XXX").pattern("XXX").pattern("XXX")
-                .define('X', entry.ingot())
-                .save(pvd, prefix(entry.block().getId(), path + "block_from_ingot/"));
-        unlock(pvd, ShapedRecipeBuilder.shaped(RecipeCategory.MISC, entry.ingot())::unlockedBy, entry.nugget().get())
-                .pattern("XXX").pattern("XXX").pattern("XXX").define('X', entry.nugget())
-                .save(pvd, prefix(entry.block().getId(), path + "ingot_from_nugget/"));
+        storgeCraft(pvd, prefix(entry.block().getId(), path + "block_from_ingot/"), entry.ingot().get(), entry.block());
+        storgeCraft(pvd, prefix(entry.ingot().getId(), path + "ingot_from_nugget/"), entry.nugget().get(), entry.ingot());
         unlock(pvd, ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, entry.ingot(), 9)::unlockedBy, entry.block().asItem())
                 .requires(entry.block()).save(pvd, prefix(entry.ingot().getId(), path + "ingot_from_block/"));
         unlock(pvd, ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, entry.nugget(), 9)::unlockedBy, entry.ingot().get())
@@ -42,8 +37,7 @@ public class BindingHandler {
 
     public static void storgeCraft(RegistrateRecipeProvider pvd, ResourceLocation path, Item input, ItemLike output) {
         unlock(pvd, ShapedRecipeBuilder.shaped(RecipeCategory.MISC, output)::unlockedBy, input)
-                .pattern("XXX").pattern("XXX").pattern("XXX")
-                .define('X', input)
+                .pattern("XXX").pattern("XXX").pattern("XXX").define('X', input)
                 .save(pvd, path);
     }
 
