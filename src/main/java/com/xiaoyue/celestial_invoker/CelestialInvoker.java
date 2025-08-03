@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import org.slf4j.Logger;
 
 @Mod(CelestialInvoker.MODID)
@@ -19,7 +18,7 @@ public class CelestialInvoker
     public static final CelestialRegistrate REGISTRATE = new CelestialRegistrate(MODID);
     
     public CelestialInvoker() {
-        REGISTRATE.mapConfig().initConfigs(ModConfig.Type.COMMON);
+        REGISTRATE.initDefaultConfig();
     }
 
     @SubscribeEvent

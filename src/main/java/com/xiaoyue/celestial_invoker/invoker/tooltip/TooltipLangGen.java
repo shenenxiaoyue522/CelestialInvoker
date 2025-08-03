@@ -1,13 +1,12 @@
-package com.xiaoyue.celestial_invoker.data;
+package com.xiaoyue.celestial_invoker.invoker.tooltip;
 
-import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 
-public class TooltipLoaderGen extends LanguageProvider {
+public class TooltipLangGen extends LanguageProvider {
     private final TooltipLoader loader;
 
-    public TooltipLoaderGen(PackOutput output, TooltipLoader loader) {
+    public TooltipLangGen(PackOutput output, TooltipLoader loader) {
         super(output, loader.modid, "en_us");
         this.loader = loader;
     }

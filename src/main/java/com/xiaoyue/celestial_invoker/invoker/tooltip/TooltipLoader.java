@@ -1,7 +1,6 @@
 package com.xiaoyue.celestial_invoker.invoker.tooltip;
 
 import com.tterrag.registrate.providers.RegistrateLangProvider;
-import com.xiaoyue.celestial_invoker.data.TooltipLoaderGen;
 import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -22,9 +21,15 @@ public class TooltipLoader {
         this.loadTooltips();
     }
 
+    private void trySetKey(String key, TooltipEntry entry) {
+        if (!key.isEmpty()) {
+            entry.setKey(key);
+        }
+    }
+
     public void generator(GatherDataEvent event) {
         DataGenerator gen = event.getGenerator();
-        gen.addProvider(event.includeClient(), new TooltipLoaderGen(gen.getPackOutput(), this));
+        gen.addProvider(event.includeClient(), new TooltipLangGen(gen.getPackOutput(), this));
     }
 
     public void generator(RegistrateLangProvider pvd) {
@@ -46,13 +51,13 @@ public class TooltipLoader {
                 Class<?> annoCls = Class.forName(clazz.getClassName());
                 Field field = annoCls.getDeclaredField(data.memberName());
                 if (field.get(null) instanceof TooltipEntry entry) {
-                    entry.setKey(tooltipKey);
+                    trySetKey(tooltipKey, entry);
                     map.put(tooltipKey, entry);
                 } else if (field.get(null) instanceof TooltipHolder holder) {
                     for (int i = 0; i < holder.size(); i++) {
                         TooltipEntry entry = holder.get(i);
                         tooltipKey = tooltipKey + "_" + i;
-                        entry.setKey(tooltipKey);
+                        trySetKey(tooltipKey, entry);
                         map.put(tooltipKey, entry);
                     }
                 }

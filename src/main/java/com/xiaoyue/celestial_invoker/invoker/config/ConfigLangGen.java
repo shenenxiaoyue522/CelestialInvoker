@@ -1,6 +1,5 @@
-package com.xiaoyue.celestial_invoker.data;
+package com.xiaoyue.celestial_invoker.invoker.config;
 
-import com.xiaoyue.celestial_invoker.invoker.config.ConfigHolder;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 

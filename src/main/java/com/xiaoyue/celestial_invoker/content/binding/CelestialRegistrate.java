@@ -1,35 +1,42 @@
 package com.xiaoyue.celestial_invoker.content.binding;
 
-import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.builders.NoConfigBuilder;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
+import com.tterrag.registrate.util.OneTimeEventReceiver;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import com.xiaoyue.celestial_invoker.content.client.SimpleTexParticle;
 import com.xiaoyue.celestial_invoker.content.generator.CelestialProviders;
+import com.xiaoyue.celestial_invoker.content.generator.RegistrateParticleTexProvider;
 import com.xiaoyue.celestial_invoker.invoker.config.ConfigHolderMap;
 import com.xiaoyue.celestial_invoker.invoker.config.ConfigLoader;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import dev.xkmc.l2library.base.L2Registrate;
+import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.SoundDefinition;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
@@ -40,12 +47,12 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class CelestialRegistrate extends L2Registrate {
-
-    public ResourceKey<CreativeModeTab> defaultCreativeTab;
-
     public CelestialRegistrate(String modid) {
         super(modid);
-        this.defaultCreativeTab = CreativeModeTabs.SEARCH;
+    }
+
+    public void initDefaultConfig() {
+        mapConfig().initConfigs(ModConfig.Type.COMMON);
     }
 
     public ConfigHolderMap mapConfig() {
@@ -54,6 +61,17 @@ public class CelestialRegistrate extends L2Registrate {
 
     public void addModTooltipGen() {
         this.addDataGenerator(ProviderType.LANG, new TooltipLoader(getModid())::generator);
+    }
+
+    public <T extends SimpleTexParticle> RegistryEntry<ParticleType<SimpleParticleType>> particleType(String name, boolean overrideLimiter, NonNullSupplier<T> sup, NonNullConsumer<RegistrateParticleTexProvider> cons) {
+        return particleType(name, () -> new SimpleParticleType(overrideLimiter), sup.get(), cons);
+    }
+
+    public <T extends ParticleType<T> & ParticleOptions> RegistryEntry<ParticleType<T>> particleType(String name, NonNullSupplier<ParticleType<T>> sup, ParticleEngine.SpriteParticleRegistration<T> pvd, NonNullConsumer<RegistrateParticleTexProvider> cons) {
+        RegistryEntry<ParticleType<T>> entry = this.generic(this, name, Registries.PARTICLE_TYPE, sup).register();
+        this.addDataGenerator(CelestialProviders.PARTICLE_TEX, cons);
+        OneTimeEventReceiver.addModListener(this, RegisterParticleProvidersEvent.class, e -> e.registerSpriteSet(entry.get(), pvd));
+        return entry;
     }
 
     public RegistryEntry<SoundEvent> sound(String name, float range, SoundDefinition def) {
@@ -89,16 +107,6 @@ public class CelestialRegistrate extends L2Registrate {
 
     public RegistryEntry<CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
         return this.buildModCreativeTab(name, getTabName(name), config);
-    }
-
-    @Override
-    public L2Registrate defaultCreativeTab(ResourceKey<CreativeModeTab> creativeModeTab) {
-        this.defaultCreativeTab = creativeModeTab;
-        return super.defaultCreativeTab(creativeModeTab);
-    }
-
-    public <T extends Item> ItemBuilder<T, L2Registrate> nullTabItem(String name, NonNullFunction<Item.Properties, T> func) {
-        return this.item(name, func).removeTab(this.defaultCreativeTab);
     }
 
     public <T extends Item> Map<ArmorItem.Type, RegistryEntry<T>> armors(String name, String path, NonNullFunction<Item.Properties, T> item) {

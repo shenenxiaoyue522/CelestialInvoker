@@ -1,7 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.generator;
 
 import com.tterrag.registrate.providers.ProviderType;
-import net.minecraft.core.RegistrySetBuilder;
 
 public class CelestialProviders {
 
@@ -14,8 +13,7 @@ public class CelestialProviders {
     public static final ProviderType<RegistrateSoundEventProvider> SOUND_EVENT = ProviderType.register("sound_event",
             (r, e) -> new RegistrateSoundEventProvider(e.getGenerator().getPackOutput(), e.getExistingFileHelper(), r));
 
-    public static ProviderType<RegistrateDataEntriesProvider> dataEntries(RegistrySetBuilder builder) {
-        return ProviderType.register("data_entries", (r, e) ->
-                new RegistrateDataEntriesProvider(e.getGenerator().getPackOutput(), e.getLookupProvider(), r, builder));
-    }
+    public static final ProviderType<RegistrateParticleTexProvider> PARTICLE_TEX = ProviderType.register("particle_tex",
+            (r, e) -> new RegistrateParticleTexProvider(e.getGenerator().getPackOutput(), e.getExistingFileHelper(), r));
+
 }

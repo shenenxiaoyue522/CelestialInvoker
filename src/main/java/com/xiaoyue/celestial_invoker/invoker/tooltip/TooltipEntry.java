@@ -18,8 +18,18 @@ public final class TooltipEntry {
         this.obj = obj;
     }
 
+    public TooltipEntry(String key, String tooltip, Object... obj) {
+        this.key = key;
+        this.tooltip = tooltip;
+        this.obj = obj;
+    }
+
     public static TooltipEntry define(String tooltip, Object... obj) {
         return new TooltipEntry(tooltip, obj);
+    }
+
+    public static TooltipEntry define(String key, String tooltip, Object... obj) {
+        return new TooltipEntry(key, tooltip, obj);
     }
 
     public void setKey(String key) {
