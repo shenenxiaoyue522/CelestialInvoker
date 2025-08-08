@@ -1,5 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.binding;
 
+import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.NoConfigBuilder;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
@@ -46,9 +47,14 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-public class CelestialRegistrate extends L2Registrate {
+public class CelestialRegistrate extends AbstractRegistrate<CelestialRegistrate> {
     public CelestialRegistrate(String modid) {
         super(modid);
+        this.registerEventListeners(this.getModEventBus());
+    }
+
+    public L2Registrate l2reg() {
+        return new L2Registrate(getModid());
     }
 
     public void initDefaultConfig() {
@@ -102,11 +108,11 @@ public class CelestialRegistrate extends L2Registrate {
     }
 
     public RegistryEntry<CreativeModeTab> buildModNameCreativeTab(Consumer<CreativeModeTab.Builder> config) {
-        return this.buildModCreativeTab("tab", getTabName("tab"), config);
+        return this.l2reg().buildModCreativeTab("tab", getTabName("tab"), config);
     }
 
     public RegistryEntry<CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
-        return this.buildModCreativeTab(name, getTabName(name), config);
+        return this.l2reg().buildModCreativeTab(name, getTabName(name), config);
     }
 
     public <T extends Item> Map<ArmorItem.Type, RegistryEntry<T>> armors(String name, String path, NonNullFunction<Item.Properties, T> item) {
