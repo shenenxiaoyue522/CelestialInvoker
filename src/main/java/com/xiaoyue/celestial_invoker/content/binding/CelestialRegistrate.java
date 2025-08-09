@@ -48,13 +48,16 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class CelestialRegistrate extends AbstractRegistrate<CelestialRegistrate> {
+    private final L2Registrate l2reg;
+
     public CelestialRegistrate(String modid) {
         super(modid);
         this.registerEventListeners(this.getModEventBus());
+        this.l2reg = new L2Registrate(getModid());
     }
 
     public L2Registrate l2reg() {
-        return new L2Registrate(getModid());
+        return l2reg;
     }
 
     public void initDefaultConfig() {
