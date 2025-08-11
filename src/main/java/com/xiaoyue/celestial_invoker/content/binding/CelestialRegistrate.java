@@ -34,6 +34,11 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.SoundDefinition;
@@ -70,6 +75,14 @@ public class CelestialRegistrate extends AbstractRegistrate<CelestialRegistrate>
 
     public void addModTooltipGen() {
         this.addDataGenerator(ProviderType.LANG, new TooltipLoader(getModid())::generator);
+    }
+
+    public <T extends StructurePieceType> RegistryEntry<T> structurePieceType(String name, NonNullSupplier<T> sup) {
+        return this.generic(this, name, Registries.STRUCTURE_PIECE, sup).register();
+    }
+
+    public <T extends Structure> RegistryEntry<StructureType<T>> structureType(String name, NonNullSupplier<StructureType<T>> sup) {
+        return this.generic(this, name, Registries.STRUCTURE_TYPE, sup).register();
     }
 
     public <T extends SimpleTexParticle> RegistryEntry<ParticleType<SimpleParticleType>> particleType(String name, boolean overrideLimiter, NonNullSupplier<T> sup, NonNullConsumer<RegistrateParticleTexProvider> cons) {

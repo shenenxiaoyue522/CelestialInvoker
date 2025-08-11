@@ -27,32 +27,29 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class FeatureHelper {
+public class FeatureFactory {
 
     private final RegistrySetBuilder builder;
-    public final ResourceKey<ConfiguredFeature<?, ?>> configuredKey;
-    public final ResourceKey<PlacedFeature> placedKey;
-    public final ResourceKey<BiomeModifier> biomeKey;
+    public ResourceKey<ConfiguredFeature<?, ?>> configuredKey;
+    public ResourceKey<PlacedFeature> placedKey;
+    public ResourceKey<BiomeModifier> biomeKey;
 
-    public FeatureHelper(ResourceLocation location) {
-        this.configuredKey = ResourceKey.create(Registries.CONFIGURED_FEATURE, location);
-        this.placedKey = ResourceKey.create(Registries.PLACED_FEATURE, location);
-        this.biomeKey = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, location);
+    public FeatureFactory() {
         this.builder = new RegistrySetBuilder();
     }
 
-    public FeatureHelper(ResourceLocation location, RegistrySetBuilder builder) {
-        this.configuredKey = ResourceKey.create(Registries.CONFIGURED_FEATURE, location);
-        this.placedKey = ResourceKey.create(Registries.PLACED_FEATURE, location);
-        this.biomeKey = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, location);
+    public FeatureFactory(RegistrySetBuilder builder) {
         this.builder = builder;
     }
 
-    public static FeatureHelper builder(ResourceLocation location) {
-        return new FeatureHelper(location);
+    public FeatureFactory key(ResourceLocation location) {
+        this.configuredKey = ResourceKey.create(Registries.CONFIGURED_FEATURE, location);
+        this.placedKey = ResourceKey.create(Registries.PLACED_FEATURE, location);
+        this.biomeKey = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, location);
+        return this;
     }
 
-    public <FC extends FeatureConfiguration, F extends Feature<FC>> FeatureHelper configured(
+    public <FC extends FeatureConfiguration, F extends Feature<FC>> FeatureFactory configured(
             Function<BootstapContext<ConfiguredFeature<?,?>>, Pair<F, FC>> function) {
         builder.add(Registries.CONFIGURED_FEATURE, c -> {
             Pair<F, FC> obj = function.apply(c);
@@ -61,7 +58,7 @@ public class FeatureHelper {
         return this;
     }
 
-    public FeatureHelper placed(Function<BootstapContext<PlacedFeature>, List<PlacementModifier>> function) {
+    public FeatureFactory placed(Function<BootstapContext<PlacedFeature>, List<PlacementModifier>> function) {
         builder.add(Registries.PLACED_FEATURE, c -> {
             var holder = c.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(configuredKey);
             PlacementUtils.register(c, placedKey, holder, function.apply(c));
@@ -73,7 +70,7 @@ public class FeatureHelper {
         return List.of(countModifier, InSquarePlacement.spread(), heightRange, BiomeFilter.biome());
     }
 
-    public FeatureHelper biome(BiFunction<BootstapContext<BiomeModifier>, Holder.Reference<PlacedFeature>, BiomeModifier> function) {
+    public FeatureFactory biome(BiFunction<BootstapContext<BiomeModifier>, Holder.Reference<PlacedFeature>, BiomeModifier> function) {
         builder.add(ForgeRegistries.Keys.BIOME_MODIFIERS, c -> {
             var placed = c.lookup(Registries.PLACED_FEATURE).getOrThrow(placedKey);
             c.register(biomeKey, function.apply(c, placed));
