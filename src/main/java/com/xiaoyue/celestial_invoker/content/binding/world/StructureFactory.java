@@ -4,16 +4,21 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 
 import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class StructureFactory {
 
@@ -21,11 +26,11 @@ public class StructureFactory {
     public ResourceKey<Structure> structureKey;
     public ResourceKey<StructureSet> structureSetKey;
 
-    public StructureFactory(ResourceLocation location) {
+    public StructureFactory() {
         this.builder = new RegistrySetBuilder();
     }
 
-    public StructureFactory(RegistrySetBuilder builder, ResourceLocation location) {
+    public StructureFactory(RegistrySetBuilder builder) {
         this.builder = builder;
     }
 
@@ -35,10 +40,18 @@ public class StructureFactory {
         return this;
     }
 
-    public <T extends Structure> StructureFactory structure(T structure) {
+    public StructureFactory pool(String key, Function<BootstapContext<StructureTemplatePool>, StructureTemplatePool> func) {
+        builder.add(Registries.TEMPLATE_POOL, c -> {
+            Pools.register(c, key, func.apply(c));
+        });
+        return this;
+    }
+
+    public <T extends Structure> StructureFactory structure(BiFunction<HolderGetter<Biome>, HolderGetter<StructureTemplatePool>, T> func) {
         builder.add(Registries.STRUCTURE, c -> {
-            HolderGetter<Biome> holderBio = c.lookup(Registries.BIOME);
-            c.register(structureKey, structure);
+            HolderGetter<Biome> holderBiome = c.lookup(Registries.BIOME);
+            HolderGetter<StructureTemplatePool> holderPool = c.lookup(Registries.TEMPLATE_POOL);
+            c.register(structureKey, func.apply(holderBiome, holderPool));
         });
         return this;
     }

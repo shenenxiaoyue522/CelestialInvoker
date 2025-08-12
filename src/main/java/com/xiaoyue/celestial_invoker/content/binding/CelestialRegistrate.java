@@ -1,6 +1,5 @@
 package com.xiaoyue.celestial_invoker.content.binding;
 
-import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.NoConfigBuilder;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
@@ -35,10 +34,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.SoundDefinition;
@@ -52,17 +49,9 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-public class CelestialRegistrate extends AbstractRegistrate<CelestialRegistrate> {
-    private final L2Registrate l2reg;
-
+public class CelestialRegistrate extends L2Registrate {
     public CelestialRegistrate(String modid) {
         super(modid);
-        this.registerEventListeners(this.getModEventBus());
-        this.l2reg = new L2Registrate(getModid());
-    }
-
-    public L2Registrate l2reg() {
-        return l2reg;
     }
 
     public void initDefaultConfig() {
@@ -124,11 +113,11 @@ public class CelestialRegistrate extends AbstractRegistrate<CelestialRegistrate>
     }
 
     public RegistryEntry<CreativeModeTab> buildModNameCreativeTab(Consumer<CreativeModeTab.Builder> config) {
-        return this.l2reg().buildModCreativeTab("tab", getTabName("tab"), config);
+        return this.buildModCreativeTab("tab", getTabName("tab"), config);
     }
 
     public RegistryEntry<CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
-        return this.l2reg().buildModCreativeTab(name, getTabName(name), config);
+        return this.buildModCreativeTab(name, getTabName(name), config);
     }
 
     public <T extends Item> Map<ArmorItem.Type, RegistryEntry<T>> armors(String name, String path, NonNullFunction<Item.Properties, T> item) {
