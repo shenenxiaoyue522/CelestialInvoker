@@ -40,6 +40,10 @@ public final class TooltipEntry {
         return Component.translatable(key, obj);
     }
 
+    public MutableComponent get(Object... obj) {
+        return Component.translatable(key, obj);
+    }
+
     public MutableComponent withGray() {
         return Component.translatable(key, obj).withStyle(ChatFormatting.GRAY);
     }
