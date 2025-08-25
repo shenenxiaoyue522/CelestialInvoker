@@ -48,6 +48,22 @@ public final class TooltipEntry {
         return Component.translatable(key, obj).withStyle(ChatFormatting.GRAY);
     }
 
+    public MutableComponent withGray(Object... obj) {
+        return Component.translatable(key, obj).withStyle(ChatFormatting.GRAY);
+    }
+
+    public MutableComponent withColor(ChatFormatting color) {
+        return Component.translatable(key, obj).withStyle(color);
+    }
+
+    public MutableComponent withColor(ChatFormatting color, Object... obj) {
+        return Component.translatable(key, obj).withStyle(color);
+    }
+
+    public static MutableComponent per(double v) {
+        return Component.literal(v * 100f + "%").withStyle(ChatFormatting.AQUA);
+    }
+
     public static MutableComponent chance(double v) {
         return Component.literal(Math.round(v * 100f) + "%").withStyle(ChatFormatting.AQUA);
     }
@@ -62,9 +78,5 @@ public final class TooltipEntry {
 
     public static MutableComponent eff(MobEffect eff) {
         return eff.getDisplayName().copy().withStyle(eff.getCategory().getTooltipFormatting());
-    }
-
-    public static MutableComponent per(double v) {
-        return Component.literal(v * 100f + "%").withStyle(ChatFormatting.AQUA);
     }
 }
