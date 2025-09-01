@@ -1,19 +1,27 @@
 package com.xiaoyue.celestial_invoker.content.generic.item;
 
+import com.xiaoyue.celestial_invoker.content.binding.BindingHandler;
 import com.xiaoyue.celestial_invoker.content.generic.entity.AirBladeEntity;
+import com.xiaoyue.celestial_invoker.content.generic.entity.AirBladeEntityRender;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 
 import javax.annotation.Nullable;
 
 public interface IAirBladeUser {
 
-    ParticleOptions getParticle();
+    default ParticleOptions getParticle() {
+        return ParticleTypes.CRIT;
+    }
 
-    DamageSource getSource(AirBladeEntity blade, @Nullable Entity shooter);
+    default DamageSource getSource(AirBladeEntity blade, @Nullable Entity shooter) {
+        return new DamageSource(BindingHandler.getDamageSource(blade.level(), DamageTypes.MOB_PROJECTILE), shooter, blade);
+    }
 
     default boolean canHurt(AirBladeEntity blade, Entity target, float dmg) {
         return true;
@@ -26,10 +34,11 @@ public interface IAirBladeUser {
     default void onHitBlock(AirBladeEntity blade, BlockPos pos) {
     }
 
-    ResourceLocation getTexture(AirBladeEntity blade);
-
     default boolean isGlow() {
         return true;
     }
 
+    default ResourceLocation getTexture(AirBladeEntity blade) {
+        return AirBladeEntityRender.DEF_TEXTURE;
+    }
 }
