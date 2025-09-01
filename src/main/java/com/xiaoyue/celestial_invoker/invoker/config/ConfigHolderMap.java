@@ -1,34 +1,56 @@
 package com.xiaoyue.celestial_invoker.invoker.config;
 
+import com.xiaoyue.celestial_invoker.simple.SimpleCompare;
 import com.xiaoyue.celestial_invoker.simple.StringCaser;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class ConfigHolderMap {
 
-    public final Map<String, Map<String, ConfigHolder<?>>> COMMON_MAP = new TreeMap<>();
-    public final Map<String, Map<String, ConfigHolder<?>>> SERVER_MAP = new TreeMap<>();
-    public final Map<String, Map<String, ConfigHolder<?>>> CLIENT_MAP = new TreeMap<>();
+    private final List<Function<ForgeConfigSpec.Builder, ?>> extraConfigs = new ArrayList<>();
+
+    private Map<String, Map<String, ConfigHolder<?>>> COMMON_MAP = new TreeMap<>();
+    private Map<String, Map<String, ConfigHolder<?>>> SERVER_MAP = new TreeMap<>();
+    private Map<String, Map<String, ConfigHolder<?>>> CLIENT_MAP = new TreeMap<>();
 
     public final Map<String, String> TITLE_MAP = new TreeMap<>();
     public final Map<String, ConfigHolder<?>> TEXT_MAP = new TreeMap<>();
 
-    public void initConfigs(ModConfig.Type type) {
-        this.initConfigsInPath(type, ConfigLoader.getConfigName(type));
+    public ConfigHolderMap compare(BiFunction<String, String, Integer> func) {
+        this.COMMON_MAP = new TreeMap<>(new SimpleCompare(func));
+        this.SERVER_MAP = new TreeMap<>(new SimpleCompare(func));
+        this.CLIENT_MAP = new TreeMap<>(new SimpleCompare(func));
+        return this;
     }
 
-    public void initConfigsInPath(ModConfig.Type type, String fileName) {
+    public void initConfigs(ModConfig.Type type) {
+        this.initConfigs(type, ConfigLoader.getConfigName(type));
+    }
+
+    public void initConfigs(ModConfig.Type type, String fileName) {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
         String title = ConfigLoader.getActiveModId() + ".configuration.";
         TITLE_MAP.put(title + "title", StringCaser.caseSpaceCapitalize(title));
         this.applyConfig(type, builder, title);
+        if (!extraConfigs.isEmpty()) {
+            extraConfigs.forEach(builder::configure);
+        }
         ModLoadingContext.get().registerConfig(type, builder.build(), fileName);
         String key = title + "section." + fileName.replace("-", ".");
         TITLE_MAP.put(key, ConfigLoader.getConfigTypeText(type));
+    }
+
+    public ConfigHolderMap addExtra(Function<ForgeConfigSpec.Builder, ?> extraConfig) {
+        this.extraConfigs.add(extraConfig);
+        return this;
     }
 
     public void applyConfig(ModConfig.Type type, ForgeConfigSpec.Builder builder, String title) {

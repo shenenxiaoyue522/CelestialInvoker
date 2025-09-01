@@ -13,6 +13,9 @@ public class ConfigLangGen extends LanguageProvider {
         ConfigHolder.CACHE.TEXT_MAP.forEach((key, config) -> {
             StringBuilder finalText = new StringBuilder(config.getTexts().get(0));
             add(key, config.getName());
+            if (!config.getRangeText().isEmpty()) {
+                config.getTexts().add(config.getRangeText());
+            }
             if (config.getTexts().size() > 1) {
                 for (int i = 1; i < config.getTexts().size(); i++) {
                     finalText.append("/n ").append(config.getTexts().get(i));

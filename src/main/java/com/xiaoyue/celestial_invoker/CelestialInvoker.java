@@ -2,6 +2,7 @@ package com.xiaoyue.celestial_invoker;
 
 import com.mojang.logging.LogUtils;
 import com.xiaoyue.celestial_invoker.content.binding.CelestialRegistrate;
+import com.xiaoyue.celestial_invoker.register.CIEntities;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -18,7 +19,7 @@ public class CelestialInvoker
     public static final CelestialRegistrate REGISTRATE = new CelestialRegistrate(MODID);
     
     public CelestialInvoker() {
-        REGISTRATE.initDefaultConfig();
+        CIEntities.register();
     }
 
     @SubscribeEvent

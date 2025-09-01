@@ -7,6 +7,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
 
+import java.lang.reflect.Field;
 import java.util.Locale;
 
 public class ConfigLoader {
@@ -40,7 +41,9 @@ public class ConfigLoader {
                 Type clazz = data.clazz();
                 String name = data.memberName();
                 Class<?> annoCls = Class.forName(clazz.getClassName());
-                ConfigHolder<?> holder = cast(annoCls.getDeclaredField(name).get(null));
+                Field field = annoCls.getDeclaredField(name);
+                field.setAccessible(true);
+                ConfigHolder<?> holder = cast(field.get(null));
                 ConfigHolder.CACHE.addConfig(category, holder, type);
             }
             return ConfigHolder.CACHE;

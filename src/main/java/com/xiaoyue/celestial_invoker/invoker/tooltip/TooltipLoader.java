@@ -45,11 +45,12 @@ public class TooltipLoader {
                 if (!key.isEmpty()) {
                     tooltipKey = key;
                 } else if (id != null) {
-                    tooltipKey = "tooltip." + modid + "." + id;
+                    tooltipKey = modid + "." + "tooltip." + id;
                 }
                 Type clazz = data.clazz();
                 Class<?> annoCls = Class.forName(clazz.getClassName());
                 Field field = annoCls.getDeclaredField(data.memberName());
+                field.setAccessible(true);
                 if (field.get(null) instanceof TooltipEntry entry) {
                     trySetKey(tooltipKey, entry);
                     map.put(tooltipKey, entry);
