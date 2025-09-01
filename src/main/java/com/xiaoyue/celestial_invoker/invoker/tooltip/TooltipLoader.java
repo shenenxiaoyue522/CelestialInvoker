@@ -55,9 +55,10 @@ public class TooltipLoader {
                     trySetKey(tooltipKey, entry);
                     map.put(tooltipKey, entry);
                 } else if (field.get(null) instanceof TooltipHolder holder) {
+                    String multiKey = tooltipKey + "_";
                     for (int i = 0; i < holder.size(); i++) {
                         TooltipEntry entry = holder.get(i);
-                        tooltipKey = tooltipKey + "_" + i;
+                        tooltipKey = multiKey + i;
                         trySetKey(tooltipKey, entry);
                         map.put(tooltipKey, entry);
                     }
