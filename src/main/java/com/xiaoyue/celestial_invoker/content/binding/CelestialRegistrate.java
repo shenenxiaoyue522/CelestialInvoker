@@ -10,11 +10,9 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import com.xiaoyue.celestial_invoker.content.client.SimpleTexParticle;
+import com.xiaoyue.celestial_invoker.content.binding.client.SimpleTexParticle;
 import com.xiaoyue.celestial_invoker.content.generator.CelestialProviders;
 import com.xiaoyue.celestial_invoker.content.generator.RegistrateParticleTexProvider;
-import com.xiaoyue.celestial_invoker.invoker.config.ConfigHolderMap;
-import com.xiaoyue.celestial_invoker.invoker.config.ConfigLoader;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import dev.xkmc.l2library.base.L2Registrate;
 import net.minecraft.client.particle.ParticleEngine;
@@ -39,7 +37,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.SoundDefinition;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
@@ -52,14 +49,6 @@ import java.util.stream.Collectors;
 public class CelestialRegistrate extends L2Registrate {
     public CelestialRegistrate(String modid) {
         super(modid);
-    }
-
-    public void initDefaultConfig() {
-        mapConfig().initConfigs(ModConfig.Type.COMMON);
-    }
-
-    public ConfigHolderMap mapConfig() {
-        return ConfigLoader.mapConfig(getModid());
     }
 
     public void addModTooltipGen() {

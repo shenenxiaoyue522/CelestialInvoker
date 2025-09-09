@@ -29,6 +29,10 @@ public class ConfigLoader {
         return String.format(Locale.ROOT, "%s-%s.toml", getActiveModId(), type.extension());
     }
 
+    public static String getCelestialConfigName(ModConfig.Type type) {
+        return String.format(Locale.ROOT, "celestial_configs/" + "%s-%s.toml", getActiveModId(), type.extension());
+    }
+
     public static ConfigHolder<?> cast(Object obj) {
         return (ConfigHolder<?>) obj;
     }

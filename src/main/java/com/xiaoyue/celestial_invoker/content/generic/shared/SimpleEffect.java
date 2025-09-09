@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic;
+package com.xiaoyue.celestial_invoker.content.generic.shared;
 
 import com.xiaoyue.celestial_invoker.content.generic.builder.SimpleEffectBuilder;
 import net.minecraft.world.effect.MobEffect;

@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.entity;
+package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.xiaoyue.celestial_invoker.content.binding.BindingHandler;
 import com.xiaoyue.celestial_invoker.content.generic.item.IAirBladeUser;

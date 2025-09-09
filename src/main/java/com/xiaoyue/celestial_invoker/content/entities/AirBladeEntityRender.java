@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.entity;
+package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

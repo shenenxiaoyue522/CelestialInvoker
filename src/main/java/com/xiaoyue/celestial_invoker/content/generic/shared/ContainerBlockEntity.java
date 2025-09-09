@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.block;
+package com.xiaoyue.celestial_invoker.content.generic.shared;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -5,6 +5,12 @@ import net.minecraftforge.client.event.RenderTooltipEvent;
 
 public interface ICustomTooltip {
 
-    void getTextColor(RenderTooltipEvent.Color event, ItemStack stack);
+    default void getTextColor(RenderTooltipEvent.Color event, ItemStack stack) {
+
+    }
+
+    default void getTextComponents(RenderTooltipEvent.GatherComponents event, ItemStack stack) {
+
+    }
 
 }

@@ -17,4 +17,11 @@ public class ClientEvents {
             custom.getTextColor(event, event.getItemStack());
         }
     }
+
+    @SubscribeEvent
+    public static void getTextComponents(RenderTooltipEvent.GatherComponents event) {
+        if (event.getItemStack().getItem() instanceof ICustomTooltip custom) {
+            custom.getTextComponents(event, event.getItemStack());
+        }
+    }
 }
