@@ -5,7 +5,6 @@ import com.xiaoyue.celestial_invoker.content.binding.CelestialRegistrate;
 import com.xiaoyue.celestial_invoker.content.network.ClickEmptyPacket;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import dev.xkmc.l2library.serial.config.PacketHandlerWithConfig;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,8 +28,7 @@ public class CelestialInvoker
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
-        DataGenerator gen = event.getGenerator();
-        boolean client = event.includeClient();
+
     }
 
     public static ResourceLocation loc(String s) {

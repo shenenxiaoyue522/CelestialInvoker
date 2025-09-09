@@ -10,7 +10,7 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import com.xiaoyue.celestial_invoker.content.binding.client.SimpleTexParticle;
+import com.xiaoyue.celestial_invoker.content.client.SimpleTexParticle;
 import com.xiaoyue.celestial_invoker.content.generator.CelestialProviders;
 import com.xiaoyue.celestial_invoker.content.generator.RegistrateParticleTexProvider;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
@@ -23,6 +23,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -31,9 +32,6 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructureType;
-import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.SoundDefinition;
@@ -53,14 +51,6 @@ public class CelestialRegistrate extends L2Registrate {
 
     public void addModTooltipGen() {
         this.addDataGenerator(ProviderType.LANG, new TooltipLoader(getModid())::generator);
-    }
-
-    public <T extends StructurePieceType> RegistryEntry<T> structurePieceType(String name, NonNullSupplier<T> sup) {
-        return this.generic(this, name, Registries.STRUCTURE_PIECE, sup).register();
-    }
-
-    public <T extends Structure> RegistryEntry<StructureType<T>> structureType(String name, NonNullSupplier<StructureType<T>> sup) {
-        return this.generic(this, name, Registries.STRUCTURE_TYPE, sup).register();
     }
 
     public <T extends SimpleTexParticle> RegistryEntry<ParticleType<SimpleParticleType>> particleType(String name, boolean overrideLimiter, NonNullSupplier<T> sup, NonNullConsumer<RegistrateParticleTexProvider> cons) {
@@ -117,7 +107,7 @@ public class CelestialRegistrate extends L2Registrate {
 
     public MetalItemEntry<Item, Block> slimeMetal(String id) {
         return this.metal(id, Item::new, p -> new Block(BlockBehaviour.Properties
-                .of().sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F)));
+                .of().sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5f)));
     }
 
     public <T extends Item, B extends Block> MetalItemEntry<T, B> metal(String id, NonNullFunction<Item.Properties, T> item, NonNullFunction<BlockBehaviour.Properties, B> block) {
@@ -127,20 +117,24 @@ public class CelestialRegistrate extends L2Registrate {
     public <T extends Item> ItemEntry<T> ingotItem(String id, NonNullFunction<Item.Properties, T> item) {
         return this.item(id + "_ingot", item).model((ctx, pvd) ->
                         pvd.generated(ctx, pvd.modLoc("item/metal/" + ctx.getName())))
-                .tag(ItemTags.create(forgeLoc("ingots/" + id))).register();
+                .tag(forgeTag("ingots/" + id)).register();
     }
 
     public <T extends Item> ItemEntry<T> nuggetItem(String id, NonNullFunction<Item.Properties, T> item) {
         return this.item(id + "_nugget", item).model((ctx, pvd) ->
                         pvd.generated(ctx, pvd.modLoc("item/metal/" + ctx.getName())))
-                .tag(ItemTags.create(forgeLoc("nuggets/" + id))).register();
+                .tag(forgeTag("nuggets/" + id)).register();
     }
 
     public <B extends Block> BlockEntry<B> metalBlock(String id, NonNullFunction<BlockBehaviour.Properties, B> block) {
         return this.block(id + "_block", block).blockstate((ctx, pvd) ->
                         pvd.simpleBlock(ctx.get(), pvd.models().cubeAll(ctx.getName(), pvd.modLoc("block/metal/" + ctx.getName()))))
-                .item().tag(ItemTags.create(forgeLoc("storage_blocks/" + id)))
+                .item().tag(forgeTag("storage_blocks/" + id))
                 .build().register();
+    }
+
+    public static TagKey<Item> forgeTag(String id) {
+        return ItemTags.create(forgeLoc(id));
     }
 
     public static ResourceLocation forgeLoc(String path) {

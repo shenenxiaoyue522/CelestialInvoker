@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.binding.client;
+package com.xiaoyue.celestial_invoker.content.client;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
