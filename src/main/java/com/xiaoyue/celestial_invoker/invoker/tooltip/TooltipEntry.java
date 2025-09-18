@@ -11,7 +11,7 @@ public final class TooltipEntry {
     public final String tooltip;
     public final Object[] obj;
 
-    public String key;
+    public String key = "";
 
     public TooltipEntry(String tooltip, Object... obj) {
         this.tooltip = tooltip;

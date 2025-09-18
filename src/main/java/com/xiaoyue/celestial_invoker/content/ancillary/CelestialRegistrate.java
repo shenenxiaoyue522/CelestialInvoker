@@ -1,5 +1,6 @@
-package com.xiaoyue.celestial_invoker.content.binding;
+package com.xiaoyue.celestial_invoker.content.ancillary;
 
+import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.builders.NoConfigBuilder;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
@@ -10,6 +11,7 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import com.xiaoyue.celestial_invoker.content.ancillary.entry.MetalItemEntry;
 import com.xiaoyue.celestial_invoker.content.client.SimpleTexParticle;
 import com.xiaoyue.celestial_invoker.content.generator.CelestialProviders;
 import com.xiaoyue.celestial_invoker.content.generator.RegistrateParticleTexProvider;
@@ -49,7 +51,7 @@ public class CelestialRegistrate extends L2Registrate {
         super(modid);
     }
 
-    public void addModTooltipGen() {
+    public void initModTooltipSubscribe() {
         this.addDataGenerator(ProviderType.LANG, new TooltipLoader(getModid())::generator);
     }
 
@@ -99,6 +101,11 @@ public class CelestialRegistrate extends L2Registrate {
         return this.buildModCreativeTab(name, getTabName(name), config);
     }
 
+    public <T extends Item> ItemEntry<T> armor(String name, String path, ArmorItem.Type type, NonNullFunction<Item.Properties, T> item) {
+        return this.item(name + "_" + type.getName(), item).model((ctx, pvd) ->
+                pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName()))).tag(Tags.Items.ARMORS, BindingHandler.getArmorSlotTag(type)).register();
+    }
+
     public <T extends Item> Map<ArmorItem.Type, RegistryEntry<T>> armors(String name, String path, NonNullFunction<Item.Properties, T> item) {
         return Arrays.stream(ArmorItem.Type.values()).collect(Collectors.toMap(type -> type, type -> this.item(name + "_" + type.getName(), item)
                 .model((ctx, pvd) -> pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName())))
@@ -115,22 +122,22 @@ public class CelestialRegistrate extends L2Registrate {
     }
 
     public <T extends Item> ItemEntry<T> ingotItem(String id, NonNullFunction<Item.Properties, T> item) {
-        return this.item(id + "_ingot", item).model((ctx, pvd) ->
-                        pvd.generated(ctx, pvd.modLoc("item/metal/" + ctx.getName())))
-                .tag(forgeTag("ingots/" + id)).register();
+        return metalBuilder(id, "ingot", item).register();
     }
 
     public <T extends Item> ItemEntry<T> nuggetItem(String id, NonNullFunction<Item.Properties, T> item) {
-        return this.item(id + "_nugget", item).model((ctx, pvd) ->
-                        pvd.generated(ctx, pvd.modLoc("item/metal/" + ctx.getName())))
-                .tag(forgeTag("nuggets/" + id)).register();
+        return metalBuilder(id, "nugget", item).register();
+    }
+
+    public <T extends Item> ItemBuilder<T, L2Registrate> metalBuilder(String id, String type, NonNullFunction<Item.Properties, T> item) {
+        return this.item(id + "_" + type, item).model((ctx, pvd) ->
+                pvd.generated(ctx, pvd.modLoc("item/metal/" + ctx.getName()))).tag(forgeTag(type + "s/" + id));
     }
 
     public <B extends Block> BlockEntry<B> metalBlock(String id, NonNullFunction<BlockBehaviour.Properties, B> block) {
         return this.block(id + "_block", block).blockstate((ctx, pvd) ->
                         pvd.simpleBlock(ctx.get(), pvd.models().cubeAll(ctx.getName(), pvd.modLoc("block/metal/" + ctx.getName()))))
-                .item().tag(forgeTag("storage_blocks/" + id))
-                .build().register();
+                .item().tag(forgeTag("storage_blocks/" + id)).build().register();
     }
 
     public static TagKey<Item> forgeTag(String id) {

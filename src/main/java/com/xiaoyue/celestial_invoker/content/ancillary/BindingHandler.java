@@ -1,7 +1,8 @@
-package com.xiaoyue.celestial_invoker.content.binding;
+package com.xiaoyue.celestial_invoker.content.ancillary;
 
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.DataIngredient;
+import com.xiaoyue.celestial_invoker.content.ancillary.entry.MetalItemEntry;
 import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.Holder;
@@ -14,52 +15,46 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.util.RecipeMatcher;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiFunction;
 
 public class BindingHandler {
 
-    public static <C extends Container> boolean checkShapelessInputs(List<Ingredient> ingredients, C inv, Recipe<C> recipe, boolean simple) {
-        StackedContents stackedcontents = new StackedContents();
+    public static <C extends Container> boolean checkInputs(List<Ingredient> materials, C inv) {
         List<ItemStack> inputs = new ArrayList<>();
-        int i = 0;
-        for(int j = 0; j < inv.getContainerSize(); ++j) {
-            ItemStack itemstack = inv.getItem(j);
-            if (!itemstack.isEmpty()) {
-                ++i;
-                if (simple) {
-                    stackedcontents.accountStack(itemstack, 1);
-                } else {
-                    inputs.add(itemstack);
-                }
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack stack = inv.getItem(i);
+            if (!stack.isEmpty()) {
+                inputs.add(stack);
             }
         }
-        test: {
-            if (i == ingredients.size()) {
-                if (simple) {
-                    if (stackedcontents.canCraft(recipe, null)) {
-                        break test;
-                    }
-                } else if (RecipeMatcher.findMatches(inputs, ingredients) != null) {
-                    break test;
+        List<Ingredient> requiredIngredients = new ArrayList<>(materials);
+        for (ItemStack input : inputs) {
+            boolean matched = false;
+            for (Iterator<Ingredient> iterator = requiredIngredients.iterator(); iterator.hasNext();) {
+                Ingredient ingredient = iterator.next();
+                if (ingredient.test(input)) {
+                    iterator.remove();
+                    matched = true;
+                    break;
                 }
             }
-            return false;
+            if (!matched) {
+                return false;
+            }
         }
-        return true;
+        return requiredIngredients.isEmpty();
     }
 
     public static Holder.Reference<DamageType> getDamageSource(Level level, ResourceKey<DamageType> key) {

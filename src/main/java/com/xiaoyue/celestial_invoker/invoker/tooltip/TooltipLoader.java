@@ -45,7 +45,7 @@ public class TooltipLoader {
                 if (!key.isEmpty()) {
                     tooltipKey = key;
                 } else if (id != null) {
-                    tooltipKey = modid + "." + "tooltip." + id;
+                    tooltipKey = modid + ".tooltip." + id;
                 }
                 Type clazz = data.clazz();
                 Class<?> annoCls = Class.forName(clazz.getClassName());
@@ -58,7 +58,11 @@ public class TooltipLoader {
                     String multiKey = tooltipKey + "_";
                     for (int i = 0; i < holder.size(); i++) {
                         TooltipEntry entry = holder.get(i);
-                        tooltipKey = multiKey + i;
+                        if (entry.key.isEmpty()) {
+                            tooltipKey = multiKey + i;
+                        } else {
+                            tooltipKey = entry.key;
+                        }
                         trySetKey(tooltipKey, entry);
                         map.put(tooltipKey, entry);
                     }

@@ -3,11 +3,8 @@ package com.xiaoyue.celestial_invoker.content.client;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
-@OnlyIn(value = Dist.CLIENT)
 public abstract class SimpleTexParticle extends TextureSheetParticle implements ParticleProvider<SimpleParticleType>, ParticleEngine.SpriteParticleRegistration<SimpleParticleType> {
     public final SpriteSet sprites;
     public final ParticleRenderType type;

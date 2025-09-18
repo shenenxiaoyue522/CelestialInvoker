@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.generic.item;
 
-import com.xiaoyue.celestial_invoker.content.binding.BindingHandler;
+import com.xiaoyue.celestial_invoker.content.ancillary.BindingHandler;
 import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntity;
 import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntityRender;
 import net.minecraft.core.BlockPos;
