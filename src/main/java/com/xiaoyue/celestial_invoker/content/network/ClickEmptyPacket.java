@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.network;
 
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
-import com.xiaoyue.celestial_invoker.content.generic.item.IClickUseItem;
+import com.xiaoyue.celestial_invoker.content.generic.item.IClickInteraction;
 import dev.xkmc.l2serial.network.SerialPacketBase;
 import dev.xkmc.l2serial.serialization.SerialClass;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,13 +36,13 @@ public class ClickEmptyPacket extends SerialPacketBase {
             if (isRight) {
                 PlayerInteractEvent.RightClickItem event = new PlayerInteractEvent.RightClickItem(player, hand);
                 ItemStack stack = event.getItemStack();
-                if (stack.getItem() instanceof IClickUseItem item) {
+                if (stack.getItem() instanceof IClickInteraction item) {
                     item.onRightClickEmpty(stack, event, player);
                 }
             } else {
                 PlayerInteractEvent.LeftClickEmpty event = new PlayerInteractEvent.LeftClickEmpty(player);
                 ItemStack stack = event.getItemStack();
-                if (stack.getItem() instanceof IClickUseItem item) {
+                if (stack.getItem() instanceof IClickInteraction item) {
                     item.onLeftClickEmpty(stack, event, player);
                 }
             }

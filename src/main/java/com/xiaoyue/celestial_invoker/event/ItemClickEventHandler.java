@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.event;
 
-import com.xiaoyue.celestial_invoker.content.generic.item.IClickUseItem;
+import com.xiaoyue.celestial_invoker.content.generic.item.IClickInteraction;
 import com.xiaoyue.celestial_invoker.content.network.ClickEmptyPacket;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,14 +27,14 @@ public class ItemClickEventHandler {
 
     @SubscribeEvent
     public static void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
-        if (event.getItemStack().getItem() instanceof IClickUseItem item) {
+        if (event.getItemStack().getItem() instanceof IClickInteraction item) {
             item.onLeftClickBlock(event.getItemStack(), event, event.getEntity());
         }
     }
 
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getItemStack().getItem() instanceof IClickUseItem item) {
+        if (event.getItemStack().getItem() instanceof IClickInteraction item) {
             item.onRightClickBlock(event.getItemStack(), event, event.getEntity());
         }
     }

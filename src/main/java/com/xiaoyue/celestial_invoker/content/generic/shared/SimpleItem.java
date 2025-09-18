@@ -1,11 +1,12 @@
-package com.xiaoyue.celestial_invoker.content.generic.item;
+package com.xiaoyue.celestial_invoker.content.generic.shared;
 
 import com.xiaoyue.celestial_invoker.content.generic.builder.SimpleItemBuilder;
+import com.xiaoyue.celestial_invoker.content.generic.item.ISimpleItem;
 
-public class SimpleItemImpl extends ISimpleItem.Factory {
+public class SimpleItem extends ISimpleItem.Factory {
     private final SimpleItemBuilder.Impl builder;
 
-    public SimpleItemImpl(Properties pProperties, SimpleItemBuilder.Impl builder) {
+    public SimpleItem(Properties pProperties, SimpleItemBuilder.Impl builder) {
         super(pProperties);
         this.builder = builder;
     }

@@ -16,7 +16,7 @@ public class ModuleSlot extends Slot {
 
     @Override
     public int getMaxStackSize(ItemStack pStack) {
-        if (menu instanceof IModuleMenu moduleMenu) {
+        if (menu instanceof IControlSlotMenu moduleMenu) {
             return moduleMenu.getMaxStackSize(this, pStack);
         }
         return super.getMaxStackSize(pStack);
@@ -24,7 +24,7 @@ public class ModuleSlot extends Slot {
 
     @Override
     public void onTake(Player pPlayer, ItemStack pStack) {
-        if (menu instanceof IModuleMenu moduleMenu) {
+        if (menu instanceof IControlSlotMenu moduleMenu) {
             moduleMenu.onTake(this, pPlayer, pStack);
         }
         super.onTake(pPlayer, pStack);
@@ -32,7 +32,7 @@ public class ModuleSlot extends Slot {
 
     @Override
     public boolean mayPlace(ItemStack pStack) {
-        if (menu instanceof IModuleMenu moduleMenu) {
+        if (menu instanceof IControlSlotMenu moduleMenu) {
             return moduleMenu.mayPlace(this, pStack);
         }
         return super.mayPlace(pStack);
@@ -41,7 +41,7 @@ public class ModuleSlot extends Slot {
     @Override
     public void setChanged() {
         super.setChanged();
-        if (menu instanceof IModuleMenu moduleMenu) {
+        if (menu instanceof IControlSlotMenu moduleMenu) {
             moduleMenu.onSlotChanged(this);
         }
     }

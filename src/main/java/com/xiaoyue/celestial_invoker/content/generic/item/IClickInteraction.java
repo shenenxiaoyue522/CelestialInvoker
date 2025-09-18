@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
-public interface IClickUseItem {
+public interface IClickInteraction {
 
     default void onLeftClickEmpty(ItemStack stack, PlayerInteractEvent.LeftClickEmpty event, Player player) {
 
