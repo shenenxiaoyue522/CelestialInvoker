@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.ancillary;
+package com.xiaoyue.celestial_invoker.simple;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.invoker.config;
 
-import com.xiaoyue.celestial_invoker.content.ancillary.StringCaser;
 import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
+import com.xiaoyue.celestial_invoker.simple.StringCaser;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.forgespi.language.ModFileScanData;

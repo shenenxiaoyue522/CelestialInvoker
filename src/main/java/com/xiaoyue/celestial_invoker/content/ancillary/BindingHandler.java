@@ -3,7 +3,7 @@ package com.xiaoyue.celestial_invoker.content.ancillary;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.DataIngredient;
 import com.xiaoyue.celestial_invoker.content.ancillary.entry.MetalItemEntry;
-import com.xiaoyue.celestial_invoker.invoker.subscribe.ForceLoadClass;
+import com.xiaoyue.celestial_invoker.invoker.provider.ForceLoadClass;
 import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.Holder;

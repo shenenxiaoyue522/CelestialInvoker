@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.invoker.subscribe;
+package com.xiaoyue.celestial_invoker.invoker.provider;
 
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
 import net.minecraftforge.fml.IModLoadingState;

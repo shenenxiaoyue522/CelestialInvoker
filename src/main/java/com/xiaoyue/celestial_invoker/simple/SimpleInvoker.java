@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.simple;
 
 import com.xiaoyue.celestial_invoker.invoker.config.ConfigLoader;
-import com.xiaoyue.celestial_invoker.invoker.subscribe.CelestialStatesProvider;
+import com.xiaoyue.celestial_invoker.invoker.provider.CelestialStatesProvider;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.language.ModFileScanData;
