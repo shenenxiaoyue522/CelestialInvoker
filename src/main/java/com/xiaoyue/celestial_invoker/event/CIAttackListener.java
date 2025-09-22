@@ -1,6 +1,5 @@
 package com.xiaoyue.celestial_invoker.event;
 
-import com.xiaoyue.celestial_invoker.content.generic.item.ExtraDataArmor;
 import dev.xkmc.l2damagetracker.contents.attack.AttackCache;
 import dev.xkmc.l2damagetracker.contents.attack.AttackListener;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -9,17 +8,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
-import java.util.function.BiConsumer;
+import static com.xiaoyue.celestial_invoker.content.generic.item.ExtraDataArmor.postMethod;
 
 public class CIAttackListener implements AttackListener {
-
-    public static void postArmor(LivingEntity entity, BiConsumer<ItemStack, ExtraDataArmor> cons) {
-        entity.getArmorSlots().forEach(stack -> {
-            if (!stack.isEmpty() && stack.getItem() instanceof ExtraDataArmor armor) {
-                cons.accept(stack, armor);
-            }
-        });
-    }
 
     @Override
     public void onHurtMaximized(AttackCache cache, ItemStack weapon) {
@@ -27,14 +18,14 @@ public class CIAttackListener implements AttackListener {
         assert event != null;
         LivingEntity target = cache.getAttackTarget();
         LivingEntity attacker = cache.getAttacker();
-        postArmor(target, (stack, armor) -> {
+        postMethod(target, (stack, armor) -> {
             EquipmentSlot slot = stack.getEquipmentSlot();
-            armor.config.onHurt(target, stack, event, slot);
+            armor.onHurt(target, stack, event, slot);
         });
         if (attacker != null) {
-            postArmor(attacker, (stack, armor) -> {
+            postMethod(attacker, (stack, armor) -> {
                 EquipmentSlot slot = stack.getEquipmentSlot();
-                armor.config.onHurtTarget(attacker, stack, event, slot);
+                armor.onHurtTarget(attacker, stack, event, slot);
             });
         }
     }
@@ -44,9 +35,9 @@ public class CIAttackListener implements AttackListener {
         LivingDamageEvent event = cache.getLivingDamageEvent();
         assert event != null;
         LivingEntity target = cache.getAttackTarget();
-        postArmor(target, (stack, armor) -> {
+        postMethod(target, (stack, armor) -> {
             EquipmentSlot slot = stack.getEquipmentSlot();
-            armor.config.onDamage(target, stack, event, slot);
+            armor.onDamage(target, stack, event, slot);
         });
     }
 }

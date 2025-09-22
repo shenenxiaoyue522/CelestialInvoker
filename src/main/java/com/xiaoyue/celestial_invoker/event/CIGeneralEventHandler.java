@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.event;
 
 import com.xiaoyue.celestial_invoker.content.generic.item.IClickInteraction;
-import com.xiaoyue.celestial_invoker.content.network.ClickEmptyPacket;
+import com.xiaoyue.celestial_invoker.content.generic.network.ClickEmptyPacket;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ItemClickEventHandler {
+public class CIGeneralEventHandler {
 
     @SubscribeEvent
     public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {

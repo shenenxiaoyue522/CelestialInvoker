@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.network;
+package com.xiaoyue.celestial_invoker.content.generic.network;
 
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
 import com.xiaoyue.celestial_invoker.content.generic.item.IClickInteraction;

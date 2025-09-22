@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.simple.stats;
+package com.xiaoyue.celestial_invoker.content.ancillary.material;
 
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -7,6 +7,10 @@ public record ToolStats(int dur, float speed, float attack, int lv, int enchant,
 
     public static ToolStats create(int dur, float speed, float attack, int lv, int enchant, Ingredient repair) {
         return new ToolStats(dur, speed, attack, lv, enchant, repair);
+    }
+
+    public static ToolStats create(int dur, float speed, float attack, int lv, int enchant) {
+        return new ToolStats(dur, speed, attack, lv, enchant, Ingredient.of());
     }
 
     @Override

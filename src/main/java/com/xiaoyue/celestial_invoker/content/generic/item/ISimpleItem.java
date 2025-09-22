@@ -33,8 +33,7 @@ public interface ISimpleItem {
         }
     }
 
-    default Multimap<Attribute, AttributeModifier> addAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-        Multimap<Attribute, AttributeModifier> map = LinkedHashMultimap.create();
+    default Multimap<Attribute, AttributeModifier> addAttributeModifiers(EquipmentSlot slot, ItemStack stack, Multimap<Attribute, AttributeModifier> map) {
         String name = CelestialInvoker.loc("default_melee_attribute").toString();
         if (getBuilder().defaultDamage != 0 && slot.equals(EquipmentSlot.MAINHAND)) {
             map.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, name, getBuilder().defaultDamage,
@@ -76,27 +75,27 @@ public interface ISimpleItem {
         }
 
         @Override
-        public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        public final void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
             addTooltips(pStack, pTooltipComponents);
         }
 
         @Override
-        public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-            return addAttributeModifiers(slot, stack);
+        public final Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+            return addAttributeModifiers(slot, stack,  LinkedHashMultimap.create());
         }
 
         @Override
-        public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
+        public final void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
             onInvTick(stack, level, player);
         }
 
         @Override
-        public boolean canBeHurtBy(DamageSource pDamageSource) {
+        public final boolean canBeHurtBy(DamageSource pDamageSource) {
             return canHurtBy(pDamageSource);
         }
 
         @Override
-        public boolean isFoil(ItemStack pStack) {
+        public final boolean isFoil(ItemStack pStack) {
             return isRenderFoil(pStack);
         }
     }

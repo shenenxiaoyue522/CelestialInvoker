@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.network;
+package com.xiaoyue.celestial_invoker.content.generic.network;
 
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
 import dev.xkmc.l2serial.network.SerialPacketBase;
@@ -10,7 +10,7 @@ import net.minecraft.world.inventory.MenuConstructor;
 import net.minecraftforge.network.NetworkEvent;
 
 @SerialClass
-public class OpenMenuPacket extends SerialPacketBase {
+public class SimpleUseMenuPacket extends SerialPacketBase {
 
     @SerialClass.SerialField
     public Component title;
@@ -18,13 +18,13 @@ public class OpenMenuPacket extends SerialPacketBase {
     @SerialClass.SerialField
     public MenuConstructor sup;
 
-    public OpenMenuPacket(Component title, MenuConstructor sup) {
+    public SimpleUseMenuPacket(Component title, MenuConstructor sup) {
         this.title = title;
         this.sup = sup;
     }
 
     @Deprecated
-    public OpenMenuPacket() {
+    public SimpleUseMenuPacket() {
         this(Component.empty(), (id, inv, p) -> null);
     }
 

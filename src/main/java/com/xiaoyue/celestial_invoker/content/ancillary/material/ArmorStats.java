@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.simple.stats;
+package com.xiaoyue.celestial_invoker.content.ancillary.material;
 
 import dev.xkmc.l2damagetracker.contents.materials.api.ArmorMat;
 import net.minecraft.sounds.SoundEvent;
@@ -18,5 +18,13 @@ public class ArmorStats extends ArmorMat {
 
     public static ArmorStats create(String name, int durability, int[] protection, int enchant, float tough, float kb, Supplier<Ingredient> repair) {
         return new ArmorStats(name, durability, protection, enchant, SoundEvents.ARMOR_EQUIP_GENERIC, tough, kb, repair);
+    }
+
+    public static ArmorStats create(String name, int durability, int[] protection, int enchant, float tough, Supplier<Ingredient> repair) {
+        return new ArmorStats(name, durability, protection, enchant, SoundEvents.ARMOR_EQUIP_GENERIC, tough, 0, repair);
+    }
+
+    public static ArmorStats create(String name, int durability, int[] protection, int enchant, float tough) {
+        return new ArmorStats(name, durability, protection, enchant, SoundEvents.ARMOR_EQUIP_GENERIC, tough, 0, Ingredient::of);
     }
 }

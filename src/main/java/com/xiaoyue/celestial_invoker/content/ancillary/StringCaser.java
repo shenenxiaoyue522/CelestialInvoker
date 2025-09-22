@@ -1,12 +1,7 @@
-package com.xiaoyue.celestial_invoker.simple;
+package com.xiaoyue.celestial_invoker.content.ancillary;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Arrays;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class StringCaser {
 
@@ -48,9 +43,5 @@ public class StringCaser {
         }
 
         return result.toString().trim();
-    }
-
-    public static String allLowerCaseFirst(String text) {
-        return Arrays.stream(text.toLowerCase(Locale.ROOT).split("\\.")).map(StringUtils::capitalize).collect(Collectors.joining(" "));
     }
 }

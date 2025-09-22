@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.client;
 
-import com.xiaoyue.celestial_invoker.simple.ItemCDTracker;
+import com.xiaoyue.celestial_invoker.content.ancillary.ItemCooldownTracker;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
@@ -11,18 +11,25 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemDecorator;
 
 @OnlyIn(value = Dist.CLIENT)
-public class ItemCDDecoration implements IItemDecorator {
+public class ItemDecorationHandler implements IItemDecorator {
 
     @Override
     public boolean render(GuiGraphics graphics, Font font, ItemStack stack, int x, int y) {
         if (!stack.isEmpty()) {
-            float f = ItemCDTracker.getCooldownPercent(stack);
+            float f = ItemCooldownTracker.getCooldownPercent(stack);
             if (f > 0.0F) {
                 int i1 = y + Mth.floor(16.0F * (1.0F - f));
                 int j1 = i1 + Mth.ceil(16.0F * f);
                 graphics.fill(RenderType.guiOverlay(), x, i1, x + 16, j1, Integer.MAX_VALUE);
             }
         }
+        if (stack.getItem() instanceof Factory factory) {
+            factory.addCustomDecoration(graphics, font, stack, x, y);
+        }
         return false;
+    }
+
+    public interface Factory {
+        void addCustomDecoration(GuiGraphics graphics, Font font, ItemStack stack, int x, int y);
     }
 }

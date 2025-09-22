@@ -3,6 +3,7 @@ package com.xiaoyue.celestial_invoker.content.ancillary;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.DataIngredient;
 import com.xiaoyue.celestial_invoker.content.ancillary.entry.MetalItemEntry;
+import com.xiaoyue.celestial_invoker.invoker.subscribe.ForceLoadClass;
 import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.Holder;
@@ -30,6 +31,10 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 public class BindingHandler {
+
+    public static void setUnbreakable(ItemStack stack) {
+        stack.getOrCreateTag().putBoolean("Unbreakable", true);
+    }
 
     public static <C extends Container> boolean checkInputs(List<Ingredient> materials, C inv) {
         List<ItemStack> inputs = new ArrayList<>();
@@ -61,12 +66,15 @@ public class BindingHandler {
         return level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(key);
     }
 
-    public static void runForceLoad(String modid) {
+    public static void postForceLoader(String modid, String type) {
         for (ModFileScanData.AnnotationData data : SimpleInvoker.getModAnno(modid, ForceLoadClass.class)) {
-            try {
-                Class.forName(data.clazz().getClassName());
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+            String dataType = (String) data.annotationData().getOrDefault("type", "all");
+            if (dataType.equals(type)) {
+                try {
+                    Class.forName(data.clazz().getClassName());
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

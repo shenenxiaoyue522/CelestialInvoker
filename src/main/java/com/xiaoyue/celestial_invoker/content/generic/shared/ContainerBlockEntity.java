@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class ContainerBlockEntity extends BlockEntity implements MenuProvider {
 
-    public LazyOptional<IItemHandler> lazyHandler = LazyOptional.empty();
+    public LazyOptional<IItemHandler> lazyHandler = LazyOptional.of(this::getInventory);
     public final String TAG_INV = "BlockInventory";
 
     public ContainerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
