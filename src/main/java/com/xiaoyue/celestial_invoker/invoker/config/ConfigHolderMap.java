@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.invoker.config;
 
-import com.xiaoyue.celestial_invoker.simple.QuickCompare;
+import com.xiaoyue.celestial_invoker.simple.BaseCompare;
 import com.xiaoyue.celestial_invoker.simple.StringCaser;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -25,9 +25,9 @@ public class ConfigHolderMap {
     public ConfigPath configPath = null;
 
     public ConfigHolderMap compare(BiFunction<String, String, Integer> func) {
-        this.COMMON_MAP = new TreeMap<>(new QuickCompare(func));
-        this.SERVER_MAP = new TreeMap<>(new QuickCompare(func));
-        this.CLIENT_MAP = new TreeMap<>(new QuickCompare(func));
+        this.COMMON_MAP = new TreeMap<>(new BaseCompare(func));
+        this.SERVER_MAP = new TreeMap<>(new BaseCompare(func));
+        this.CLIENT_MAP = new TreeMap<>(new BaseCompare(func));
         return this;
     }
 
