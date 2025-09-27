@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.invoker.provider;
+package com.xiaoyue.celestial_invoker.invoker.handler;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

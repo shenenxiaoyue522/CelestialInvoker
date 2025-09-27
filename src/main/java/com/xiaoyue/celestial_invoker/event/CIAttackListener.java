@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
-import static com.xiaoyue.celestial_invoker.content.generic.item.ExtraDataArmor.postMethod;
+import static com.xiaoyue.celestial_invoker.content.generic.item.ExtraDataArmorItem.postMethod;
 
 public class CIAttackListener implements AttackListener {
 

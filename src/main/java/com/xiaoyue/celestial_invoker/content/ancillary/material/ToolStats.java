@@ -3,15 +3,9 @@ package com.xiaoyue.celestial_invoker.content.ancillary.material;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 
+import java.util.function.Supplier;
+
 public record ToolStats(int dur, float speed, float attack, int lv, int enchant, Ingredient repair) implements Tier {
-
-    public static ToolStats create(int dur, float speed, float attack, int lv, int enchant, Ingredient repair) {
-        return new ToolStats(dur, speed, attack, lv, enchant, repair);
-    }
-
-    public static ToolStats create(int dur, float speed, float attack, int lv, int enchant) {
-        return new ToolStats(dur, speed, attack, lv, enchant, Ingredient.of());
-    }
 
     @Override
     public int getUses() {
@@ -41,5 +35,44 @@ public record ToolStats(int dur, float speed, float attack, int lv, int enchant,
     @Override
     public Ingredient getRepairIngredient() {
         return repair;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        public int durability, level, enchant = 0;
+        public float speed, attack = 0f;
+        public Supplier<Ingredient> repair = Ingredient::of;
+
+        public void durability(int durability) {
+            this.durability = durability;
+        }
+
+        public void level(int level) {
+            this.level = level;
+        }
+
+        public void enchant(int enchant) {
+            this.enchant = enchant;
+        }
+
+        public void speed(float speed) {
+            this.speed = speed;
+        }
+
+        public void attack(float attack) {
+            this.attack = attack;
+        }
+
+        public void setRepair(Supplier<Ingredient> repair) {
+            this.repair = repair;
+        }
+
+        public ToolStats build() {
+            return new ToolStats(durability, speed, attack, level, enchant, repair.get());
+        }
     }
 }

@@ -106,11 +106,11 @@ public class CelestialRegistrate extends L2Registrate {
                 pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName()))).tag(Tags.Items.ARMORS, BindingHandler.getArmorSlotTag(type)).register();
     }
 
-    public <T extends Item> Map<ArmorItem.Type, RegistryEntry<T>> armors(String name, String path, ArmorTypeCallback<T> item) {
+    public <T extends Item> Map<ArmorItem.Type, ItemEntry<T>> armors(String name, String path, ArmorTypeCallback<T> item) {
         return armors(type -> name + "_" + type.getName(), path, item);
     }
 
-    public <T extends Item> Map<ArmorItem.Type, RegistryEntry<T>> armors(ArmorNameCallback name, String path, ArmorTypeCallback<T> item) {
+    public <T extends Item> Map<ArmorItem.Type, ItemEntry<T>> armors(ArmorNameCallback name, String path, ArmorTypeCallback<T> item) {
         return Arrays.stream(ArmorItem.Type.values()).collect(Collectors.toMap(type -> type, type -> this.item(name.onCallback(type), item.onCallback(type))
                 .model((ctx, pvd) -> pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName())))
                 .tag(Tags.Items.ARMORS, BindingHandler.getArmorSlotTag(type)).register(), (a, b) -> b, TreeMap::new));

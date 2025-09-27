@@ -2,10 +2,10 @@ package com.xiaoyue.celestial_invoker.register;
 
 import com.tterrag.registrate.util.entry.EntityEntry;
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
+import com.xiaoyue.celestial_invoker.content.client.entity.AirBladeEntityRender;
+import com.xiaoyue.celestial_invoker.content.client.entity.GenericArrowEntityRender;
 import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntity;
-import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntityRender;
 import com.xiaoyue.celestial_invoker.content.entities.GenericArrowEntity;
-import com.xiaoyue.celestial_invoker.content.entities.GenericArrowEntityRender;
 import net.minecraft.world.entity.MobCategory;
 
 public class CIEntities {

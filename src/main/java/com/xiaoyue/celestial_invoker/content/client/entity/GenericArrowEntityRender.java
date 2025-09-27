@@ -1,5 +1,6 @@
-package com.xiaoyue.celestial_invoker.content.entities;
+package com.xiaoyue.celestial_invoker.content.client.entity;
 
+import com.xiaoyue.celestial_invoker.content.entities.GenericArrowEntity;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;

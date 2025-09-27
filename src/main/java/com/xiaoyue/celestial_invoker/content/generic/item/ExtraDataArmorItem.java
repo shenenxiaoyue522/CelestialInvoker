@@ -9,6 +9,7 @@ import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipEntry;
 import dev.xkmc.l2library.util.Proxy;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
@@ -29,24 +30,26 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
-public class ExtraDataArmor extends ArmorItem {
+public class ExtraDataArmorItem extends ArmorItem {
 
     @SubscribeTooltip(id = "set_effect")
     public static TooltipEntry setEffect = TooltipEntry.define("Set effect: ");
-    public static final EnumMap<Type, UUID> ARMOR_MODIFIER_UUID_PER_TYPE = Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
+    @SubscribeTooltip(id = "alt_down")
+    public static TooltipEntry altDown = TooltipEntry.define("Press [%s] to display set effects");
+    public static final EnumMap<Type, UUID> ARMOR_MODIFIER_UUID_PER_TYPE = Util.make(new EnumMap<>(Type.class), (map) -> {
         map.put(Type.BOOTS, UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"));
         map.put(Type.LEGGINGS, UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"));
         map.put(Type.CHESTPLATE, UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"));
         map.put(Type.HELMET, UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150"));
     });
 
-    public ExtraDataArmor(ArmorMaterial material, Type pType, Properties pProperties) {
+    public ExtraDataArmorItem(ArmorMaterial material, Type pType, Properties pProperties) {
         super(material, pType, pProperties);
     }
 
-    public static void postMethod(LivingEntity entity, BiConsumer<ItemStack, ExtraDataArmor> cons) {
+    public static void postMethod(LivingEntity entity, BiConsumer<ItemStack, ExtraDataArmorItem> cons) {
         entity.getArmorSlots().forEach(stack -> {
-            if (!stack.isEmpty() && stack.getItem() instanceof ExtraDataArmor armor) {
+            if (!stack.isEmpty() && stack.getItem() instanceof ExtraDataArmorItem armor) {
                 cons.accept(stack, armor);
             }
         });
@@ -55,21 +58,30 @@ public class ExtraDataArmor extends ArmorItem {
     @Override
     public final void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> list, TooltipFlag pIsAdvanced) {
         this.addTooltips(stack, list, type.getSlot());
+        if (hasArmorSetTooltip(stack) && Screen.hasAltDown()) {
+            addArmorSetTooltips(stack, list);
+        } else {
+            list.add(altDown.withGray(Component.literal("ALT").withStyle(ChatFormatting.YELLOW)));
+        }
     }
 
     protected void addTooltips(ItemStack stack, List<Component> list, EquipmentSlot slot) {
 
     }
 
-    public void addSeriesArmorTooltips(ItemStack stack, List<Component> list) {
+    public boolean hasArmorSetTooltip(ItemStack stack) {
+        return false;
+    }
+
+    public void addArmorSetTooltips(ItemStack stack, List<Component> list) {
         Player player = Proxy.getClientPlayer();
         list.add(getArmorSetTitle(player));
-        list.add(getArmorSetEffectDescription(stack).withStyle(ChatFormatting.GRAY));
-        List<Item> stacks = getSeriesArmors();
-        for (Item armor : stacks) {
-            MutableComponent cmp = Component.literal(" - ").append(armor.getDescription());
-            EquipmentSlot slot = armor.getEquipmentSlot(armor.getDefaultInstance());
-            cmp.withStyle(hasSeriesArmor(player, slot) ? ChatFormatting.GREEN : ChatFormatting.GRAY);
+        addArmorSetEffectTooltips(stack, list);
+        List<Item> items = getSetArmors();
+        for (Item armor : items) {
+            MutableComponent cmp = Component.literal("> ").append(armor.getDescription());
+            EquipmentSlot slot = ((ArmorItem) armor).getEquipmentSlot();
+            cmp.withStyle(hasSetArmor(player, slot) ? ChatFormatting.GREEN : ChatFormatting.GRAY);
             list.add(cmp);
         }
     }
@@ -79,13 +91,17 @@ public class ExtraDataArmor extends ArmorItem {
     }
 
     private MutableComponent getArmorSetTitle(Player player) {
-        Component end = getArmorSetName().append(" (" + getSeriesArmorAmount(player) + "/" + getSeriesArmors().size() + ")")
+        Component end = getArmorSetName().append(" (" + getSetArmorAmount(player) + "/" + getSetArmorRequiredAmount() + ")")
                 .withStyle(ChatFormatting.GRAY);
         return setEffect.get().append(" ").append(end);
     }
 
-    public MutableComponent getArmorSetEffectDescription(ItemStack stack) {
-        return Component.literal("");
+    public void addArmorSetEffectTooltips(ItemStack stack, List<Component> list) {
+
+    }
+
+    public int getSetArmorRequiredAmount() {
+        return getSetArmors().size();
     }
 
     @Override
@@ -111,8 +127,8 @@ public class ExtraDataArmor extends ArmorItem {
         return modify;
     }
 
-    protected ExtraDataArmor.DefenseData getExtraDefense(ItemStack stack) {
-        return new ExtraDataArmor.DefenseData(0f, 0f, 0f);
+    protected DefenseData getExtraDefense(ItemStack stack) {
+        return new DefenseData(0f, 0f, 0f);
     }
 
     protected void getAttributes(EquipmentSlot slot, ItemStack stack, Multimap<Attribute, AttributeModifier> modify) {
@@ -139,33 +155,33 @@ public class ExtraDataArmor extends ArmorItem {
 
     }
 
-    public boolean fullSeriesArmor(@Nullable LivingEntity entity) {
-        return getSeriesArmorAmount(entity) >= 4;
+    public boolean fullSetArmor(@Nullable LivingEntity entity) {
+        return getSetArmorAmount(entity) >= 4;
     }
 
-    public int getSeriesArmorAmount(@Nullable LivingEntity entity) {
+    public int getSetArmorAmount(@Nullable LivingEntity entity) {
         int amount = 0;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (slot.isArmor() && hasSeriesArmor(entity, slot)) amount++;
+            if (slot.isArmor() && hasSetArmor(entity, slot)) amount++;
         }
         return amount;
     }
 
-    public boolean hasSeriesArmor(@Nullable LivingEntity entity, EquipmentSlot slot) {
+    public boolean hasSetArmor(@Nullable LivingEntity entity, EquipmentSlot slot) {
         if (entity == null) return false;
         ItemStack stack = entity.getItemBySlot(slot);
         if (stack.isEmpty()) return false;
-        return isSeriesArmor(stack, slot);
+        return isSetArmor(stack, slot);
     }
 
-    public boolean isSeriesArmor(ItemStack stack, EquipmentSlot slot) {
-        for (Item armor : getSeriesArmors()) {
+    public boolean isSetArmor(ItemStack stack, EquipmentSlot slot) {
+        for (Item armor : getSetArmors()) {
             if (stack.is(armor)) return true;
         }
         return false;
     }
 
-    public List<Item> getSeriesArmors() {
+    public List<Item> getSetArmors() {
         return List.of();
     }
 

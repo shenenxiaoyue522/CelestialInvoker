@@ -1,9 +1,10 @@
-package com.xiaoyue.celestial_invoker.content.entities;
+package com.xiaoyue.celestial_invoker.content.client.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
+import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntity;
 import com.xiaoyue.celestial_invoker.content.generic.item.IAirBladeUser;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
