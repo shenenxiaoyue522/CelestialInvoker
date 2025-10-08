@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.ancillary;
+package com.xiaoyue.celestial_invoker.content.ancillary.helper;
 
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateItemModelProvider;

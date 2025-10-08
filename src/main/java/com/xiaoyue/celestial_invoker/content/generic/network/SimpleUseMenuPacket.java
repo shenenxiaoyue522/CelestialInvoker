@@ -14,7 +14,6 @@ public class SimpleUseMenuPacket extends SerialPacketBase {
 
     @SerialClass.SerialField
     public Component title;
-
     @SerialClass.SerialField
     public MenuConstructor sup;
 

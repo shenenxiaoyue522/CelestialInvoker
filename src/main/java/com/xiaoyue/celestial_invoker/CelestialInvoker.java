@@ -5,10 +5,13 @@ import com.xiaoyue.celestial_invoker.content.ancillary.CelestialRegistrate;
 import com.xiaoyue.celestial_invoker.content.generic.network.ClickEmptyPacket;
 import com.xiaoyue.celestial_invoker.content.generic.network.SimpleUseMenuPacket;
 import com.xiaoyue.celestial_invoker.event.CIAttackListener;
+import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import dev.xkmc.l2damagetracker.contents.attack.AttackEventHandler;
 import dev.xkmc.l2library.serial.config.PacketHandlerWithConfig;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
 import org.slf4j.Logger;
@@ -27,7 +30,11 @@ public class CelestialInvoker {
     public CelestialInvoker() {
         CIEntities.register();
         AttackEventHandler.register(3320, new CIAttackListener());
-        REGISTRATE.initModTooltipSubscribe();
+    }
+
+    @SubscribeEvent
+    public static void onGatherData(GatherDataEvent event) {
+        new TooltipLoader(MODID).generator(event);
     }
 
     public static ResourceLocation loc(String s) {

@@ -1,6 +1,7 @@
 {
   "entity.celestial_invoker.air_blade": "空气刃",
   "entity.celestial_invoker.generic_arrow": "箭",
+  "entity.celestial_invoker.magic_projectile": "魔法弹",
   "celestial_invoker.tooltip.alt_down": "按[%s]显示套装效果",
   "celestial_invoker.tooltip.set_effect": "套装效果: "
 }
