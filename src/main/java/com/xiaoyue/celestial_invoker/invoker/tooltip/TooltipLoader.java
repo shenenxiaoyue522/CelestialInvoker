@@ -1,6 +1,7 @@
 package com.xiaoyue.celestial_invoker.invoker.tooltip;
 
-import com.tterrag.registrate.providers.RegistrateLangProvider;
+import com.tterrag.registrate.AbstractRegistrate;
+import com.tterrag.registrate.providers.ProviderType;
 import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -32,8 +33,9 @@ public class TooltipLoader {
         gen.addProvider(event.includeClient(), new TooltipLangGen(gen.getPackOutput(), this));
     }
 
-    public void generator(RegistrateLangProvider pvd) {
-        map.forEach((key, entry) -> pvd.add(key, entry.tooltip));
+    public void generator(AbstractRegistrate<?> registrate) {
+        registrate.addDataGenerator(ProviderType.LANG, pvd ->
+                map.forEach((key, entry) -> pvd.add(key, entry.tooltip)));
     }
 
     public void loadTooltips() {
