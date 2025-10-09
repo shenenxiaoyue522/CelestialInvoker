@@ -1,5 +1,6 @@
 package com.xiaoyue.celestial_invoker.event;
 
+import com.xiaoyue.celestial_invoker.content.generic.item.ExtraDataArmorItem;
 import com.xiaoyue.celestial_invoker.content.generic.item.IClickInteraction;
 import com.xiaoyue.celestial_invoker.content.generic.network.ClickEmptyPacket;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -11,21 +12,30 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.function.BiConsumer;
+
 import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
-import static com.xiaoyue.celestial_invoker.content.generic.item.ExtraDataArmorItem.postMethod;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CIGeneralEventHandler {
 
+    public static void postArmorMethod(LivingEntity entity, BiConsumer<ItemStack, ExtraDataArmorItem> cons) {
+        entity.getArmorSlots().forEach(stack -> {
+            if (!stack.isEmpty() && stack.getItem() instanceof ExtraDataArmorItem armor) {
+                cons.accept(stack, armor);
+            }
+        });
+    }
+
     @SubscribeEvent
     public static void onHurtEvent(LivingHurtEvent event) {
         LivingEntity target = event.getEntity();
-        postMethod(target, (stack, armor) -> {
+        postArmorMethod(target, (stack, armor) -> {
             EquipmentSlot slot = stack.getEquipmentSlot();
             armor.onHurt(target, stack, event, slot);
         });
         if (event.getSource().getEntity() instanceof LivingEntity attacker) {
-            postMethod(attacker, (stack, armor) -> {
+            postArmorMethod(attacker, (stack, armor) -> {
                 EquipmentSlot slot = stack.getEquipmentSlot();
                 armor.onHurtTarget(attacker, stack, event, slot);
             });
@@ -35,7 +45,7 @@ public class CIGeneralEventHandler {
     @SubscribeEvent
     public static void onDamageEvent(LivingDamageEvent event) {
         LivingEntity target = event.getEntity();
-        postMethod(target, (stack, armor) -> {
+        postArmorMethod(target, (stack, armor) -> {
             EquipmentSlot slot = stack.getEquipmentSlot();
             armor.onDamage(target, stack, event, slot);
         });

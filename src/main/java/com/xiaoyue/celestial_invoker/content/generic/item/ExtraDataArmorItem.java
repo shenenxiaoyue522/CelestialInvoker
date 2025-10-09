@@ -28,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 
 public class ExtraDataArmorItem extends ArmorItem {
 
@@ -45,14 +44,6 @@ public class ExtraDataArmorItem extends ArmorItem {
 
     public ExtraDataArmorItem(ArmorMaterial material, Type pType, Properties pProperties) {
         super(material, pType, pProperties);
-    }
-
-    public static void postMethod(LivingEntity entity, BiConsumer<ItemStack, ExtraDataArmorItem> cons) {
-        entity.getArmorSlots().forEach(stack -> {
-            if (!stack.isEmpty() && stack.getItem() instanceof ExtraDataArmorItem armor) {
-                cons.accept(stack, armor);
-            }
-        });
     }
 
     @Override
