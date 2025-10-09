@@ -2,15 +2,44 @@ package com.xiaoyue.celestial_invoker.event;
 
 import com.xiaoyue.celestial_invoker.content.generic.item.IClickInteraction;
 import com.xiaoyue.celestial_invoker.content.generic.network.ClickEmptyPacket;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
+import static com.xiaoyue.celestial_invoker.content.generic.item.ExtraDataArmorItem.postMethod;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CIGeneralEventHandler {
+
+    @SubscribeEvent
+    public static void onHurtEvent(LivingHurtEvent event) {
+        LivingEntity target = event.getEntity();
+        postMethod(target, (stack, armor) -> {
+            EquipmentSlot slot = stack.getEquipmentSlot();
+            armor.onHurt(target, stack, event, slot);
+        });
+        if (event.getSource().getEntity() instanceof LivingEntity attacker) {
+            postMethod(attacker, (stack, armor) -> {
+                EquipmentSlot slot = stack.getEquipmentSlot();
+                armor.onHurtTarget(attacker, stack, event, slot);
+            });
+        }
+    }
+
+    @SubscribeEvent
+    public static void onDamageEvent(LivingDamageEvent event) {
+        LivingEntity target = event.getEntity();
+        postMethod(target, (stack, armor) -> {
+            EquipmentSlot slot = stack.getEquipmentSlot();
+            armor.onDamage(target, stack, event, slot);
+        });
+    }
 
     @SubscribeEvent
     public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
