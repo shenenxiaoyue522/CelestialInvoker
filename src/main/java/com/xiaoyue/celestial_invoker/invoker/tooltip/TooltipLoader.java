@@ -4,7 +4,9 @@ import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
 import net.minecraft.data.DataGenerator;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
 
@@ -36,6 +38,10 @@ public class TooltipLoader {
     public void generator(AbstractRegistrate<?> registrate) {
         registrate.addDataGenerator(ProviderType.LANG, pvd ->
                 map.forEach((key, entry) -> pvd.add(key, entry.tooltip)));
+    }
+
+    public static void generator(String modid, AbstractRegistrate<?> registrate) {
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> new TooltipLoader(modid).generator(registrate));
     }
 
     public void loadTooltips() {

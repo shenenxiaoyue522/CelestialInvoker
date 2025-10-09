@@ -27,11 +27,12 @@ public class CelestialInvoker {
     
     public CelestialInvoker() {
         CIEntities.register();
+        TooltipLoader.generator(MODID, REGISTRATE);
     }
 
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent event) {
-        new TooltipLoader(MODID).generator(REGISTRATE);
+
     }
 
     public static ResourceLocation loc(String s) {
