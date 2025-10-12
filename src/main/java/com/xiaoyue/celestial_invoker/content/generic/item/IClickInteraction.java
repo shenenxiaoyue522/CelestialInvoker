@@ -10,7 +10,7 @@ public interface IClickInteraction {
 
     }
 
-    default void onRightClickEmpty(ItemStack stack, PlayerInteractEvent.RightClickItem event, Player player) {
+    default void onRightClickEmpty(ItemStack stack, PlayerInteractEvent.RightClickEmpty event, Player player) {
 
     }
 

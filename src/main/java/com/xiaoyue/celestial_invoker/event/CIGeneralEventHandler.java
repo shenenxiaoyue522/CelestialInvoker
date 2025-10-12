@@ -54,24 +54,14 @@ public class CIGeneralEventHandler {
     @SubscribeEvent
     public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
         if (event.getEntity().level().isClientSide()) {
-            new ClickEmptyPacket(player -> {
-                ItemStack stack = event.getItemStack();
-                if (stack.getItem() instanceof IClickInteraction item) {
-                    item.onLeftClickEmpty(stack, event, player);
-                }
-            }).toServer();
+            new ClickEmptyPacket(false, event.getHand()).toServer();
         }
     }
 
     @SubscribeEvent
-    public static void onRightClickEmpty(PlayerInteractEvent.RightClickItem event) {
+    public static void onRightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
         if (event.getEntity().level().isClientSide()) {
-            new ClickEmptyPacket(player -> {
-                ItemStack stack = event.getItemStack();
-                if (stack.getItem() instanceof IClickInteraction item) {
-                    item.onRightClickEmpty(stack, event, player);
-                }
-            }).toServer();
+            new ClickEmptyPacket(true, event.getHand()).toServer();
         }
     }
 
