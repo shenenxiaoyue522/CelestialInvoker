@@ -86,7 +86,7 @@
            * Some more tweaks to the feature system to output useful and well formatted error messages when bounds fail. Requires SPI 7.0.1 and the language string "fml.modloading.feature.missing" has changed.
            * Use immutable lists where possible and generally tidy things a bit
  - 47.0.34 [HotFix]: Somehow not caught by CI, but there was an issue in the SpawnUtils to handle.
- - 47.0.33 Remove amount from FluidStack hashCode to fix the equal/hashCode java contract (#9602)
+ - 47.0.33 Remove newHealth from FluidStack hashCode to fix the equal/hashCode java contract (#9602)
  - 47.0.32 Add example usage for configs to the MDK (#9596)
            Demonstrates proper usage of different builder value types, validation, transformation/parsing, load/reload handling and direct field access.
  - 47.0.31 Demonstrate configureEach in run configs (#9594)
