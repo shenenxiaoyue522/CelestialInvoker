@@ -3,7 +3,6 @@ package com.xiaoyue.celestial_invoker.content.generic.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import com.xiaoyue.celestial_invoker.content.ancillary.entry.AttrModifierEntry;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -16,7 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ThrownTrident;
@@ -112,15 +110,11 @@ public class CelestialTridentItem extends TridentItem {
     @Override
     public final Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         LinkedHashMultimap<Attribute, AttributeModifier> map = LinkedHashMultimap.create();
-        AttrModifierEntry attr = AttrModifierEntry.builder()
-                .uuid(BASE_ATTACK_DAMAGE_UUID).name("Tool modifier").value(8f).toMap(map)
-                .attr(Attributes.ATTACK_SPEED).uuid(BASE_ATTACK_SPEED_UUID).name("Tool modifier")
-                .value(-2.9f).toMap(map);
-        addAttributes(slot, stack, map, attr);
+        addAttributes(slot, stack, map);
         return map;
     }
 
-    protected void addAttributes(EquipmentSlot slot, ItemStack stack, Multimap<Attribute, AttributeModifier> map, AttrModifierEntry attr) {
+    protected void addAttributes(EquipmentSlot slot, ItemStack stack, Multimap<Attribute, AttributeModifier> map) {
 
     }
 }
