@@ -47,28 +47,34 @@ public record ToolStats(int dur, float speed, float attack, int lv, int enchant,
         public float speed, attack = 0f;
         public Supplier<Ingredient> repair = Ingredient::of;
 
-        public void durability(int durability) {
+        public Builder durability(int durability) {
             this.durability = durability;
+            return this;
         }
 
-        public void level(int level) {
+        public Builder level(int level) {
             this.level = level;
+            return this;
         }
 
-        public void enchant(int enchant) {
+        public Builder enchant(int enchant) {
             this.enchant = enchant;
+            return this;
         }
 
-        public void speed(float speed) {
+        public Builder speed(float speed) {
             this.speed = speed;
+            return this;
         }
 
-        public void attack(float attack) {
+        public Builder attack(float attack) {
             this.attack = attack;
+            return this;
         }
 
-        public void setRepair(Supplier<Ingredient> repair) {
+        public Builder setRepair(Supplier<Ingredient> repair) {
             this.repair = repair;
+            return this;
         }
 
         public ToolStats build() {
