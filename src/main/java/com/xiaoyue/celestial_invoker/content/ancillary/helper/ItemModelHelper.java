@@ -62,9 +62,9 @@ public class ItemModelHelper {
         String path = "item/" + ctx.getName();
         pvd.getBuilder(path + "_using")
                 .parent(new ModelFile.UncheckedModelFile("celestial_invoker:item/spear_using"))
-                .texture("layer0", namespace + ":" + texture + "trident");
+                .texture("layer0", namespace + ":" + texture);
         pvd.withExistingParent(ctx.getName(), "celestial_invoker:item/spear")
-                .texture("layer0", namespace + ":" + texture + "trident")
+                .texture("layer0", namespace + ":" + texture)
                 .override()
                 .predicate(new ResourceLocation("using"), 1f)
                 .model(pvd.getExistingFile(new ResourceLocation(namespace, path + "_using")));
