@@ -60,10 +60,10 @@ public class ItemModelHelper {
         String namespace = ctx.getId().getNamespace();
         String texture = "item/trident/" + ctx.getName();
         String path = "item/" + ctx.getName();
-        pvd.getBuilder(path + "_using")
+        pvd.getBuilder(ctx.getName() + "_using")
                 .parent(new ModelFile.UncheckedModelFile("celestial_invoker:item/spear_using"))
                 .texture("layer0", namespace + ":" + texture);
-        pvd.withExistingParent(ctx.getName(), "celestial_invoker:item/spear")
+        pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("celestial_invoker:item/spear"))
                 .texture("layer0", namespace + ":" + texture)
                 .override()
                 .predicate(new ResourceLocation("using"), 1f)
