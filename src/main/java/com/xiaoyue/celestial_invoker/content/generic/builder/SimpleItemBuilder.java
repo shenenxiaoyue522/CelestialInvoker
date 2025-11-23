@@ -42,7 +42,7 @@ public abstract class SimpleItemBuilder<B extends SimpleItemBuilder<B>> {
         return self();
     }
 
-    public B info(BiConsumer<ItemStack, List<Component>> info) {
+    public B text(BiConsumer<ItemStack, List<Component>> info) {
         this.info = info;
         return self();
     }

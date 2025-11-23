@@ -26,8 +26,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class CelestialTrident extends TridentItem {
-    public CelestialTrident(Properties pProperties) {
+public class CelestialTridentItem extends TridentItem {
+    public CelestialTridentItem(Properties pProperties) {
         super(pProperties);
     }
 
