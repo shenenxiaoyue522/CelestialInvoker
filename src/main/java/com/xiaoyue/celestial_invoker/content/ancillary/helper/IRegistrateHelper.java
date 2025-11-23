@@ -26,6 +26,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -47,10 +49,20 @@ import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static com.xiaoyue.celestial_invoker.content.ancillary.CelestialRegistrate.forgeTag;
-
 @SuppressWarnings("unused")
 public interface IRegistrateHelper<R extends L2Registrate> {
+
+    static <R extends L2Registrate> IRegistrateHelper<L2Registrate> simpleHelper(R registrate) {
+        return () -> registrate;
+    }
+
+    static TagKey<Item> forgeTag(String id) {
+        return ItemTags.create(forgeLoc(id));
+    }
+
+    static ResourceLocation forgeLoc(String path) {
+        return new ResourceLocation("forge", path);
+    }
 
     R owner();
 

@@ -25,6 +25,10 @@ public class DoubleConfigEntry extends ConfigHolder<ForgeConfigSpec.DoubleValue>
         return define(name, value, 0.01, 10, text);
     }
 
+    public static DoubleConfigEntry defineBigRange(String name, double value, String... text) {
+        return define(name, value, 0.01, 1000, text);
+    }
+
     public static DoubleConfigEntry defineFromMinUsable(String name, double value, double max, String... text) {
         return define(name, value, 0.01, max, text);
     }
@@ -54,7 +58,7 @@ public class DoubleConfigEntry extends ConfigHolder<ForgeConfigSpec.DoubleValue>
     }
 
     public double perValue() {
-        return this.value * (double) 100.0F;
+        return this.value * (double) 100.0f;
     }
 
     public float floatValue() {

@@ -28,20 +28,16 @@ public class StringCaser {
         if (id.contains("_")) {
             input = id.replace('_', ' ');
         }
-
         if (input.contains(".")) {
             input = input.replace('.', ' ');
         }
-
         StringBuilder result = new StringBuilder();
         String[] words = input.split(" ");
-
         for(String word : words) {
             result.append(Character.toUpperCase(word.charAt(0)));
             result.append(word.substring(1).toLowerCase());
             result.append(" ");
         }
-
         return result.toString().trim();
     }
 }

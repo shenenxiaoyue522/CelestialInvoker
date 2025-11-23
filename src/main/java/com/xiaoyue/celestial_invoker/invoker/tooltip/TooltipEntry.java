@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 public final class TooltipEntry {
 
@@ -72,7 +73,7 @@ public final class TooltipEntry {
         return Component.literal("" + v).withStyle(ChatFormatting.AQUA);
     }
 
-    public static MutableComponent num(float v) {
+    public static MutableComponent num(double v) {
         return Component.literal("" + v).withStyle(ChatFormatting.AQUA);
     }
 
@@ -82,5 +83,9 @@ public final class TooltipEntry {
 
     public static MutableComponent eff(MobEffect eff) {
         return eff.getDisplayName().copy().withStyle(eff.getCategory().getTooltipFormatting());
+    }
+
+    public static MutableComponent enchantment(Enchantment enchantment) {
+        return Component.translatable(enchantment.getDescriptionId());
     }
 }

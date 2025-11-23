@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.event;
 
-import com.xiaoyue.celestial_invoker.content.generic.item.GenericBowItem;
+import com.xiaoyue.celestial_invoker.content.generic.item.CelestialBowItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,7 +18,7 @@ public class ClientEvents {
         Player player = event.getPlayer();
         if (player.isUsingItem()) {
             ItemStack stack = player.getUseItem();
-            if (stack.getItem() instanceof GenericBowItem bow) {
+            if (stack.getItem() instanceof CelestialBowItem bow) {
                 bow.getDrawingFov(player, stack, event);
             }
         }

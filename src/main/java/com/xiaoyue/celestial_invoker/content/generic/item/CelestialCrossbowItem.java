@@ -32,12 +32,12 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class GenericCrossbowItem extends CrossbowItem {
+public class CelestialCrossbowItem extends CrossbowItem {
 
     private boolean startSoundPlayed = false;
     private boolean midLoadSoundPlayed = false;
 
-    public GenericCrossbowItem(Properties pProperties) {
+    public CelestialCrossbowItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -100,13 +100,13 @@ public class GenericCrossbowItem extends CrossbowItem {
                     ((AbstractArrow)projectile).pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                 }
             }
-            if (crossbow.getItem() instanceof GenericCrossbowItem item) {
+            if (crossbow.getItem() instanceof CelestialCrossbowItem item) {
                 Projectile customProjectile = item.getCustomProjectile(pShooter, pHand, crossbow, projectile);
                 if (customProjectile != null) {
                     projectile = customProjectile;
                 }
             }
-            if (crossbow.getItem() instanceof GenericCrossbowItem item) {
+            if (crossbow.getItem() instanceof CelestialCrossbowItem item) {
                 item.onConfigShoot(pShooter, pHand, crossbow, ammo, projectile, projectile instanceof AbstractArrow arrow ? arrow : null);
             }
             if (pShooter instanceof CrossbowAttackMob mob && mob.getTarget() != null) {
@@ -205,7 +205,7 @@ public class GenericCrossbowItem extends CrossbowItem {
     }
 
     public static int getChargeDuration(ItemStack crossbow) {
-        if (crossbow.getItem() instanceof GenericCrossbowItem item) {
+        if (crossbow.getItem() instanceof CelestialCrossbowItem item) {
             return item.getChargeTime(crossbow);
         }
         return CrossbowItem.getChargeDuration(crossbow);

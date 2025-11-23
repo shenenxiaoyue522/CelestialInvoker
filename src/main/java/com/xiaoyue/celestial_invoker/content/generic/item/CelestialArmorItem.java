@@ -29,7 +29,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.UUID;
 
-public class ExtraDataArmorItem extends ArmorItem {
+public class CelestialArmorItem extends ArmorItem {
 
     @SubscribeTooltip(id = "set_effect")
     public static TooltipEntry setEffect = TooltipEntry.define("Set effect: ");
@@ -42,7 +42,7 @@ public class ExtraDataArmorItem extends ArmorItem {
         map.put(Type.HELMET, UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150"));
     });
 
-    public ExtraDataArmorItem(ArmorMaterial material, Type pType, Properties pProperties) {
+    public CelestialArmorItem(ArmorMaterial material, Type pType, Properties pProperties) {
         super(material, pType, pProperties);
     }
 

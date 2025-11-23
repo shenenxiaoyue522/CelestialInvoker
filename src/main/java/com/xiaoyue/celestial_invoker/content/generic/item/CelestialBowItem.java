@@ -15,8 +15,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.event.ForgeEventFactory;
 
-public class GenericBowItem extends BowItem {
-    public GenericBowItem(Properties pProperties) {
+public class CelestialBowItem extends BowItem {
+    public CelestialBowItem(Properties pProperties) {
         super(pProperties);
     }
 

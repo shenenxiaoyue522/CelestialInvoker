@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.event;
 
-import com.xiaoyue.celestial_invoker.content.generic.item.ExtraDataArmorItem;
+import com.xiaoyue.celestial_invoker.content.generic.item.CelestialArmorItem;
 import com.xiaoyue.celestial_invoker.content.generic.item.IClickInteraction;
 import com.xiaoyue.celestial_invoker.content.generic.network.ClickEmptyPacket;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -19,9 +19,9 @@ import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CIGeneralEventHandler {
 
-    public static void postArmorMethod(LivingEntity entity, BiConsumer<ItemStack, ExtraDataArmorItem> cons) {
+    public static void postArmorMethod(LivingEntity entity, BiConsumer<ItemStack, CelestialArmorItem> cons) {
         entity.getArmorSlots().forEach(stack -> {
-            if (!stack.isEmpty() && stack.getItem() instanceof ExtraDataArmorItem armor) {
+            if (!stack.isEmpty() && stack.getItem() instanceof CelestialArmorItem armor) {
                 cons.accept(stack, armor);
             }
         });

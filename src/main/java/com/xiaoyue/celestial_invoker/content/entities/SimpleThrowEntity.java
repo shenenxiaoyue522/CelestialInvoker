@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 
 @SerialClass
-public class SimpleThrowEntity extends AbstractArrow implements IEntityAdditionalSpawnData {
+public abstract class SimpleThrowEntity extends AbstractArrow implements IEntityAdditionalSpawnData {
 
     @SerialClass.SerialField
     public ItemStack weapon = ItemStack.EMPTY;

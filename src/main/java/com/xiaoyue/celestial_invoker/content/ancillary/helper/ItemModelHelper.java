@@ -56,4 +56,18 @@ public class ItemModelHelper {
                 .model(new ModelFile.UncheckedModelFile(namespace + ":" + texLoc + "/crossbow_firework"));
     }
 
+    public static void createTridentModel(DataGenContext<?, ?> ctx, RegistrateItemModelProvider pvd) {
+        String namespace = ctx.getId().getNamespace();
+        String texture = "item/trident/" + ctx.getName();
+        String path = "item/" + ctx.getName();
+        pvd.getBuilder(path + "_using")
+                .parent(new ModelFile.UncheckedModelFile("celestial_invoker:item/spear_using"))
+                .texture("layer0", namespace + ":" + texture + "trident");
+        pvd.withExistingParent(ctx.getName(), "celestial_invoker:item/spear")
+                .texture("layer0", namespace + ":" + texture + "trident")
+                .override()
+                .predicate(new ResourceLocation("using"), 1f)
+                .model(pvd.getExistingFile(new ResourceLocation(namespace, path + "_using")));
+    }
+
 }
