@@ -71,6 +71,14 @@ public class GenericArrowEntity extends AbstractArrow implements IEntityAddition
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if (builder != null && builder.onTick != null) {
+            builder.onTick.accept(this);
+        }
+    }
+
+    @Override
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
         if (builder != null && builder.hitEntity != null) {

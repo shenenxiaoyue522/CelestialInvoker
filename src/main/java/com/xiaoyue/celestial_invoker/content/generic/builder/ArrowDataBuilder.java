@@ -2,9 +2,11 @@ package com.xiaoyue.celestial_invoker.content.generic.builder;
 
 import com.xiaoyue.celestial_invoker.content.entities.GenericArrowEntity;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class ArrowDataBuilder {
 
@@ -12,6 +14,7 @@ public class ArrowDataBuilder {
     public int knock = 0;
     public byte pierce = 0;
     public boolean ignoreWater, ignoreGravity = false;
+    public Consumer<GenericArrowEntity> onTick;
     public BiConsumer<GenericArrowEntity, Entity> hitEntity;
     public BiConsumer<GenericArrowEntity, BlockHitResult> hitBlock;
 
@@ -37,6 +40,11 @@ public class ArrowDataBuilder {
 
     public ArrowDataBuilder ignoreGravity() {
         this.ignoreGravity = true;
+        return this;
+    }
+
+    public ArrowDataBuilder onTick(Consumer<GenericArrowEntity> onTick) {
+        this.onTick = onTick;
         return this;
     }
 
