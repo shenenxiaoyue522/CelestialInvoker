@@ -81,7 +81,7 @@ public class GenericArrowEntity extends AbstractArrow implements IEntityAddition
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
-        if (builder != null && builder.hitEntity != null) {
+        if (builder != null && builder.hitBlock != null) {
             builder.hitBlock.accept(this, pResult);
         }
     }
