@@ -73,6 +73,10 @@ public final class TooltipEntry {
         return Component.literal("" + v).withStyle(ChatFormatting.AQUA);
     }
 
+    public static MutableComponent num(float v) {
+        return Component.literal("" + v).withStyle(ChatFormatting.AQUA);
+    }
+
     public static MutableComponent num(double v) {
         return Component.literal("" + v).withStyle(ChatFormatting.AQUA);
     }

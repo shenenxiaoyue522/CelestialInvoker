@@ -101,7 +101,7 @@ public class CelestialCrossbowItem extends CrossbowItem {
                 }
             }
             if (crossbow.getItem() instanceof CelestialCrossbowItem item) {
-                Projectile customProjectile = item.getCustomProjectile(pShooter, pHand, crossbow, projectile);
+                Projectile customProjectile = item.getCustomProjectile(pShooter, pHand, crossbow, ammo, projectile);
                 if (customProjectile != null) {
                     projectile = customProjectile;
                 }
@@ -142,7 +142,7 @@ public class CelestialCrossbowItem extends CrossbowItem {
         return arrow;
     }
 
-    protected Projectile getCustomProjectile(LivingEntity shooter, InteractionHand hand, ItemStack crossbow, Projectile origin) {
+    protected Projectile getCustomProjectile(LivingEntity shooter, InteractionHand hand, ItemStack crossbow, ItemStack ammo, Projectile origin) {
         return null;
     }
 
