@@ -3,7 +3,7 @@ package com.xiaoyue.celestial_invoker.content.generic.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import com.xiaoyue.celestial_invoker.content.ancillary.entry.AttrModifierEntry;
+import com.xiaoyue.celestial_invoker.content.ancillary.entry.AttributeAdder;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.SubscribeTooltip;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipEntry;
 import dev.xkmc.l2library.util.Proxy;
@@ -107,7 +107,7 @@ public class CelestialArmorItem extends ArmorItem {
             UUID uuid = ARMOR_MODIFIER_UUID_PER_TYPE.get(this.type);
             float defense = this.getDefense() + this.getExtraDefense(stack).armor;
             float toughness = this.getToughness() + this.getExtraDefense(stack).toughness;
-            AttrModifierEntry entry = AttrModifierEntry.builder().uuid(uuid);
+            AttributeAdder entry = AttributeAdder.builder().uuid(uuid);
             entry.attr(Attributes.ARMOR).name("Armor modifier").value(defense).toMap(modify)
                     .attr(Attributes.ARMOR_TOUGHNESS).name("Armor toughness").value(toughness).toMap(modify);
             if (this.knockbackResistance > 0.0F) {
