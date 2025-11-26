@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.xiaoyue.celestial_invoker.content.generic.builder.MagicProjectileConfig;
-import com.xiaoyue.celestial_invoker.content.generic.builder.MagicProjectileConfig.IEffectFactory;
+import com.xiaoyue.celestial_invoker.content.generic.builder.MagicProjectileConfig.IFactory;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import dev.xkmc.l2serial.serialization.SerialClass;
 import net.minecraft.network.FriendlyByteBuf;
@@ -22,7 +22,7 @@ import java.util.List;
 public class MagicProjectile extends AbstractHurtingProjectile implements IEntityAdditionalSpawnData {
 
     @SerialClass.SerialField
-    public MagicProjectileConfig config = MagicProjectileConfig.builder(IEffectFactory.defaultEffect).build();
+    public MagicProjectileConfig config = MagicProjectileConfig.builder(IFactory.defaultEffect).build();
     @SerialClass.SerialField
     public LivingEntity caster;
     @SerialClass.SerialField

@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 
 public class MagicProjectileConfig {
 
-    public final List<IEffectFactory> effects = new ArrayList<>();
+    public final List<IFactory> effects = new ArrayList<>();
     public float speed = 1.0f;
     public float gravity = 0.0f;
     public int lifetime = 100;
@@ -29,22 +29,22 @@ public class MagicProjectileConfig {
     public SoundEvent launchSound = SoundEvents.ENDER_PEARL_THROW;
     public SoundEvent hitSound = SoundEvents.GLASS_BREAK;
 
-    public MagicProjectileConfig(IEffectFactory... effect) {
+    public MagicProjectileConfig(IFactory... effect) {
         this.effects.addAll(Arrays.stream(effect).toList());
     }
 
-    public void forEffects(Consumer<IEffectFactory> cons) {
+    public void forEffects(Consumer<IFactory> cons) {
         effects.forEach(cons);
     }
 
-    public static Builder builder(IEffectFactory... effect) {
+    public static Builder builder(IFactory... effect) {
         return new Builder(effect);
     }
 
     public static class Builder {
         private final MagicProjectileConfig config;
 
-        public Builder(IEffectFactory... effect) {
+        public Builder(IFactory... effect) {
             this.config = new MagicProjectileConfig(effect);
         }
 
@@ -90,9 +90,9 @@ public class MagicProjectileConfig {
         }
     }
 
-    public interface IEffectFactory {
+    public interface IFactory {
 
-        IEffectFactory defaultEffect = new IEffectFactory() {
+        IFactory defaultEffect = new IFactory() {
         };
 
         default void onHitEntity(Level level, LivingEntity caster, MagicProjectile projectile, Entity target, Vec3 hitPos, float power) {

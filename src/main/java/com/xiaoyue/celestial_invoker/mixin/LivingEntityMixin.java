@@ -25,12 +25,8 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/network/syncher/SynchedEntityData;set(Lnet/minecraft/network/syncher/EntityDataAccessor;Ljava/lang/Object;)V"), method = "setHealth", cancellable = true)
     public void celestial_invoker$setHealth(float pHealth, CallbackInfo ci) {
         LivingEntity self = (LivingEntity) (Object) this;
-        float newHp = pHealth;
-        LivingHealthChangeEvent event = new LivingHealthChangeEvent(self, newHp);
-        if (MinecraftForge.EVENT_BUS.post(event)) {
-            newHp = 0;
-        }
-        newHp = event.getNewHealth();
+        LivingHealthChangeEvent event = new LivingHealthChangeEvent(self, pHealth);
+        float newHp = MinecraftForge.EVENT_BUS.post(event) ? 0f : event.getNewHealth();
         this.entityData.set(DATA_HEALTH_ID, newHp);
         ci.cancel();
     }

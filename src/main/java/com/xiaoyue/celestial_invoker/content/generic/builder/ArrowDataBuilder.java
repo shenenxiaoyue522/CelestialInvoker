@@ -2,7 +2,6 @@ package com.xiaoyue.celestial_invoker.content.generic.builder;
 
 import com.xiaoyue.celestial_invoker.content.entities.GenericArrowEntity;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.function.BiConsumer;

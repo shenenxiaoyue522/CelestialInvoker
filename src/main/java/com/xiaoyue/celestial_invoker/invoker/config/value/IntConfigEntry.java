@@ -25,6 +25,10 @@ public class IntConfigEntry extends ConfigHolder<ForgeConfigSpec.IntValue> {
         return define(name, value, Integer.MIN_VALUE, Integer.MAX_VALUE, text);
     }
 
+    public static IntConfigEntry defineFromZero(String name, int value, int max, String... text) {
+            return define(name, value, 0, max, text);
+        }
+
     public int get() {
         return this.value;
     }
