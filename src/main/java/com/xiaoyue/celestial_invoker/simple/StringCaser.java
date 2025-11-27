@@ -10,11 +10,9 @@ public class StringCaser {
         Matcher matcher = pattern.matcher(input);
         String[] words = pattern.split(matcher.replaceAll(" ").toLowerCase().trim());
         StringBuilder camelCaseOutput = new StringBuilder(words[0]);
-
         for(int i = 1; i < words.length; ++i) {
             camelCaseOutput.append(toProperCase(words[i]));
         }
-
         return camelCaseOutput.toString();
     }
 
