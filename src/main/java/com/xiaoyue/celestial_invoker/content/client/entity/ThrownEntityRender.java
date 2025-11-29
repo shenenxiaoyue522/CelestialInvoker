@@ -17,18 +17,18 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class ThrownEntityRender<T extends SimpleThrowEntity> extends EntityRenderer<T> {
 
     @Nullable
-    public Consumer<PoseStack> extra;
+    public BiConsumer<PoseStack, T> extra;
     private final ItemRenderer itemRenderer;
     private final Vec3 scale;
     private final float offset;
     private final Matrix4f preTransform = new Matrix4f();
 
-    protected ThrownEntityRender(EntityRendererProvider.Context context, Vec3 scale, float offset, Consumer<PoseStack> extra) {
+    protected ThrownEntityRender(EntityRendererProvider.Context context, Vec3 scale, float offset, BiConsumer<PoseStack, T> extra) {
         super(context);
         this.extra = extra;
         this.itemRenderer = context.getItemRenderer();
@@ -48,7 +48,7 @@ public class ThrownEntityRender<T extends SimpleThrowEntity> extends EntityRende
         poseStack.last().pose().mul(preTransform);
         poseStack.translate(0, entity.getBbHeight() / 2, 0);
         if (extra != null) {
-            extra.accept(poseStack);
+            extra.accept(poseStack, entity);
         }
         this.itemRenderer.render(stack, ItemDisplayContext.NONE, false, poseStack, buffer, light, OverlayTexture.NO_OVERLAY, bakedmodel);
         poseStack.popPose();
@@ -68,7 +68,7 @@ public class ThrownEntityRender<T extends SimpleThrowEntity> extends EntityRende
         return null;
     }
 
-    public static <T extends SimpleThrowEntity> ThrownEntityRender<T> simple(EntityRendererProvider.Context context, Vec3 scale, float offset, ResourceLocation texture, Consumer<PoseStack> extra) {
+    public static <T extends SimpleThrowEntity> ThrownEntityRender<T> simple(EntityRendererProvider.Context context, Vec3 scale, float offset, ResourceLocation texture, BiConsumer<PoseStack, T> extra) {
         return new ThrownEntityRender<>(context, scale, offset, extra) {
             @Override
             public ResourceLocation getTextureLocation(T entity) {
