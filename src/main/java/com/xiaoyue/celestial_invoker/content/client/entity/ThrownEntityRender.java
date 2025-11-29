@@ -14,17 +14,23 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+
+import java.util.function.Consumer;
 
 public class ThrownEntityRender<T extends SimpleThrowEntity> extends EntityRenderer<T> {
 
+    @Nullable
+    public Consumer<PoseStack> extra;
     private final ItemRenderer itemRenderer;
     private final Vec3 scale;
     private final float offset;
     private final Matrix4f preTransform = new Matrix4f();
 
-    protected ThrownEntityRender(EntityRendererProvider.Context context, Vec3 scale, float offset) {
+    protected ThrownEntityRender(EntityRendererProvider.Context context, Vec3 scale, float offset, Consumer<PoseStack> extra) {
         super(context);
+        this.extra = extra;
         this.itemRenderer = context.getItemRenderer();
         this.shadowRadius = 0.175F;
         this.scale = scale.scale(0.85);
@@ -41,6 +47,9 @@ public class ThrownEntityRender<T extends SimpleThrowEntity> extends EntityRende
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, entity.xRotO - 45.0F, entity.getXRot() - 45.0F)));
         poseStack.last().pose().mul(preTransform);
         poseStack.translate(0, entity.getBbHeight() / 2, 0);
+        if (extra != null) {
+            extra.accept(poseStack);
+        }
         this.itemRenderer.render(stack, ItemDisplayContext.NONE, false, poseStack, buffer, light, OverlayTexture.NO_OVERLAY, bakedmodel);
         poseStack.popPose();
         super.render(entity, v, partialTick, poseStack, buffer, light);
@@ -59,12 +68,16 @@ public class ThrownEntityRender<T extends SimpleThrowEntity> extends EntityRende
         return null;
     }
 
-    public static <T extends SimpleThrowEntity> ThrownEntityRender<T> simple(EntityRendererProvider.Context context, Vec3 scale, float offset, ResourceLocation texture) {
-        return new ThrownEntityRender<>(context, scale, offset) {
+    public static <T extends SimpleThrowEntity> ThrownEntityRender<T> simple(EntityRendererProvider.Context context, Vec3 scale, float offset, ResourceLocation texture, Consumer<PoseStack> extra) {
+        return new ThrownEntityRender<>(context, scale, offset, extra) {
             @Override
             public ResourceLocation getTextureLocation(T entity) {
                 return texture;
             }
         };
+    }
+
+    public static <T extends SimpleThrowEntity> ThrownEntityRender<T> simple(EntityRendererProvider.Context context, Vec3 scale, float offset, ResourceLocation texture) {
+        return simple(context, scale, offset, texture, null);
     }
 }
