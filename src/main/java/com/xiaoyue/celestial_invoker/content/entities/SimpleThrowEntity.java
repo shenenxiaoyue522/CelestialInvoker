@@ -20,6 +20,14 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
         super(pEntityType, pShooter, pLevel);
     }
 
+    protected SimpleThrowEntity(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
+        super(pEntityType, pLevel);
+    }
+
+    protected SimpleThrowEntity(EntityType<? extends AbstractArrow> pEntityType, double pX, double pY, double pZ, Level pLevel) {
+        super(pEntityType, pX, pY, pZ, pLevel);
+    }
+
     public void setWeapon(ItemStack weapon) {
         this.weapon = weapon;
     }
