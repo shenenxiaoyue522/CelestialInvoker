@@ -2,6 +2,7 @@ package com.xiaoyue.celestial_invoker.mixin;
 
 import com.xiaoyue.celestial_invoker.event.api.LivingHealthChangeEvent;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class LivingEntityMixin extends Entity {
     @Shadow @Final private static EntityDataAccessor<Float> DATA_HEALTH_ID;
 
+    @Shadow public abstract float getMaxHealth();
+
     public LivingEntityMixin(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
@@ -27,7 +30,7 @@ public abstract class LivingEntityMixin extends Entity {
         LivingEntity self = (LivingEntity) (Object) this;
         LivingHealthChangeEvent event = new LivingHealthChangeEvent(self, pHealth);
         float newHp = MinecraftForge.EVENT_BUS.post(event) ? 0f : event.getNewHealth();
-        this.entityData.set(DATA_HEALTH_ID, newHp);
+        this.entityData.set(DATA_HEALTH_ID, Mth.clamp(newHp, 0.0f, getMaxHealth()));
         ci.cancel();
     }
 }
