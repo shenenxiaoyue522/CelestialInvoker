@@ -16,14 +16,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
-public class ThrowableEntityRender<T extends SimpleThrowEntity> extends EntityRenderer<T> {
+public class ThrownEntityRender<T extends SimpleThrowEntity> extends EntityRenderer<T> {
 
     private final ItemRenderer itemRenderer;
     private final Vec3 scale;
     private final float offset;
     private final Matrix4f preTransform = new Matrix4f();
 
-    protected ThrowableEntityRender(EntityRendererProvider.Context context, Vec3 scale, float offset) {
+    protected ThrownEntityRender(EntityRendererProvider.Context context, Vec3 scale, float offset) {
         super(context);
         this.itemRenderer = context.getItemRenderer();
         this.shadowRadius = 0.175F;
@@ -57,5 +57,14 @@ public class ThrowableEntityRender<T extends SimpleThrowEntity> extends EntityRe
     @Override
     public ResourceLocation getTextureLocation(T entity) {
         return null;
+    }
+
+    public static <T extends SimpleThrowEntity> ThrownEntityRender<T> simple(EntityRendererProvider.Context context, Vec3 scale, float offset, ResourceLocation texture) {
+        return new ThrownEntityRender<>(context, scale, offset) {
+            @Override
+            public ResourceLocation getTextureLocation(T entity) {
+                return texture;
+            }
+        };
     }
 }
