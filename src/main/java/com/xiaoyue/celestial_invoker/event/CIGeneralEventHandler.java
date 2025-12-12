@@ -1,11 +1,15 @@
 package com.xiaoyue.celestial_invoker.event;
 
+import com.xiaoyue.celestial_invoker.content.ancillary.entry.AttributeAdder;
 import com.xiaoyue.celestial_invoker.content.generic.item.CelestialArmorItem;
 import com.xiaoyue.celestial_invoker.content.generic.item.IClickInteraction;
 import com.xiaoyue.celestial_invoker.content.generic.network.ClickEmptyPacket;
+import dev.xkmc.l2damagetracker.init.L2DamageTracker;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -76,6 +80,16 @@ public class CIGeneralEventHandler {
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         if (event.getItemStack().getItem() instanceof IClickInteraction item) {
             item.onRightClickBlock(event.getItemStack(), event, event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onTest(ItemAttributeModifierEvent event) {
+        if (event.getItemStack().is(Items.DIAMOND) && event.getSlotType().equals(EquipmentSlot.MAINHAND)) {
+            event.addModifier(L2DamageTracker.CRIT_RATE.get(), AttributeAdder.builder().nameWithUUID("test")
+                    .value(1).operation(0).toModifier());
+            event.addModifier(L2DamageTracker.REDUCTION.get(), AttributeAdder.builder().nameWithUUID("test")
+                    .value(-0.05).operation(1).toModifier());
         }
     }
 }
