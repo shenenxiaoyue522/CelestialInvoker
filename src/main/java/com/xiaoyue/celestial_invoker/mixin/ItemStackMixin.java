@@ -1,7 +1,11 @@
 package com.xiaoyue.celestial_invoker.mixin;
 
 import com.google.common.collect.Multimap;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.xiaoyue.celestial_invoker.content.ancillary.BindingHandler;
+import com.xiaoyue.celestial_invoker.simple.ItemAccessor;
 import dev.xkmc.l2damagetracker.contents.curios.AttrTooltip;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
@@ -31,6 +35,9 @@ public abstract class ItemStackMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;shouldShowInTooltip(ILnet/minecraft/world/item/ItemStack$TooltipPart;)Z", ordinal = 4), method = "getTooltipLines")
     public void celestial_invoker$setModifiers(Player pPlayer, TooltipFlag pIsAdvanced, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
         ItemStack stack = (ItemStack) (Object) this;
+        if (!stack.is(BindingHandler.CUSTOM_ATTRIBUTE_TOOLTIP)) {
+            return;
+        }
         for(EquipmentSlot slot : EquipmentSlot.values()) {
             Multimap<Attribute, AttributeModifier> modifiers = stack.getAttributeModifiers(slot);
             if (modifiers.isEmpty()) {
@@ -43,11 +50,11 @@ public abstract class ItemStackMixin {
                 double amount = modifier.getAmount();
                 boolean flag = false;
                 if (pPlayer != null) {
-                    if (modifier.getId() == ((ItemAccessor) stack.getItem()).getBASE_ATTACK_DAMAGE_UUID()) {
+                    if (modifier.getId() == ItemAccessor.getBaseDamageUUID()) {
                         amount += pPlayer.getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
                         amount += EnchantmentHelper.getDamageBonus(stack, MobType.UNDEFINED);
                         flag = true;
-                    } else if (modifier.getId() == ((ItemAccessor) stack.getItem()).getBASE_ATTACK_SPEED_UUID()) {
+                    } else if (modifier.getId() == ItemAccessor.getBaseSpeedUUID()) {
                         amount += pPlayer.getAttributeBaseValue(Attributes.ATTACK_SPEED);
                         flag = true;
                     }
@@ -81,10 +88,12 @@ public abstract class ItemStackMixin {
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "shouldShowInTooltip", cancellable = true)
-    private static void a(int pHideFlags, ItemStack.TooltipPart pPart, CallbackInfoReturnable<Boolean> cir) {
-        if (pPart.equals(ItemStack.TooltipPart.MODIFIERS)) {
-            cir.setReturnValue(false);
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Multimap;isEmpty()Z"), method = "getTooltipLines")
+    public boolean a(Multimap<Attribute, AttributeModifier> instance, Operation<Boolean> original) {
+        ItemStack stack = (ItemStack) (Object) this;
+        if (stack.is(BindingHandler.CUSTOM_ATTRIBUTE_TOOLTIP)) {
+            return true;
         }
+        return original.call(instance);
     }
 }

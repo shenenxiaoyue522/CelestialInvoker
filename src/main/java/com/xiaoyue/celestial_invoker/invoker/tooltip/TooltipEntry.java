@@ -7,6 +7,8 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.enchantment.Enchantment;
 
+import java.text.DecimalFormat;
+
 public final class TooltipEntry {
 
     public final String tooltip;
@@ -62,7 +64,8 @@ public final class TooltipEntry {
     }
 
     public static MutableComponent per(double v) {
-        return Component.literal(v * 100f + "%").withStyle(ChatFormatting.AQUA);
+        DecimalFormat format = new DecimalFormat("#.#");
+        return Component.literal(Float.parseFloat(format.format(v * 100f)) + "%").withStyle(ChatFormatting.AQUA);
     }
 
     public static MutableComponent chance(double v) {
