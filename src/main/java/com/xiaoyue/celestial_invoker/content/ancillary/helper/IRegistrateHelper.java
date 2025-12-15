@@ -13,7 +13,6 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import com.xiaoyue.celestial_invoker.content.ancillary.BindingHandler;
 import com.xiaoyue.celestial_invoker.content.ancillary.CelestialRegistrate;
 import com.xiaoyue.celestial_invoker.content.ancillary.entry.MetalItemEntry;
-import com.xiaoyue.celestial_invoker.content.client.SimpleTexParticle;
 import com.xiaoyue.celestial_invoker.content.generator.CelestialProviders;
 import com.xiaoyue.celestial_invoker.content.generator.RegistrateParticleTexProvider;
 import dev.xkmc.l2library.base.L2Registrate;
@@ -21,7 +20,6 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -72,10 +70,6 @@ public interface IRegistrateHelper<R extends L2Registrate> {
 
     default <T extends Recipe<?>> RegistryEntry<RecipeSerializer<T>> recipeSerial(String name, NonNullSupplier<RecipeSerializer<T>> sup) {
         return owner().simple(this, name, ForgeRegistries.Keys.RECIPE_SERIALIZERS, sup);
-    }
-
-    default <T extends SimpleTexParticle> RegistryEntry<ParticleType<SimpleParticleType>> particleType(String name, boolean overrideLimiter, NonNullSupplier<T> sup, NonNullConsumer<RegistrateParticleTexProvider> cons) {
-        return particleType(name, () -> new SimpleParticleType(overrideLimiter), sup.get(), cons);
     }
 
     default <T extends ParticleType<T> & ParticleOptions> RegistryEntry<ParticleType<T>> particleType(String name, NonNullSupplier<ParticleType<T>> sup, ParticleEngine.SpriteParticleRegistration<T> pvd, NonNullConsumer<RegistrateParticleTexProvider> cons) {
