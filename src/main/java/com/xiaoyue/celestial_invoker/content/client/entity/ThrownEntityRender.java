@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -65,19 +66,14 @@ public class ThrownEntityRender<T extends SimpleThrowEntity> extends EntityRende
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        return null;
+        return InventoryMenu.BLOCK_ATLAS;
     }
 
-    public static <T extends SimpleThrowEntity> ThrownEntityRender<T> simple(EntityRendererProvider.Context context, Vec3 scale, float offset, ResourceLocation texture, BiConsumer<PoseStack, T> extra) {
-        return new ThrownEntityRender<>(context, scale, offset, extra) {
-            @Override
-            public ResourceLocation getTextureLocation(T entity) {
-                return texture;
-            }
-        };
+    public static <T extends SimpleThrowEntity> ThrownEntityRender<T> simple(EntityRendererProvider.Context context, Vec3 scale, float offset, BiConsumer<PoseStack, T> extra) {
+        return new ThrownEntityRender<>(context, scale, offset, extra);
     }
 
-    public static <T extends SimpleThrowEntity> ThrownEntityRender<T> simple(EntityRendererProvider.Context context, Vec3 scale, float offset, ResourceLocation texture) {
-        return simple(context, scale, offset, texture, null);
+    public static <T extends SimpleThrowEntity> ThrownEntityRender<T> simple(EntityRendererProvider.Context context, Vec3 scale, float offset) {
+        return simple(context, scale, offset, null);
     }
 }

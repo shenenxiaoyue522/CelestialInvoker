@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraftforge.fml.ModList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -52,7 +53,9 @@ public abstract class ItemStackMixin {
                 if (pPlayer != null) {
                     if (modifier.getId() == ItemAccessor.getBaseDamageUUID()) {
                         amount += pPlayer.getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
-                        amount += EnchantmentHelper.getDamageBonus(stack, MobType.UNDEFINED);
+                        if (!ModList.get().isLoaded("celestial_overhaul")) {
+                            amount += EnchantmentHelper.getDamageBonus(stack, MobType.UNDEFINED);
+                        }
                         flag = true;
                     } else if (modifier.getId() == ItemAccessor.getBaseSpeedUUID()) {
                         amount += pPlayer.getAttributeBaseValue(Attributes.ATTACK_SPEED);
@@ -89,7 +92,7 @@ public abstract class ItemStackMixin {
     }
 
     @WrapOperation(at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Multimap;isEmpty()Z"), method = "getTooltipLines")
-    public boolean a(Multimap<Attribute, AttributeModifier> instance, Operation<Boolean> original) {
+    public boolean celestial_invoker$canModifyTooltips(Multimap<Attribute, AttributeModifier> instance, Operation<Boolean> original) {
         ItemStack stack = (ItemStack) (Object) this;
         if (stack.is(BindingHandler.CUSTOM_ATTRIBUTE_TOOLTIP)) {
             return true;

@@ -47,53 +47,60 @@ public class CelestialTridentItem extends TridentItem {
             if (chance >= getChargeTime(pStack, player)) {
                 int riptide = EnchantmentHelper.getRiptide(pStack);
                 if (riptide <= 0 || player.isInWaterOrRain()) {
-                    if (!pLevel.isClientSide) {
-                        pStack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
-                        if (riptide == 0) {
-                            AbstractArrow thrownEntity = getThrownEntity(pLevel, player, pStack);
-                            onConfigShoot(pStack, player, pLevel, thrownEntity);
-                            thrownEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5f + (float) riptide * 0.5f, 1.0f);
-                            if (player.getAbilities().instabuild) {
-                                thrownEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-                            }
-                            pLevel.addFreshEntity(thrownEntity);
-                            pLevel.playSound(null, thrownEntity, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
-                            if (!player.getAbilities().instabuild) {
-                                player.getInventory().removeItem(pStack);
-                            }
-                        }
-                    }
+                    onFullCharge(pLevel, player, pStack, riptide);
                     player.awardStat(Stats.ITEM_USED.get(this));
                     if (riptide > 0) {
-                        float yRot = player.getYRot();
-                        float xRot = player.getXRot();
-                        float $$10 = -Mth.sin(yRot * ((float)Math.PI / 180F)) * Mth.cos(xRot * ((float)Math.PI / 180F));
-                        float $$11 = -Mth.sin(xRot * ((float)Math.PI / 180F));
-                        float $$12 = Mth.cos(yRot * ((float)Math.PI / 180F)) * Mth.cos(xRot * ((float)Math.PI / 180F));
-                        float $$13 = Mth.sqrt($$10 * $$10 + $$11 * $$11 + $$12 * $$12);
-                        float $$14 = 3.0F * ((1.0F + (float) riptide) / 4.0F);
-                        $$10 *= $$14 / $$13;
-                        $$11 *= $$14 / $$13;
-                        $$12 *= $$14 / $$13;
-                        player.push($$10, $$11, $$12);
-                        player.startAutoSpinAttack(20);
-                        if (player.onGround()) {
-                            player.move(MoverType.SELF, new Vec3(0.0f, 1.2f, 0.0f));
-                        }
-                        SoundEvent soundEvent;
-                        if (riptide >= 3) {
-                            soundEvent = SoundEvents.TRIDENT_RIPTIDE_3;
-                        } else if (riptide == 2) {
-                            soundEvent = SoundEvents.TRIDENT_RIPTIDE_2;
-                        } else {
-                            soundEvent = SoundEvents.TRIDENT_RIPTIDE_1;
-                        }
-                        pLevel.playSound(null, player, soundEvent, SoundSource.PLAYERS, 1.0F, 1.0F);
+                        useRiptide(player, riptide);
                     }
-
                 }
             }
         }
+    }
+
+    public void onFullCharge(Level pLevel, Player player, ItemStack pStack, int riptide) {
+        if (!pLevel.isClientSide) {
+            pStack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
+            if (riptide == 0) {
+                AbstractArrow thrownEntity = getThrownEntity(pLevel, player, pStack);
+                onConfigShoot(pStack, player, pLevel, thrownEntity);
+                thrownEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5f + (float) riptide * 0.5f, 1.0f);
+                if (player.getAbilities().instabuild) {
+                    thrownEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                }
+                pLevel.addFreshEntity(thrownEntity);
+                pLevel.playSound(null, thrownEntity, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+                if (!player.getAbilities().instabuild) {
+                    player.getInventory().removeItem(pStack);
+                }
+            }
+        }
+    }
+
+    public void useRiptide(Player player, int riptide) {
+        float yRot = player.getYRot();
+        float xRot = player.getXRot();
+        float $$10 = -Mth.sin(yRot * ((float)Math.PI / 180F)) * Mth.cos(xRot * ((float)Math.PI / 180F));
+        float $$11 = -Mth.sin(xRot * ((float)Math.PI / 180F));
+        float $$12 = Mth.cos(yRot * ((float)Math.PI / 180F)) * Mth.cos(xRot * ((float)Math.PI / 180F));
+        float $$13 = Mth.sqrt($$10 * $$10 + $$11 * $$11 + $$12 * $$12);
+        float $$14 = 3.0F * ((1.0F + (float) riptide) / 4.0F);
+        $$10 *= $$14 / $$13;
+        $$11 *= $$14 / $$13;
+        $$12 *= $$14 / $$13;
+        player.push($$10, $$11, $$12);
+        player.startAutoSpinAttack(20);
+        if (player.onGround()) {
+            player.move(MoverType.SELF, new Vec3(0.0f, 1.2f, 0.0f));
+        }
+        SoundEvent soundEvent;
+        if (riptide >= 3) {
+            soundEvent = SoundEvents.TRIDENT_RIPTIDE_3;
+        } else if (riptide == 2) {
+            soundEvent = SoundEvents.TRIDENT_RIPTIDE_2;
+        } else {
+            soundEvent = SoundEvents.TRIDENT_RIPTIDE_1;
+        }
+        player.level().playSound(null, player, soundEvent, SoundSource.PLAYERS, 1.0F, 1.0F);
     }
 
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {

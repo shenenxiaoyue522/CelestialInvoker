@@ -2,10 +2,10 @@ package com.xiaoyue.celestial_invoker.content.client;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.particles.ParticleOptions;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class SimpleTexParticle extends TextureSheetParticle implements ParticleProvider<SimpleParticleType>, ParticleEngine.SpriteParticleRegistration<SimpleParticleType> {
+public abstract class SimpleTexParticle<S extends ParticleOptions> extends TextureSheetParticle implements ParticleProvider<S>, ParticleEngine.SpriteParticleRegistration<S> {
     public final SpriteSet sprites;
     public final ParticleRenderType type;
     public final int lifeTime;
@@ -32,10 +32,9 @@ public abstract class SimpleTexParticle extends TextureSheetParticle implements 
     }
 
     @Override
-    public abstract @Nullable Particle createParticle(SimpleParticleType type, ClientLevel level, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed);
+    public abstract @Nullable Particle createParticle(S type, ClientLevel level, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed);
 
     @Override
-    public ParticleProvider<SimpleParticleType> create(SpriteSet spriteSet) {
-        return this;
-    }
+    public abstract ParticleProvider<S> create(SpriteSet spriteSet);
+
 }
