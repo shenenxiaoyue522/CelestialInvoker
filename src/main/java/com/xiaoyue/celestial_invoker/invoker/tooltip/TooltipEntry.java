@@ -63,8 +63,9 @@ public final class TooltipEntry {
         return Component.translatable(key, obj).withStyle(color);
     }
 
+    public static final DecimalFormat format = new DecimalFormat("#.#");
+
     public static MutableComponent per(double v) {
-        DecimalFormat format = new DecimalFormat("#.#");
         return Component.literal(Float.parseFloat(format.format(v * 100f)) + "%").withStyle(ChatFormatting.AQUA);
     }
 
@@ -73,15 +74,15 @@ public final class TooltipEntry {
     }
 
     public static MutableComponent num(int v) {
-        return Component.literal("" + v).withStyle(ChatFormatting.AQUA);
+        return Component.literal(format.format(v)).withStyle(ChatFormatting.AQUA);
     }
 
     public static MutableComponent num(float v) {
-        return Component.literal("" + v).withStyle(ChatFormatting.AQUA);
+        return Component.literal(format.format(v)).withStyle(ChatFormatting.AQUA);
     }
 
     public static MutableComponent num(double v) {
-        return Component.literal("" + v).withStyle(ChatFormatting.AQUA);
+        return Component.literal(format.format(v)).withStyle(ChatFormatting.AQUA);
     }
 
     public static MutableComponent entity(EntityType<?> type) {
