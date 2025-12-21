@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import dev.xkmc.l2serial.serialization.SerialClass;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -19,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 @SerialClass
@@ -30,6 +33,7 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
     public int loyalty = 0;
     @SerialClass.SerialField
     public boolean isFoil;
+    @SerialClass.SerialField
     public int remainingHit = 1;
     public int clientSideReturnTridentTickCount;
 
@@ -83,7 +87,7 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
         Entity owner = this.getOwner();
         if (loyalty > 0 && (this.remainingHit == 0 || this.isNoPhysics()) && owner != null) {
             if (!this.isAcceptibleReturnOwner()) {
-                if (!this.level().isClientSide && this.pickup == Pickup.ALLOWED) {
+                if (!this.level().isClientSide && canDrop()) {
                     this.spawnAtLocation(this.getPickupItem(), 0.1F);
                 }
                 this.discard();
@@ -105,6 +109,10 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
         super.tick();
     }
 
+    protected boolean canDrop() {
+        return this.pickup == Pickup.ALLOWED;
+    }
+
     public boolean isAcceptibleReturnOwner() {
         Entity owner = this.getOwner();
         if (owner != null && owner.isAlive()) {
@@ -117,12 +125,11 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
-        float damage = (float) getBaseDamage();
+        float damage = (float) getDamage(entity);
         if (entity instanceof LivingEntity livingentity) {
             damage += EnchantmentHelper.getDamageBonus(this.weapon, livingentity.getMobType());
         }
         Entity owner = this.getOwner();
-        DamageSource damagesource = level().damageSources().trident(this, owner == null ? this : owner);
         if (this.remainingHit > 0) {
             this.remainingHit--;
             if (this.getPierceLevel() > 0) {
@@ -132,12 +139,12 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
                 if (this.piercedAndKilledEntities == null) {
                     this.piercedAndKilledEntities = Lists.newArrayListWithCapacity(5);
                 }
-
                 this.piercingIgnoreEntityIds.add(entity.getId());
             }
         }
         SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
-        if (entity.hurt(damagesource, damage)) {
+        DamageSource source = getDamageSource(owner);
+        if (entity.hurt(source, damage)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
@@ -158,6 +165,13 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
         this.playSound(soundevent, f1, 1.0F);
     }
 
+    protected DamageSource getDamageSource(@Nullable Entity owner) {
+        return level().damageSources().trident(this, owner == null ? this : owner);
+    }
+
+    protected double getDamage(Entity target) {
+        return getBaseDamage();
+    }
 
     @Override
     protected @Nullable EntityHitResult findHitEntity(Vec3 pStartVec, Vec3 pEndVec) {
@@ -179,6 +193,11 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
     @Override
     protected SoundEvent getDefaultHitGroundSoundEvent() {
         return SoundEvents.TRIDENT_HIT_GROUND;
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
