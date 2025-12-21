@@ -31,6 +31,7 @@ public class ThrownEntityRender<T extends SimpleThrowEntity> extends EntityRende
 
     protected ThrownEntityRender(EntityRendererProvider.Context context, Vec3 scale, float offset, BiConsumer<PoseStack, T> extra) {
         super(context);
+        this.shadowRadius = 0f;
         this.extra = extra;
         this.itemRenderer = context.getItemRenderer();
         this.shadowRadius = 0.175F;
@@ -51,7 +52,7 @@ public class ThrownEntityRender<T extends SimpleThrowEntity> extends EntityRende
         if (extra != null) {
             extra.accept(poseStack, entity);
         }
-        this.itemRenderer.render(stack, ItemDisplayContext.NONE, false, poseStack, buffer, light, OverlayTexture.NO_OVERLAY, bakedmodel);
+        this.itemRenderer.render(stack, ItemDisplayContext.GROUND, false, poseStack, buffer, light, OverlayTexture.NO_OVERLAY, bakedmodel);
         poseStack.popPose();
         super.render(entity, v, partialTick, poseStack, buffer, light);
     }

@@ -2,9 +2,12 @@ package com.xiaoyue.celestial_invoker.content.ancillary.helper;
 
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateItemModelProvider;
+import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.loaders.SeparateTransformsModelBuilder;
 
 public class ItemModelHelper {
 
@@ -63,10 +66,14 @@ public class ItemModelHelper {
         pvd.getBuilder(ctx.getName() + "_using")
                 .parent(new ModelFile.UncheckedModelFile("celestial_invoker:item/spear_using"))
                 .texture("layer0", namespace + ":" + texture);
+        var ground = new ItemModelBuilder(null, pvd.existingFileHelper)
+                .parent(pvd.getExistingFile(pvd.mcLoc("item/generated")))
+                .texture("layer0", namespace + ":item/trident/3d/" + ctx.getName());
         pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("celestial_invoker:item/spear"))
                 .texture("layer0", namespace + ":" + texture)
-                .override()
-                .predicate(new ResourceLocation("using"), 1f)
+                .guiLight(BlockModel.GuiLight.FRONT).customLoader(SeparateTransformsModelBuilder::begin)
+                .perspective(ItemDisplayContext.GROUND, ground).end()
+                .override().predicate(new ResourceLocation("using"), 1f)
                 .model(pvd.getExistingFile(new ResourceLocation(namespace, path + "_using")));
     }
 
