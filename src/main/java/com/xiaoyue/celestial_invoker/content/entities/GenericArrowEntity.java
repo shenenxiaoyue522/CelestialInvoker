@@ -1,5 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
+import com.xiaoyue.celestial_invoker.content.ancillary.helper.NBTSerialHelper;
 import com.xiaoyue.celestial_invoker.content.generic.builder.ArrowDataBuilder;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import net.minecraft.nbt.CompoundTag;
@@ -102,19 +103,15 @@ public class GenericArrowEntity extends AbstractArrow implements IEntityAddition
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("Bow", bow.save(new CompoundTag()));
-        tag.put("Arrow", arrow.save(new CompoundTag()));
+        NBTSerialHelper.save(tag, "Bow", bow);
+        NBTSerialHelper.save(tag, "Arrow", arrow);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains("Bow", CompoundTag.TAG_COMPOUND)) {
-            bow = ItemStack.of(tag.getCompound("Bow"));
-        }
-        if (tag.contains("Arrow", CompoundTag.TAG_COMPOUND)) {
-            arrow = ItemStack.of(tag.getCompound("Arrow"));
-        }
+        bow = NBTSerialHelper.loadOrDefault(tag, "Bow", ItemStack.class, ItemStack.EMPTY);
+        arrow = NBTSerialHelper.loadOrDefault(tag, "Arrow", ItemStack.class, ItemStack.EMPTY);
     }
 
     @Override

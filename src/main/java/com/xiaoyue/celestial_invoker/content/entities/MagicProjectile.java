@@ -4,6 +4,8 @@ import com.xiaoyue.celestial_invoker.content.generic.builder.MagicProjectileConf
 import com.xiaoyue.celestial_invoker.content.generic.builder.MagicProjectileConfig.IFactory;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,6 +16,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 
@@ -122,6 +125,11 @@ public class MagicProjectile extends AbstractHurtingProjectile implements IEntit
     @Override
     protected boolean shouldBurn() {
         return false;
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override

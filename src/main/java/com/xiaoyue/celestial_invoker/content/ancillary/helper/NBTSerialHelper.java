@@ -284,13 +284,8 @@ public class NBTSerialHelper {
         }, (tag, id) -> {
             if (!tag.contains(id, Tag.TAG_COMPOUND)) return null;
             CompoundTag aabbTag = tag.getCompound(id);
-            return new AABB(
-                    aabbTag.getDouble("minX"),
-                    aabbTag.getDouble("minY"),
-                    aabbTag.getDouble("minZ"),
-                    aabbTag.getDouble("maxX"),
-                    aabbTag.getDouble("maxY"),
-                    aabbTag.getDouble("maxZ"));
+            return new AABB(aabbTag.getDouble("minX"), aabbTag.getDouble("minY"), aabbTag.getDouble("minZ"),
+                    aabbTag.getDouble("maxX"), aabbTag.getDouble("maxY"), aabbTag.getDouble("maxZ"));
         });
     }
 
