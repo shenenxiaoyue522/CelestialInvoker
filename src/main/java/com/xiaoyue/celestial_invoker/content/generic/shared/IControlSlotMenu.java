@@ -8,8 +8,8 @@ import net.minecraft.world.item.ItemStack;
 
 public interface IControlSlotMenu {
 
-    default ModuleSlot slot(AbstractContainerMenu menu, Container inv, int slot, int x, int y) {
-        return new ModuleSlot(menu, inv, slot, x, y);
+    default ModuleSlot slot(Container inv, int slot, int x, int y) {
+        return new ModuleSlot(((AbstractContainerMenu) this), inv, slot, x, y);
     }
 
     default void onTake(Slot slot, Player player, ItemStack stack) {
