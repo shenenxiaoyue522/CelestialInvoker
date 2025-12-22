@@ -5,9 +5,9 @@ import com.xiaoyue.celestial_invoker.content.generic.item.IAirBladeUser;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import dev.xkmc.l2damagetracker.init.L2DamageTracker;
 import dev.xkmc.l2library.util.math.MathHelper;
-import dev.xkmc.l2serial.serialization.SerialClass;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -27,16 +27,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 
-@SerialClass
 public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData {
 
-    @SerialClass.SerialField
     public float damage = 2f;
-    @SerialClass.SerialField
     public int life = 100;
-    @SerialClass.SerialField
     public float zRot = 0f;
-    @SerialClass.SerialField
     public ItemStack stack = ItemStack.EMPTY;
 
     public AirBladeEntity(EntityType<? extends ThrowableProjectile> pEntityType, Level pLevel) {
@@ -151,15 +146,33 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
     }
 
     @Override
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.put("Item", stack.save(new CompoundTag()));
+        tag.putFloat("Damage", damage);
+    }
+
+    @Override
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("Item", CompoundTag.TAG_COMPOUND)) {
+            stack = ItemStack.of(tag.getCompound("Item"));
+        }
+        damage = tag.getFloat("Damage");
+    }
+
+    @Override
     public void writeSpawnData(FriendlyByteBuf buf) {
         buf.writeFloat(zRot);
         buf.writeItemStack(stack, true);
+        buf.writeFloat(damage);
     }
 
     @Override
     public void readSpawnData(FriendlyByteBuf buf) {
         zRot = buf.readFloat();
         stack = buf.readItem();
+        damage = buf.readFloat();
     }
 
     @Override

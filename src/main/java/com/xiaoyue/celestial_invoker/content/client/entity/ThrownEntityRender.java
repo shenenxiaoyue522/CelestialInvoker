@@ -31,10 +31,9 @@ public class ThrownEntityRender<T extends SimpleThrowEntity> extends EntityRende
 
     protected ThrownEntityRender(EntityRendererProvider.Context context, Vec3 scale, float offset, BiConsumer<PoseStack, T> extra) {
         super(context);
-        this.shadowRadius = 0f;
         this.extra = extra;
         this.itemRenderer = context.getItemRenderer();
-        this.shadowRadius = 0.175F;
+        this.shadowRadius = 0f;
         this.scale = scale.scale(0.85);
         this.offset = offset;
         preTransform.translate(-offset, -offset, 0);

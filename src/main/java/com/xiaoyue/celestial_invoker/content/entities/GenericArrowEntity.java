@@ -2,8 +2,10 @@ package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.xiaoyue.celestial_invoker.content.generic.builder.ArrowDataBuilder;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
-import dev.xkmc.l2serial.serialization.SerialClass;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -12,13 +14,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
 
-@SerialClass
 public class GenericArrowEntity extends AbstractArrow implements IEntityAdditionalSpawnData {
 
-    @SerialClass.SerialField
     public ItemStack bow, arrow = ItemStack.EMPTY;
-    @SerialClass.SerialField
     public ArrowDataBuilder builder = null;
 
     public GenericArrowEntity(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
@@ -91,6 +91,29 @@ public class GenericArrowEntity extends AbstractArrow implements IEntityAddition
         super.onHitBlock(pResult);
         if (builder != null && builder.hitBlock != null) {
             builder.hitBlock.accept(this, pResult);
+        }
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.put("Bow", bow.save(new CompoundTag()));
+        tag.put("Arrow", arrow.save(new CompoundTag()));
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("Bow", CompoundTag.TAG_COMPOUND)) {
+            bow = ItemStack.of(tag.getCompound("Bow"));
+        }
+        if (tag.contains("Arrow", CompoundTag.TAG_COMPOUND)) {
+            arrow = ItemStack.of(tag.getCompound("Arrow"));
         }
     }
 

@@ -69,10 +69,12 @@ public class ItemModelHelper {
         var ground = new ItemModelBuilder(null, pvd.existingFileHelper)
                 .parent(pvd.getExistingFile(pvd.mcLoc("item/generated")))
                 .texture("layer0", namespace + ":item/trident/3d/" + ctx.getName());
-        pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("celestial_invoker:item/spear"))
-                .texture("layer0", namespace + ":" + texture)
-                .guiLight(BlockModel.GuiLight.FRONT).customLoader(SeparateTransformsModelBuilder::begin)
-                .perspective(ItemDisplayContext.GROUND, ground).end()
+        var based = new ItemModelBuilder(null, pvd.existingFileHelper)
+                .parent(new ModelFile.UncheckedModelFile("celestial_invoker:item/spear"))
+                .texture("layer0", namespace + ":" + texture);
+        ItemModelBuilder builder = pvd.getBuilder(ctx.getName());
+        builder.guiLight(BlockModel.GuiLight.FRONT).customLoader(SeparateTransformsModelBuilder::begin)
+                .base(based).perspective(ItemDisplayContext.GROUND, ground).end()
                 .override().predicate(new ResourceLocation("using"), 1f)
                 .model(pvd.getExistingFile(new ResourceLocation(namespace, path + "_using")));
     }

@@ -1,8 +1,9 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.google.common.collect.Lists;
-import dev.xkmc.l2serial.serialization.SerialClass;
+import com.xiaoyue.celestial_invoker.content.ancillary.helper.NBTSerialHelper;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -24,23 +25,18 @@ import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-@SerialClass
 public abstract class SimpleThrowEntity extends AbstractArrow implements IEntityAdditionalSpawnData {
 
-    @SerialClass.SerialField
     public ItemStack weapon = ItemStack.EMPTY;
-    @SerialClass.SerialField
     public int loyalty = 0;
-    @SerialClass.SerialField
-    public boolean isFoil;
-    @SerialClass.SerialField
+    public boolean foil;
     public int remainingHit = 1;
     public int clientSideReturnTridentTickCount;
 
     protected SimpleThrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity pShooter, Level pLevel, ItemStack stack) {
         super(pEntityType, pShooter, pLevel);
         this.weapon = stack;
-        this.isFoil = stack.hasFoil();
+        this.foil = stack.hasFoil();
         this.loyalty = EnchantmentHelper.getLoyalty(stack);
     }
 
@@ -57,7 +53,6 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
         super.setPierceLevel(pPierceLevel);
         this.remainingHit = pPierceLevel + 1;
     }
-
 
     private void tickEarlyReturn() {
         Vec3 origin = position();
@@ -193,6 +188,23 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
     @Override
     protected SoundEvent getDefaultHitGroundSoundEvent() {
         return SoundEvents.TRIDENT_HIT_GROUND;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        NBTSerialHelper.save(tag, "Weapon", weapon);
+        NBTSerialHelper.save(tag, "Foil", foil);
+        NBTSerialHelper.save(tag, "Loyalty", loyalty);
+    }
+
+    @Override
+    @SuppressWarnings("")
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        weapon = NBTSerialHelper.loadOrDefault(tag, "Weapon", ItemStack.class, ItemStack.EMPTY);
+        foil = NBTSerialHelper.loadOrDefault(tag, "Weapon", Boolean.class, false);
+        loyalty = NBTSerialHelper.loadOrDefault(tag, "Weapon", Integer.class, 0);
     }
 
     @Override

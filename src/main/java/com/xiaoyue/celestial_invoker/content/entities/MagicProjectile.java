@@ -3,7 +3,6 @@ package com.xiaoyue.celestial_invoker.content.entities;
 import com.xiaoyue.celestial_invoker.content.generic.builder.MagicProjectileConfig;
 import com.xiaoyue.celestial_invoker.content.generic.builder.MagicProjectileConfig.IFactory;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
-import dev.xkmc.l2serial.serialization.SerialClass;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
@@ -18,16 +17,11 @@ import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 
 import java.util.List;
 
-@SerialClass
 public class MagicProjectile extends AbstractHurtingProjectile implements IEntityAdditionalSpawnData {
 
-    @SerialClass.SerialField
     public MagicProjectileConfig config = MagicProjectileConfig.builder(IFactory.defaultEffect).build();
-    @SerialClass.SerialField
     public LivingEntity caster;
-    @SerialClass.SerialField
     public float power = 2f;
-    @SerialClass.SerialField
     public int age = 0;
 
     public MagicProjectile(EntityType<? extends AbstractHurtingProjectile> pEntityType, Level pLevel) {
