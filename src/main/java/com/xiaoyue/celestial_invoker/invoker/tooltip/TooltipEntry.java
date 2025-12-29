@@ -69,7 +69,7 @@ public final class TooltipEntry {
         return Component.literal(Float.parseFloat(format.format(v * 100f)) + "%").withStyle(ChatFormatting.AQUA);
     }
 
-    public static MutableComponent chance(double v) {
+    public static MutableComponent round(double v) {
         return Component.literal(Math.round(v * 100f) + "%").withStyle(ChatFormatting.AQUA);
     }
 

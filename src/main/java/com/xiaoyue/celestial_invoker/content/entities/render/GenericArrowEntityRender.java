@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.client.entity;
+package com.xiaoyue.celestial_invoker.content.entities.render;
 
 import com.xiaoyue.celestial_invoker.content.entities.GenericArrowEntity;
 import net.minecraft.client.renderer.entity.ArrowRenderer;

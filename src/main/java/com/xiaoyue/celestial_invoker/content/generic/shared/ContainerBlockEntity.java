@@ -52,15 +52,15 @@ public abstract class ContainerBlockEntity extends BlockEntity implements MenuPr
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        pTag.put(TAG_INV, getInventory().serializeNBT());
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag tag) {
+        tag.put(TAG_INV, getInventory().serializeNBT());
+        super.saveAdditional(tag);
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        getInventory().deserializeNBT(pTag.getCompound(TAG_INV));
-        super.load(pTag);
+    public void load(CompoundTag tag) {
+        getInventory().deserializeNBT(tag.getCompound(TAG_INV));
+        super.load(tag);
     }
 
     public void dropContents() {

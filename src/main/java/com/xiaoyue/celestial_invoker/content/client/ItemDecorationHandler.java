@@ -20,7 +20,7 @@ public class ItemDecorationHandler implements IItemDecorator {
             if (f > 0.0F) {
                 int i1 = y + Mth.floor(16.0F * (1.0F - f));
                 int j1 = i1 + Mth.ceil(16.0F * f);
-                graphics.fill(RenderType.guiOverlay(), x, i1, x + 16, j1, Integer.MAX_VALUE);
+                graphics.fill(RenderType.guiOverlay(), x, i1, x + 16, j1, ItemCooldownTracker.getCooldownColor(stack));
             }
         }
         if (stack.getItem() instanceof Factory factory) {

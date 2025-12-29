@@ -1,10 +1,12 @@
 package com.xiaoyue.celestial_invoker.event;
 
+import com.xiaoyue.celestial_invoker.content.client.hud.HudManager;
 import com.xiaoyue.celestial_invoker.content.generic.item.CelestialBowItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ComputeFovModifierEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -21,6 +23,13 @@ public class ClientEvents {
             if (stack.getItem() instanceof CelestialBowItem bow) {
                 bow.getDrawingFov(player, stack, event);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            HudManager.INSTANCE.tick();
         }
     }
 }

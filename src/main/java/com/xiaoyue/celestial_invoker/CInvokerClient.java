@@ -1,11 +1,13 @@
 package com.xiaoyue.celestial_invoker;
 
+import com.xiaoyue.celestial_invoker.content.client.HudOverlayHandler;
 import com.xiaoyue.celestial_invoker.content.client.ItemDecorationHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterItemDecorationsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
@@ -14,8 +16,12 @@ import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
 public class CInvokerClient {
 
     @SubscribeEvent
-    public static void initGuiLayer(RegisterGuiOverlaysEvent event) {
+    public static void clientStep(FMLClientSetupEvent event) {
+    }
 
+    @SubscribeEvent
+    public static void initHud(RegisterGuiOverlaysEvent event) {
+        event.registerBelowAll("custom_bar_handler", new HudOverlayHandler());
     }
 
     @SubscribeEvent
