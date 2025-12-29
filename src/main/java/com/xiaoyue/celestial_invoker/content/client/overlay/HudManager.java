@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.client.hud;
+package com.xiaoyue.celestial_invoker.content.client.overlay;
 
 import java.util.*;
 

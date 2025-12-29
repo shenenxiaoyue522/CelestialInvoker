@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.event;
 
-import com.xiaoyue.celestial_invoker.content.client.hud.HudManager;
+import com.xiaoyue.celestial_invoker.content.client.overlay.HudManager;
 import com.xiaoyue.celestial_invoker.content.generic.item.CelestialBowItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

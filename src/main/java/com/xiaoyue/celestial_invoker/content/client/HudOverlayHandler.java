@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.client;
 
-import com.xiaoyue.celestial_invoker.content.client.hud.HudElement;
-import com.xiaoyue.celestial_invoker.content.client.hud.HudManager;
+import com.xiaoyue.celestial_invoker.content.client.overlay.HudElement;
+import com.xiaoyue.celestial_invoker.content.client.overlay.HudManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
