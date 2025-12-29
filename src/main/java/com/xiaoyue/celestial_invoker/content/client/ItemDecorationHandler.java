@@ -17,7 +17,7 @@ public class ItemDecorationHandler implements IItemDecorator {
     public boolean render(GuiGraphics graphics, Font font, ItemStack stack, int x, int y) {
         if (!stack.isEmpty()) {
             float f = ItemCooldownTracker.getCooldownPercent(stack);
-            if (f > 0.0F) {
+            if (f > 0.0f) {
                 int i1 = y + Mth.floor(16.0F * (1.0F - f));
                 int j1 = i1 + Mth.ceil(16.0F * f);
                 graphics.fill(RenderType.guiOverlay(), x, i1, x + 16, j1, ItemCooldownTracker.getCooldownColor(stack));
