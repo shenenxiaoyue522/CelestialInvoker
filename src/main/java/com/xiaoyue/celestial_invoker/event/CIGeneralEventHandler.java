@@ -1,54 +1,64 @@
 package com.xiaoyue.celestial_invoker.event;
 
-import com.xiaoyue.celestial_invoker.content.generic.item.CelestialArmorItem;
 import com.xiaoyue.celestial_invoker.content.generic.item.IClickInteraction;
+import com.xiaoyue.celestial_invoker.content.generic.item.combat.IAttackTargetConfig;
+import com.xiaoyue.celestial_invoker.content.generic.item.combat.IKillTargetConfig;
+import com.xiaoyue.celestial_invoker.content.generic.item.combat.ITakeDamageConfig;
 import com.xiaoyue.celestial_invoker.content.generic.network.ClickEmptyPacket;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.function.BiConsumer;
 
 import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CIGeneralEventHandler {
 
-    public static void postArmorMethod(LivingEntity entity, BiConsumer<ItemStack, CelestialArmorItem> cons) {
-        entity.getArmorSlots().forEach(stack -> {
-            if (!stack.isEmpty() && stack.getItem() instanceof CelestialArmorItem armor) {
-                cons.accept(stack, armor);
-            }
-        });
-    }
-
-    @SubscribeEvent
-    public static void onHurtEvent(LivingHurtEvent event) {
-        LivingEntity target = event.getEntity();
-        postArmorMethod(target, (stack, armor) -> {
-            EquipmentSlot slot = stack.getEquipmentSlot();
-            armor.onHurt(target, stack, event, slot);
-        });
-        if (event.getSource().getEntity() instanceof LivingEntity attacker) {
-            postArmorMethod(attacker, (stack, armor) -> {
-                EquipmentSlot slot = stack.getEquipmentSlot();
-                armor.onHurtTarget(attacker, stack, event, slot);
-            });
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onHurt(LivingHurtEvent event) {
+        LivingEntity entity = event.getEntity();
+        DamageSource source = event.getSource();
+        if (entity.level().isClientSide()) return;
+        if (source.getEntity() instanceof LivingEntity attacker) {
+            IAttackTargetConfig.invoke(attacker, entity, source, (i, c) ->
+                    c.onHurtTarget(i, attacker, source, entity, event));
         }
+        ITakeDamageConfig.invoke(entity, source, (i, c) -> c.onTakeDamagePre(i, entity, source, event));
     }
 
-    @SubscribeEvent
-    public static void onDamageEvent(LivingDamageEvent event) {
-        LivingEntity target = event.getEntity();
-        postArmorMethod(target, (stack, armor) -> {
-            EquipmentSlot slot = stack.getEquipmentSlot();
-            armor.onDamage(target, stack, event, slot);
-        });
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onDamage(LivingDamageEvent event) {
+        LivingEntity entity = event.getEntity();
+        DamageSource source = event.getSource();
+        if (entity.level().isClientSide()) return;
+        if (source.getEntity() instanceof LivingEntity attacker) {
+            IAttackTargetConfig.invoke(attacker, entity, source, (i, c) ->
+                    c.onDamageTarget(i, attacker, source, entity, event));
+        }
+        ITakeDamageConfig.invoke(entity, source, (i, c) -> c.onTakeDamagePost(i, entity, source, event));
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onCriticalHit(LivingDeathEvent event) {
+        LivingEntity entity = event.getEntity();
+        DamageSource source = event.getSource();
+        if (entity.level().isClientSide()) return;
+        if (source.getEntity() instanceof LivingEntity attacker) {
+            for (InteractionHand hand : InteractionHand.values()) {
+                ItemStack stack = attacker.getItemInHand(hand);
+                if (stack.getItem() instanceof IKillTargetConfig config && config.test(hand, attacker, source, entity)) {
+                    config.onKillTarget(stack, attacker, source, entity, event);
+                }
+            }
+        }
     }
 
     @SubscribeEvent

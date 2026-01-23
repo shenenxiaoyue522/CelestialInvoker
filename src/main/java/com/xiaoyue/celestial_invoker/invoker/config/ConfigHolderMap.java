@@ -1,5 +1,7 @@
 package com.xiaoyue.celestial_invoker.invoker.config;
 
+import com.tterrag.registrate.AbstractRegistrate;
+import com.tterrag.registrate.providers.ProviderType;
 import com.xiaoyue.celestial_invoker.simple.QuickCompare;
 import com.xiaoyue.celestial_invoker.simple.StringCaser;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -96,6 +98,25 @@ public class ConfigHolderMap {
             defMap.put(holder.getId(), holder);
             map.put(category, defMap);
         }
+    }
+
+    public void generatorLang(AbstractRegistrate<?> registrate) {
+        registrate.addDataGenerator(ProviderType.LANG, pvd -> {
+            TITLE_MAP.forEach(pvd::add);
+            ConfigHolder.CACHE.TEXT_MAP.forEach((key, config) -> {
+                pvd.add(key, config.getName());
+                StringBuilder finalText = new StringBuilder(config.getTexts().get(0));
+                if (!config.getRangeText().isEmpty()) {
+                    config.getTexts().add(config.getRangeText());
+                }
+                if (config.getTexts().size() > 1) {
+                    for (int i = 1; i < config.getTexts().size(); i++) {
+                        finalText.append("/n ").append(config.getTexts().get(i));
+                    }
+                }
+                pvd.add(key + ".tooltip", finalText.toString());
+            });
+        });
     }
 
     public record ConfigPath(ModConfig.Type type, String path) {

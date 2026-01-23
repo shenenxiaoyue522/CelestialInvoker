@@ -11,8 +11,8 @@ public class ConfigLangGen extends LanguageProvider {
     protected void addTranslations() {
         ConfigHolder.CACHE.TITLE_MAP.forEach(this::add);
         ConfigHolder.CACHE.TEXT_MAP.forEach((key, config) -> {
-            StringBuilder finalText = new StringBuilder(config.getTexts().get(0));
             add(key, config.getName());
+            StringBuilder finalText = new StringBuilder(config.getTexts().get(0));
             if (!config.getRangeText().isEmpty()) {
                 config.getTexts().add(config.getRangeText());
             }

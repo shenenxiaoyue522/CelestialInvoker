@@ -21,8 +21,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
@@ -174,18 +172,6 @@ public class CelestialArmorItem extends ArmorItem {
 
     public List<Item> getSetArmors() {
         return List.of();
-    }
-
-    public void onHurt(LivingEntity entity, ItemStack stack, LivingHurtEvent event, EquipmentSlot slot) {
-
-    }
-
-    public void onDamage(LivingEntity entity, ItemStack stack, LivingDamageEvent event, EquipmentSlot slot) {
-
-    }
-
-    public void onHurtTarget(LivingEntity attacker, ItemStack stack, LivingHurtEvent event, EquipmentSlot slot) {
-
     }
 
     public record DefenseData(float armor, float toughness, float knockbackResistance) {

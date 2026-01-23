@@ -219,11 +219,14 @@ public class CelestialCrossbowItem extends CrossbowItem {
         return f;
     }
 
-    private static boolean tryLoadProjectiles(LivingEntity pShooter, ItemStack crossbow) {
+    public static boolean tryLoadProjectiles(LivingEntity pShooter, ItemStack crossbow) {
+        return tryLoadProjectiles(pShooter, crossbow, pShooter.getProjectile(crossbow));
+    }
+
+    public static boolean tryLoadProjectiles(LivingEntity pShooter, ItemStack crossbow, ItemStack ammo) {
         int multishot = crossbow.getEnchantmentLevel(Enchantments.MULTISHOT);
         int count = multishot == 0 ? 1 : 3;
         boolean flag = pShooter instanceof Player && ((Player)pShooter).getAbilities().instabuild;
-        ItemStack ammo = pShooter.getProjectile(crossbow);
         ItemStack ammoCopy = ammo.copy();
         for(int i = 0; i < count; ++i) {
             if (i > 0) {

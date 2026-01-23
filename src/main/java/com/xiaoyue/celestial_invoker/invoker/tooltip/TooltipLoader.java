@@ -3,9 +3,7 @@ package com.xiaoyue.celestial_invoker.invoker.tooltip;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
-import net.minecraft.data.DataGenerator;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
@@ -28,11 +26,6 @@ public class TooltipLoader {
         if (!key.isEmpty()) {
             entry.setKey(key);
         }
-    }
-
-    public void generator(GatherDataEvent event) {
-        DataGenerator gen = event.getGenerator();
-        gen.addProvider(event.includeClient(), new TooltipLangGen(gen.getPackOutput(), this));
     }
 
     public void generator(AbstractRegistrate<?> registrate) {
