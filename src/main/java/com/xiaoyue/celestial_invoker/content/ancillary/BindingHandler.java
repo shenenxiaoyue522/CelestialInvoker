@@ -40,7 +40,7 @@ public class BindingHandler {
         stack.getOrCreateTag().putBoolean("Unbreakable", true);
     }
 
-    public static <C extends Container> boolean checkInputs(List<Ingredient> materials, C inv) {
+    public static <C extends Container> boolean checkShapelessInputs(List<Ingredient> materials, C inv) {
         List<ItemStack> inputs = new ArrayList<>();
         for (int i = 0; i < inv.getContainerSize(); i++) {
             ItemStack stack = inv.getItem(i);

@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.item;
+package com.xiaoyue.celestial_invoker.content.generic.item.api;
 
 import com.xiaoyue.celestial_invoker.content.ancillary.BindingHandler;
 import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntity;
@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 
 public interface IAirBladeUser {
 
-    default ParticleOptions getParticle() {
+    default ParticleOptions getTrajectoryParticles() {
         return ParticleTypes.CRIT;
     }
 

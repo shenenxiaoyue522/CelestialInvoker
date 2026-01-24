@@ -2,7 +2,7 @@ package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.xiaoyue.celestial_invoker.content.ancillary.BindingHandler;
 import com.xiaoyue.celestial_invoker.content.ancillary.helper.NBTSerialHelper;
-import com.xiaoyue.celestial_invoker.content.generic.item.IAirBladeUser;
+import com.xiaoyue.celestial_invoker.content.generic.item.api.IAirBladeUser;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import dev.xkmc.l2damagetracker.init.L2DamageTracker;
 import dev.xkmc.l2library.util.math.MathHelper;
@@ -75,7 +75,7 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
         if (life <= 0) {
             discard();
         }
-        ParticleOptions particle = stack.getItem() instanceof IAirBladeUser user ? user.getParticle() : ParticleTypes.CRIT;
+        ParticleOptions particle = stack.getItem() instanceof IAirBladeUser user ? user.getTrajectoryParticles() : ParticleTypes.CRIT;
         double vx = speed.x;
         double vy = speed.y;
         double vz = speed.z;

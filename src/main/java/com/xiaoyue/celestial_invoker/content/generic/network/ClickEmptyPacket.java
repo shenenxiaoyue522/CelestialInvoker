@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.generic.network;
 
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
-import com.xiaoyue.celestial_invoker.content.generic.item.IClickInteraction;
+import com.xiaoyue.celestial_invoker.content.generic.item.api.IClickInteraction;
 import dev.xkmc.l2serial.network.SerialPacketBase;
 import dev.xkmc.l2serial.serialization.SerialClass;
 import net.minecraft.server.level.ServerPlayer;
