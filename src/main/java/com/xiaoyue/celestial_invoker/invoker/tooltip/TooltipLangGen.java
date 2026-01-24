@@ -12,7 +12,11 @@ public class TooltipLangGen extends LanguageProvider {
     }
 
     @Override
-    protected void addTranslations() {
+    protected final void addTranslations() {
         loader.map.forEach((key, entry) -> add(key, entry.tooltip));
+        addNewTranslations();
+    }
+
+    protected void addNewTranslations() {
     }
 }
