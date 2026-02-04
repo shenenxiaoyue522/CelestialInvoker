@@ -1,0 +1,53 @@
+package com.xiaoyue.celestial_invoker.invoker.config;
+
+import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
+import com.xiaoyue.celestial_invoker.simple.StringCaser;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforgespi.language.ModFileScanData;
+import org.objectweb.asm.Type;
+
+import java.lang.reflect.Field;
+import java.util.Locale;
+
+public class ConfigLoader {
+
+    public static String getConfigTypeText(ModConfig.Type type) {
+        String modId = SimpleInvoker.getActiveModId();
+        return StringCaser.caseSpaceCapitalize(modId + "." + type.extension() + ".configuration");
+    }
+
+    public static String getSpaceCaseModId() {
+        return StringCaser.caseSpaceCapitalize(SimpleInvoker.getActiveModId());
+    }
+
+    public static String getConfigName(ModConfig.Type type) {
+        return String.format(Locale.ROOT, "%s-%s.toml", SimpleInvoker.getActiveModId(), type.extension());
+    }
+
+    public static String getCelestialConfigName(ModConfig.Type type) {
+        return String.format(Locale.ROOT, "celestial_configs/" + "%s-%s.toml", SimpleInvoker.getActiveModId(), type.extension());
+    }
+
+    public static ConfigHolder<?> cast(Object obj) {
+        return (ConfigHolder<?>) obj;
+    }
+
+    public static ConfigHolderMap mapConfig(String modid) {
+        try {
+            for(ModFileScanData.AnnotationData data : SimpleInvoker.getModAnno(modid, ConfigHolderEntry.class)) {
+                String category = (String) data.annotationData().getOrDefault("category", "");
+                ModConfig.Type type = (ModConfig.Type) data.annotationData().getOrDefault("type", ModConfig.Type.COMMON);
+                Type clazz = data.clazz();
+                String name = data.memberName();
+                Class<?> annoCls = Class.forName(clazz.getClassName());
+                Field field = annoCls.getDeclaredField(name);
+                field.setAccessible(true);
+                ConfigHolder<?> holder = cast(field.get(null));
+                ConfigHolder.CACHE.addConfig(category, holder, type);
+            }
+            return ConfigHolder.CACHE;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
