@@ -1,0 +1,6 @@
+{
+  "celestial_invoker.tooltip.alt_down": "Press [%s] to display set effects",
+  "celestial_invoker.tooltip.set_effect": "Set effect: ",
+  "entity.celestial_invoker.air_blade": "Air Blade",
+  "entity.celestial_invoker.generic_arrow": "Generic Arrow"
+}

@@ -1,13 +1,11 @@
-package com.xiaoyue.celestial_invoker.content.client;
+package com.xiaoyue.celestial_invoker.content.ancillary.helper;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
 
-public class ItemDecorationHandler {
+public class ItemBarHelper {
 
     public static float getPercent(float current, float max) {
         return current / max;
@@ -77,9 +75,5 @@ public class ItemDecorationHandler {
     public enum BarDirection {
         LEFT_TO_RIGHT,
         BOTTOM_TO_TOP
-    }
-
-    public interface Factory {
-        void addCustomDecoration(GuiGraphics graphics, Font font, ItemStack stack, int x, int y);
     }
 }

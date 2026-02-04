@@ -103,12 +103,14 @@ repositories {
 }
 
 dependencies {
+    implementation "net.neoforged:neoforge:${neo_version}"
     implementation "com.tterrag.registrate:Registrate:${registrate_version}"
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation "mezz.jei:jei-${jei_minecraft_version}:${jei_version}"
 
     implementation "curse.maven:patchouli-306770:6842247"
     implementation "curse.maven:jade-324717:7545219"
+    implementation "curse.maven:prickle-1023259:6961457"
     implementation "curse.maven:attributefix-280510:7115922"
     implementation "curse.maven:bookshelf-228525:7335846"
     implementation "curse.maven:enchantment-descriptions-250419:7039849"
@@ -117,21 +119,34 @@ dependencies {
     implementation "curse.maven:just-enough-effect-descriptions-jeed-532286:7346553"
 }
 
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
-            minecraft_version      : minecraft_version, minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version, loader_version_range   : loader_version_range,
-            mod_id                 : mod_id, mod_name               : mod_name,
-            mod_license            : mod_license, mod_version            : mod_version,
+            minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
+            neo_version         : neo_version, neo_version_range: neo_version_range,
+            loader_version_range: loader_version_range,
+            mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors         : mod_authors, mod_description: mod_description,
     ]
     inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
 }
 
-sourceSets.main.resources.srcDir generateModMetadata
-neoForge.ideSyncTask generateModMetadata
+jar {
+    manifest {
+        attributes([
+                'Specification-Title'     : "${mod_id}",
+                'Specification-Vendor'    : "xiaoyue",
+                'Specification-Version'   : '1', // We are version 1 of ourselves
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : "xiaoyue",
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'MixinConfigs'            : "${mod_id}.mixins.json"
+        ])
+    }
+}
 
 publishing {
     publications {
