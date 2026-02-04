@@ -21,7 +21,7 @@ public class CelestialBowItem extends BowItem {
         super(pProperties);
     }
 
-    public float getDrawSpeed(LivingEntity user, ItemStack bow) {
+    public float getPullTime(LivingEntity user, ItemStack bow) {
         return 1.0f;
     }
 
@@ -75,7 +75,7 @@ public class CelestialBowItem extends BowItem {
     }
 
     public float getPullForTime(LivingEntity user, ItemStack bow, float time) {
-        float actual = this.getDrawSpeed(user, bow) * 20.0F;
+        float actual = this.getPullTime(user, bow) * 20.0F;
         float f = time / actual * 1.5F;
         return Math.min(1.0F, f);
     }

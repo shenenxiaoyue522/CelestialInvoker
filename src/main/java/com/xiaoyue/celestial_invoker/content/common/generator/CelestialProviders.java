@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.ancillary.generator;
+package com.xiaoyue.celestial_invoker.content.common.generator;
 
 import com.tterrag.registrate.providers.ProviderType;
 

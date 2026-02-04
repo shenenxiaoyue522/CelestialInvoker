@@ -3,7 +3,7 @@ package com.xiaoyue.celestial_invoker.invoker.tooltip;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.RegistrateDistExecutor;
-import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
+import com.xiaoyue.celestial_invoker.content.common.SimpleInvoker;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;

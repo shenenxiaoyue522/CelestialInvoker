@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.builder;
+package com.xiaoyue.celestial_invoker.content.common;
 
 import com.xiaoyue.celestial_invoker.content.entities.GenericArrowEntity;
 import net.minecraft.world.entity.Entity;
@@ -7,7 +7,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public class ArrowDataBuilder {
+public class ArrowContext {
 
     public double damage = 2.0;
     public byte pierce = 0;
@@ -16,37 +16,37 @@ public class ArrowDataBuilder {
     public BiConsumer<GenericArrowEntity, Entity> hitEntity;
     public BiConsumer<GenericArrowEntity, BlockHitResult> hitBlock;
 
-    public ArrowDataBuilder damage(double damage) {
+    public ArrowContext damage(double damage) {
         this.damage = damage;
         return this;
     }
 
-    public ArrowDataBuilder pierce(byte pierce) {
+    public ArrowContext pierce(byte pierce) {
         this.pierce = pierce;
         return this;
     }
 
-    public ArrowDataBuilder ignoreWater() {
+    public ArrowContext ignoreWater() {
         this.ignoreWater = true;
         return this;
     }
 
-    public ArrowDataBuilder ignoreGravity() {
+    public ArrowContext ignoreGravity() {
         this.ignoreGravity = true;
         return this;
     }
 
-    public ArrowDataBuilder onTick(Consumer<GenericArrowEntity> onTick) {
+    public ArrowContext onTick(Consumer<GenericArrowEntity> onTick) {
         this.onTick = onTick;
         return this;
     }
 
-    public ArrowDataBuilder hitEntity(BiConsumer<GenericArrowEntity, Entity> hitEntity) {
+    public ArrowContext hitEntity(BiConsumer<GenericArrowEntity, Entity> hitEntity) {
         this.hitEntity = hitEntity;
         return this;
     }
 
-    public ArrowDataBuilder hitBlock(BiConsumer<GenericArrowEntity, BlockHitResult> hitBlock) {
+    public ArrowContext hitBlock(BiConsumer<GenericArrowEntity, BlockHitResult> hitBlock) {
         this.hitBlock = hitBlock;
         return this;
     }

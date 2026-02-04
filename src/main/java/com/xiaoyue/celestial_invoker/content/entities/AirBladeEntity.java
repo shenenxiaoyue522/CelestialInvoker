@@ -1,12 +1,13 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
-import com.xiaoyue.celestial_invoker.content.ancillary.BindingHandler;
-import com.xiaoyue.celestial_invoker.content.ancillary.helper.NBTSerialHelper;
+import com.xiaoyue.celestial_invoker.content.common.Bindings;
+import com.xiaoyue.celestial_invoker.content.common.helper.NBTSerialHelper;
 import com.xiaoyue.celestial_invoker.content.generic.item.api.IAirBladeUser;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -22,8 +23,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 
-public class AirBladeEntity extends ThrowableProjectile {
+public class AirBladeEntity extends ThrowableProjectile implements IEntityWithComplexSpawn {
 
     public float damage = 2f;
     public int life = 100;
@@ -90,7 +92,7 @@ public class AirBladeEntity extends ThrowableProjectile {
             if (stack.getItem() instanceof IAirBladeUser user) {
                 source = user.getSource(this, owner);
             } else {
-                source = new DamageSource(BindingHandler.getDamageSource(level(), DamageTypes.MOB_PROJECTILE), owner, this);
+                source = new DamageSource(Bindings.getDamageSource(level(), DamageTypes.MOB_PROJECTILE), owner, this);
             }
             float dmg = damage;
             if (stack.getItem() instanceof IAirBladeUser user) {
@@ -152,5 +154,15 @@ public class AirBladeEntity extends ThrowableProjectile {
         Vec3 vec3 = user.getDeltaMovement();
         if (vec3.length() < v * 0.75) return;
         this.setDeltaMovement(this.getDeltaMovement().add(vec3.x, user.onGround() ? 0.0 : vec3.y, vec3.z));
+    }
+
+    @Override
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
+        ItemStack.OPTIONAL_STREAM_CODEC.encode(buffer, stack);
+    }
+
+    @Override
+    public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
+        stack = ItemStack.OPTIONAL_STREAM_CODEC.decode(additionalData);
     }
 }

@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.simple;
+package com.xiaoyue.celestial_invoker.content.common;
 
 import com.xiaoyue.celestial_invoker.invoker.handler.ForceLoadClass;
 import net.neoforged.fml.ModContainer;

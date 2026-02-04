@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.ancillary.helper.breaker;
+package com.xiaoyue.celestial_invoker.content.common.helper.breaker;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

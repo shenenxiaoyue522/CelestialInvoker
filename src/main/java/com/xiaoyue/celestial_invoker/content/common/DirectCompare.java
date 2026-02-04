@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.simple;
+package com.xiaoyue.celestial_invoker.content.common;
 
 import java.util.Comparator;
 import java.util.function.BiFunction;

@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.invoker.config;
 
-import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
-import com.xiaoyue.celestial_invoker.simple.StringCaser;
+import com.xiaoyue.celestial_invoker.content.common.SimpleInvoker;
+import com.xiaoyue.celestial_invoker.content.common.helper.StringCaser;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;

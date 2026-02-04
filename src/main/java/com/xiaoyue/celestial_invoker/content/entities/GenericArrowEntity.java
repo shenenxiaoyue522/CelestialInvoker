@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
-import com.xiaoyue.celestial_invoker.content.ancillary.helper.NBTSerialHelper;
-import com.xiaoyue.celestial_invoker.content.generic.builder.ArrowDataBuilder;
+import com.xiaoyue.celestial_invoker.content.common.ArrowContext;
+import com.xiaoyue.celestial_invoker.content.common.helper.NBTSerialHelper;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -17,29 +17,29 @@ import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 public class GenericArrowEntity extends AbstractArrow implements IEntityWithComplexSpawn {
 
     public ItemStack bow, arrow = ItemStack.EMPTY;
-    public ArrowDataBuilder builder = null;
+    public ArrowContext context = null;
 
     public GenericArrowEntity(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public GenericArrowEntity(LivingEntity shooter, Level pLevel, ItemStack arrow, ItemStack bow, ArrowDataBuilder builder) {
+    public GenericArrowEntity(LivingEntity shooter, Level pLevel, ItemStack arrow, ItemStack bow, ArrowContext context) {
         super(CIEntities.GENERIC_ARROW.get(), shooter, pLevel, arrow, bow);
         this.arrow = arrow;
         this.bow = bow;
-        this.builder = builder;
+        this.context = context;
         setData();
     }
 
     private void setData() {
-        if (builder != null) {
-            this.setBaseDamage(builder.damage);
-            this.setPierceLevel(builder.pierce);
+        if (context != null) {
+            this.setBaseDamage(context.damage);
+            this.setPierceLevel(context.pierce);
         }
     }
 
-    public void setBuilder(ArrowDataBuilder builder) {
-        this.builder = builder;
+    public void setContext(ArrowContext context) {
+        this.context = context;
     }
 
     @Override
@@ -54,35 +54,35 @@ public class GenericArrowEntity extends AbstractArrow implements IEntityWithComp
 
     @Override
     protected float getWaterInertia() {
-        return builder != null && builder.ignoreWater ? 0.99f : 0.6f;
+        return context != null && context.ignoreWater ? 0.99f : 0.6f;
     }
 
     @Override
     public boolean isNoGravity() {
-        return builder != null && builder.ignoreGravity;
+        return context != null && context.ignoreGravity;
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (builder != null && builder.onTick != null) {
-            builder.onTick.accept(this);
+        if (context != null && context.onTick != null) {
+            context.onTick.accept(this);
         }
     }
 
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
-        if (builder != null && builder.hitEntity != null) {
-            builder.hitEntity.accept(this, pResult.getEntity());
+        if (context != null && context.hitEntity != null) {
+            context.hitEntity.accept(this, pResult.getEntity());
         }
     }
 
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
-        if (builder != null && builder.hitBlock != null) {
-            builder.hitBlock.accept(this, pResult);
+        if (context != null && context.hitBlock != null) {
+            context.hitBlock.accept(this, pResult);
         }
     }
 

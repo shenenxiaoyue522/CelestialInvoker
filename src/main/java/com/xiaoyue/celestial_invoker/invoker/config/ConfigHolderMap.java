@@ -3,9 +3,9 @@ package com.xiaoyue.celestial_invoker.invoker.config;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.RegistrateDistExecutor;
-import com.xiaoyue.celestial_invoker.simple.DirectCompare;
-import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
-import com.xiaoyue.celestial_invoker.simple.StringCaser;
+import com.xiaoyue.celestial_invoker.content.common.DirectCompare;
+import com.xiaoyue.celestial_invoker.content.common.SimpleInvoker;
+import com.xiaoyue.celestial_invoker.content.common.helper.StringCaser;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 public class ConfigHolderMap {
 
-    private final Map<ModConfig.Type, List<Function<ModConfigSpec.Builder, ?>>> extraConfigs = new HashMap<>();
+    private final Map<ModConfig.Type, List<Function<ModConfigSpec.Builder, ?>>> EXTRA_CONFIGS = new HashMap<>();
 
     private Map<String, Map<String, ConfigHolder<?>>> COMMON_MAP = new TreeMap<>();
     private Map<String, Map<String, ConfigHolder<?>>> SERVER_MAP = new TreeMap<>();
@@ -51,8 +51,8 @@ public class ConfigHolderMap {
         String title = SimpleInvoker.getActiveModId() + ".configuration.";
         TITLE_MAP.put(title + "title", StringCaser.caseSpaceCapitalize(title));
         this.applyConfig(type, builder, title);
-        if (!extraConfigs.isEmpty()) {
-            extraConfigs.forEach((extraType, func) -> {
+        if (!EXTRA_CONFIGS.isEmpty()) {
+            EXTRA_CONFIGS.forEach((extraType, func) -> {
                 if (extraType.equals(type)) func.forEach(builder::configure);
             });
         }
@@ -66,7 +66,7 @@ public class ConfigHolderMap {
 
     @SafeVarargs
     public final ConfigHolderMap addExtra(ModConfig.Type type, Function<ModConfigSpec.Builder, ?>... extraConfig) {
-        this.extraConfigs.put(type, Arrays.stream(extraConfig).toList());
+        this.EXTRA_CONFIGS.put(type, Arrays.stream(extraConfig).toList());
         return this;
     }
 

@@ -1,8 +1,8 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.google.common.collect.Lists;
-import com.xiaoyue.celestial_invoker.content.ancillary.BindingHandler;
-import com.xiaoyue.celestial_invoker.content.ancillary.helper.NBTSerialHelper;
+import com.xiaoyue.celestial_invoker.content.common.Bindings;
+import com.xiaoyue.celestial_invoker.content.common.helper.NBTSerialHelper;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -37,7 +37,7 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
         super(pEntityType, pShooter, pLevel, stack, stack);
         this.weapon = stack;
         this.foil = stack.hasFoil();
-        this.loyalty = BindingHandler.getEnchantmentLv(stack, Enchantments.LOYALTY);
+        this.loyalty = Bindings.getEnchantmentLv(stack, Enchantments.LOYALTY);
     }
 
     protected SimpleThrowEntity(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
