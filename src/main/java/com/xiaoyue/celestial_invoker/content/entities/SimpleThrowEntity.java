@@ -2,7 +2,6 @@ package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.google.common.collect.Lists;
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
-import com.xiaoyue.celestial_invoker.content.common.helper.NBTSerialHelper;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -189,17 +188,17 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        NBTSerialHelper.save(tag, "Weapon", weapon);
-        NBTSerialHelper.save(tag, "Foil", foil);
-        NBTSerialHelper.save(tag, "Loyalty", loyalty);
+        tag.put("Item", weapon.save(registryAccess(), tag));
+        tag.putBoolean("Foil", foil);
+        tag.putInt("Loyalty", loyalty);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        weapon = NBTSerialHelper.loadOrDefault(tag, "Weapon", ItemStack.class, ItemStack.EMPTY);
-        foil = NBTSerialHelper.loadOrDefault(tag, "Weapon", Boolean.class, false);
-        loyalty = NBTSerialHelper.loadOrDefault(tag, "Weapon", Integer.class, 0);
+        weapon = ItemStack.parse(registryAccess(), tag.getCompound("Item")).orElse(ItemStack.EMPTY);
+        foil = tag.getBoolean("Foil");
+        loyalty = tag.getInt("Loyalty");
     }
 
     @Override

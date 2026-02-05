@@ -5,7 +5,7 @@ import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.RegistrateDistExecutor;
 import com.xiaoyue.celestial_invoker.content.common.DirectCompare;
 import com.xiaoyue.celestial_invoker.content.common.SimpleInvoker;
-import com.xiaoyue.celestial_invoker.content.common.helper.StringCaser;
+import com.xiaoyue.celestial_invoker.content.common.helper.StringHelper;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
@@ -49,7 +49,7 @@ public class ConfigHolderMap {
     public ConfigPath initConfigs(ModConfig.Type type, String fileName) {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
         String title = SimpleInvoker.getActiveModId() + ".configuration.";
-        TITLE_MAP.put(title + "title", StringCaser.caseSpaceCapitalize(title));
+        TITLE_MAP.put(title + "title", StringHelper.caseSpaceCapitalize(title));
         this.applyConfig(type, builder, title);
         if (!EXTRA_CONFIGS.isEmpty()) {
             EXTRA_CONFIGS.forEach((extraType, func) -> {

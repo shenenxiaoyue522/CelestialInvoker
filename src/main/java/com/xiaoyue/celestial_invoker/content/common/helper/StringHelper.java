@@ -3,7 +3,7 @@ package com.xiaoyue.celestial_invoker.content.common.helper;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StringCaser {
+public class StringHelper {
 
     public static String toCamelCase(String input) {
         Pattern pattern = Pattern.compile("[\\s']+");

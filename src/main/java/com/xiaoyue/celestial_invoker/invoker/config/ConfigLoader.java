@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.invoker.config;
 
 import com.xiaoyue.celestial_invoker.content.common.SimpleInvoker;
-import com.xiaoyue.celestial_invoker.content.common.helper.StringCaser;
+import com.xiaoyue.celestial_invoker.content.common.helper.StringHelper;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
@@ -13,11 +13,11 @@ public class ConfigLoader {
 
     public static String getConfigTypeText(ModConfig.Type type) {
         String modId = SimpleInvoker.getActiveModId();
-        return StringCaser.caseSpaceCapitalize(modId + "." + type.extension() + ".configuration");
+        return StringHelper.caseSpaceCapitalize(modId + "." + type.extension() + ".configuration");
     }
 
     public static String getSpaceCaseModId() {
-        return StringCaser.caseSpaceCapitalize(SimpleInvoker.getActiveModId());
+        return StringHelper.caseSpaceCapitalize(SimpleInvoker.getActiveModId());
     }
 
     public static String getConfigName(ModConfig.Type type) {

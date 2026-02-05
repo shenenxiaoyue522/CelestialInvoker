@@ -1,7 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
-import com.xiaoyue.celestial_invoker.content.common.helper.NBTSerialHelper;
 import com.xiaoyue.celestial_invoker.content.generic.item.api.IAirBladeUser;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import net.minecraft.core.particles.ParticleOptions;
@@ -132,17 +131,17 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityWithCo
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        NBTSerialHelper.saveItem(stack, registryAccess(), tag);
-        NBTSerialHelper.save(tag, "Damage", damage);
-        NBTSerialHelper.save(tag, "ZRot", zRot);
+        tag.put("Item", stack.save(registryAccess(), tag));
+        tag.putFloat("Damage", damage);
+        tag.putFloat("ZRot", zRot);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        stack = NBTSerialHelper.loadItem(registryAccess(), tag);
-        damage = NBTSerialHelper.loadOrDefault(tag, "Damage", Float.class, 2f);
-        zRot = NBTSerialHelper.loadOrDefault(tag, "ZRot", Float.class, 0f);
+        stack = ItemStack.parse(registryAccess(), tag.getCompound("Item")).orElse(ItemStack.EMPTY);
+        damage = tag.getFloat("Damage");
+        zRot = tag.getFloat("ZRot");
     }
 
     @Override

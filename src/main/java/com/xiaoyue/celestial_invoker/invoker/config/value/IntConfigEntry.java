@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.invoker.config.value;
 
-import com.xiaoyue.celestial_invoker.content.common.helper.StringCaser;
+import com.xiaoyue.celestial_invoker.content.common.helper.StringHelper;
 import com.xiaoyue.celestial_invoker.invoker.config.ConfigHolder;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -18,7 +18,7 @@ public class IntConfigEntry extends ConfigHolder<ModConfigSpec.IntValue> {
     }
 
     public static IntConfigEntry define(String name, int value, int min, int max, String... text) {
-        return new IntConfigEntry(StringCaser.toCamelCase(name), name, value, min, max, text);
+        return new IntConfigEntry(StringHelper.toCamelCase(name), name, value, min, max, text);
     }
 
     public static IntConfigEntry defineInMaxRange(String name, int value, String... text) {

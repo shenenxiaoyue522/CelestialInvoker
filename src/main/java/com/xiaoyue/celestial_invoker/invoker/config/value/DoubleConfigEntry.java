@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.invoker.config.value;
 
-import com.xiaoyue.celestial_invoker.content.common.helper.StringCaser;
+import com.xiaoyue.celestial_invoker.content.common.helper.StringHelper;
 import com.xiaoyue.celestial_invoker.invoker.config.ConfigHolder;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -18,7 +18,7 @@ public class DoubleConfigEntry extends ConfigHolder<ModConfigSpec.DoubleValue> {
     }
 
     public static DoubleConfigEntry define(String name, double value, double min, double max, String... text) {
-        return new DoubleConfigEntry(StringCaser.toCamelCase(name), name, value, min, max, text);
+        return new DoubleConfigEntry(StringHelper.toCamelCase(name), name, value, min, max, text);
     }
 
     public static DoubleConfigEntry defineSmallRange(String name, double value, String... text) {
