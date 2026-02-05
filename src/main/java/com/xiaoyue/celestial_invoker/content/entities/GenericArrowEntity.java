@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
-import com.xiaoyue.celestial_invoker.content.common.ArrowContext;
+import com.xiaoyue.celestial_invoker.content.common.ArrowDataHolder;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -16,29 +16,29 @@ import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 public class GenericArrowEntity extends AbstractArrow implements IEntityWithComplexSpawn {
 
     public ItemStack bow, arrow = ItemStack.EMPTY;
-    public ArrowContext context = null;
+    public ArrowDataHolder holder = null;
 
     public GenericArrowEntity(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public GenericArrowEntity(LivingEntity shooter, Level pLevel, ItemStack arrow, ItemStack bow, ArrowContext context) {
+    public GenericArrowEntity(LivingEntity shooter, Level pLevel, ItemStack arrow, ItemStack bow, ArrowDataHolder holder) {
         super(CIEntities.GENERIC_ARROW.get(), shooter, pLevel, arrow, bow);
         this.arrow = arrow;
         this.bow = bow;
-        this.context = context;
+        this.holder = holder;
         setData();
     }
 
     private void setData() {
-        if (context != null) {
-            this.setBaseDamage(context.damage);
-            this.setPierceLevel(context.pierce);
+        if (holder != null) {
+            this.setBaseDamage(holder.damage);
+            this.setPierceLevel(holder.pierce);
         }
     }
 
-    public void setContext(ArrowContext context) {
-        this.context = context;
+    public void setHolder(ArrowDataHolder holder) {
+        this.holder = holder;
     }
 
     @Override
@@ -53,35 +53,35 @@ public class GenericArrowEntity extends AbstractArrow implements IEntityWithComp
 
     @Override
     protected float getWaterInertia() {
-        return context != null && context.ignoreWater ? 0.99f : 0.6f;
+        return holder != null && holder.ignoreWater ? 0.99f : 0.6f;
     }
 
     @Override
     public boolean isNoGravity() {
-        return context != null && context.ignoreGravity;
+        return holder != null && holder.ignoreGravity;
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (context != null && context.onTick != null) {
-            context.onTick.accept(this);
+        if (holder != null && holder.onTick != null) {
+            holder.onTick.accept(this);
         }
     }
 
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
-        if (context != null && context.hitEntity != null) {
-            context.hitEntity.accept(this, pResult.getEntity());
+        if (holder != null && holder.hitEntity != null) {
+            holder.hitEntity.accept(this, pResult.getEntity());
         }
     }
 
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
-        if (context != null && context.hitBlock != null) {
-            context.hitBlock.accept(this, pResult);
+        if (holder != null && holder.hitBlock != null) {
+            holder.hitBlock.accept(this, pResult);
         }
     }
 

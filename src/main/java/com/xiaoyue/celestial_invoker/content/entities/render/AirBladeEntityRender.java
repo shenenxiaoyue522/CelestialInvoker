@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
 import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntity;
-import com.xiaoyue.celestial_invoker.content.generic.item.api.IAirBladeUser;
+import com.xiaoyue.celestial_invoker.content.items.api.IAirBladeUser;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -17,7 +17,7 @@ import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 
 public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
-    public static final ResourceLocation DEF_TEXTURE = CelestialInvoker.loc("textures/entity/air_blade.png");
+    public static final ResourceLocation DEFAULT_TEXTURE = CelestialInvoker.loc("textures/entity/air_blade.png");
 
     public AirBladeEntityRender(EntityRendererProvider.Context pContext) {
         super(pContext);
@@ -59,6 +59,6 @@ public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(AirBladeEntity blade) {
-        return blade.stack.getItem() instanceof IAirBladeUser user ? user.getTexture(blade) : DEF_TEXTURE;
+        return blade.stack.getItem() instanceof IAirBladeUser user ? user.getTexture(blade) : DEFAULT_TEXTURE;
     }
 }

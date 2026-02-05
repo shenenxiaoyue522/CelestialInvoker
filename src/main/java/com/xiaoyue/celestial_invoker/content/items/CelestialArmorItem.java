@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.item;
+package com.xiaoyue.celestial_invoker.content.items;
 
 import com.xiaoyue.celestial_invoker.invoker.tooltip.SubscribeTooltip;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipEntry;

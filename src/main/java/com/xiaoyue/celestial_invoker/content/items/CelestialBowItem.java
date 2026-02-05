@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.item;
+package com.xiaoyue.celestial_invoker.content.items;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;

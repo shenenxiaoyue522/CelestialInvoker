@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.shared;
+package com.xiaoyue.celestial_invoker.content.shared;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;

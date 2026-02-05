@@ -78,5 +78,4 @@ public class ItemModelHelper {
                 .override().predicate(ResourceLocation.withDefaultNamespace("using"), 1f)
                 .model(pvd.getExistingFile(ResourceLocation.fromNamespaceAndPath(namespace, path + "_using")));
     }
-
 }

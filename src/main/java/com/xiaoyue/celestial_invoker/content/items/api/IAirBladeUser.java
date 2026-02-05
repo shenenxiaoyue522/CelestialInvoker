@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.item.api;
+package com.xiaoyue.celestial_invoker.content.items.api;
 
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntity;
@@ -39,6 +39,6 @@ public interface IAirBladeUser {
     }
 
     default ResourceLocation getTexture(AirBladeEntity blade) {
-        return AirBladeEntityRender.DEF_TEXTURE;
+        return AirBladeEntityRender.DEFAULT_TEXTURE;
     }
 }

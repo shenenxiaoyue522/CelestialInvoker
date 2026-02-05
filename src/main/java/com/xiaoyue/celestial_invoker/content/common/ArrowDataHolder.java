@@ -7,7 +7,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public class ArrowContext {
+public class ArrowDataHolder {
 
     public double damage = 2.0;
     public byte pierce = 0;
@@ -16,37 +16,37 @@ public class ArrowContext {
     public BiConsumer<GenericArrowEntity, Entity> hitEntity;
     public BiConsumer<GenericArrowEntity, BlockHitResult> hitBlock;
 
-    public ArrowContext damage(double damage) {
+    public ArrowDataHolder damage(double damage) {
         this.damage = damage;
         return this;
     }
 
-    public ArrowContext pierce(byte pierce) {
+    public ArrowDataHolder pierce(byte pierce) {
         this.pierce = pierce;
         return this;
     }
 
-    public ArrowContext ignoreWater() {
+    public ArrowDataHolder ignoreWater() {
         this.ignoreWater = true;
         return this;
     }
 
-    public ArrowContext ignoreGravity() {
+    public ArrowDataHolder ignoreGravity() {
         this.ignoreGravity = true;
         return this;
     }
 
-    public ArrowContext onTick(Consumer<GenericArrowEntity> onTick) {
+    public ArrowDataHolder onTick(Consumer<GenericArrowEntity> onTick) {
         this.onTick = onTick;
         return this;
     }
 
-    public ArrowContext hitEntity(BiConsumer<GenericArrowEntity, Entity> hitEntity) {
+    public ArrowDataHolder hitEntity(BiConsumer<GenericArrowEntity, Entity> hitEntity) {
         this.hitEntity = hitEntity;
         return this;
     }
 
-    public ArrowContext hitBlock(BiConsumer<GenericArrowEntity, BlockHitResult> hitBlock) {
+    public ArrowDataHolder hitBlock(BiConsumer<GenericArrowEntity, BlockHitResult> hitBlock) {
         this.hitBlock = hitBlock;
         return this;
     }
