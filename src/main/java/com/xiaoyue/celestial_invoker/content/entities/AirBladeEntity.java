@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
-import com.xiaoyue.celestial_invoker.content.items.api.IAirBladeUser;
+import com.xiaoyue.celestial_invoker.content.generic.items.api.IAirBladeUser;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;

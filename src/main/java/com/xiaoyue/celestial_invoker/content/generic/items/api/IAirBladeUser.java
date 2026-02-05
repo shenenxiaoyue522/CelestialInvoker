@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.items.api;
+package com.xiaoyue.celestial_invoker.content.generic.items.api;
 
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntity;

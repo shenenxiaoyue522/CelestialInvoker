@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.shared;
+package com.xiaoyue.celestial_invoker.content.generic.shared;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
