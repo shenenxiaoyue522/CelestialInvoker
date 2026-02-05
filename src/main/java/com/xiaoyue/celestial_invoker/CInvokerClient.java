@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker;
 
+import com.xiaoyue.celestial_invoker.content.ancillary.helper.ItemBarHelper;
 import com.xiaoyue.celestial_invoker.content.client.HudOverlayHandler;
-import com.xiaoyue.celestial_invoker.content.client.ItemDecorationHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterItemDecorationsEvent;
@@ -26,7 +26,7 @@ public class CInvokerClient {
 
     @SubscribeEvent
     public static void initItemDecor(RegisterItemDecorationsEvent event) {
-        ForgeRegistries.ITEMS.getValues().forEach(item -> event.register(item, new ItemDecorationHandler()));
+        ForgeRegistries.ITEMS.getValues().forEach(item -> event.register(item, new ItemBarHelper()));
     }
 
 }

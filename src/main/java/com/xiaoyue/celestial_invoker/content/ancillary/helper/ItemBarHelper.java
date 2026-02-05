@@ -1,35 +1,11 @@
-package com.xiaoyue.celestial_invoker.content.client;
+package com.xiaoyue.celestial_invoker.content.ancillary.helper;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.xiaoyue.celestial_invoker.content.ancillary.ItemCooldownTracker;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemDecorator;
 
-@OnlyIn(value = Dist.CLIENT)
-public class ItemDecorationHandler implements IItemDecorator {
-
-    @Override
-    public boolean render(GuiGraphics graphics, Font font, ItemStack stack, int x, int y) {
-        if (!stack.isEmpty()) {
-            float f = ItemCooldownTracker.getCooldownPercent(stack);
-            if (f > 0.0f) {
-                int i1 = y + Mth.floor(16.0F * (1.0F - f));
-                int j1 = i1 + Mth.ceil(16.0F * f);
-                graphics.fill(RenderType.guiOverlay(), x, i1, x + 16, j1, ItemCooldownTracker.getCooldownColor(stack));
-            }
-        }
-        if (stack.getItem() instanceof Factory factory) {
-            factory.addCustomDecoration(graphics, font, stack, x, y);
-        }
-        return false;
-    }
+public class ItemBarHelper {
 
     public static float getPercent(float current, float max) {
         return current / max;
@@ -99,9 +75,5 @@ public class ItemDecorationHandler implements IItemDecorator {
     public enum BarDirection {
         LEFT_TO_RIGHT,
         BOTTOM_TO_TOP
-    }
-
-    public interface Factory {
-        void addCustomDecoration(GuiGraphics graphics, Font font, ItemStack stack, int x, int y);
     }
 }

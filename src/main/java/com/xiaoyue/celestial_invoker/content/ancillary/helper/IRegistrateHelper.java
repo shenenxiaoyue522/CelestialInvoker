@@ -3,27 +3,18 @@ package com.xiaoyue.celestial_invoker.content.ancillary.helper;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.builders.NoConfigBuilder;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
-import com.tterrag.registrate.util.OneTimeEventReceiver;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import com.xiaoyue.celestial_invoker.content.ancillary.BindingHandler;
 import com.xiaoyue.celestial_invoker.content.ancillary.CelestialRegistrate;
 import com.xiaoyue.celestial_invoker.content.ancillary.entry.MetalItemEntry;
-import com.xiaoyue.celestial_invoker.content.generator.CelestialProviders;
-import com.xiaoyue.celestial_invoker.content.generator.RegistrateParticleTexProvider;
 import dev.xkmc.l2library.base.L2Registrate;
-import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.Registry;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
@@ -36,9 +27,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.SoundDefinition;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
@@ -70,25 +59,6 @@ public interface IRegistrateHelper<R extends L2Registrate> {
 
     default <T extends Recipe<?>> RegistryEntry<RecipeSerializer<T>> recipeSerial(String name, NonNullSupplier<RecipeSerializer<T>> sup) {
         return owner().simple(this, name, ForgeRegistries.Keys.RECIPE_SERIALIZERS, sup);
-    }
-
-    default <T extends ParticleType<T> & ParticleOptions> RegistryEntry<ParticleType<T>> particleType(String name, NonNullSupplier<ParticleType<T>> sup, ParticleEngine.SpriteParticleRegistration<T> pvd, NonNullConsumer<RegistrateParticleTexProvider> cons) {
-        RegistryEntry<ParticleType<T>> entry = owner().simple(this, name, Registries.PARTICLE_TYPE, sup);
-        owner().addDataGenerator(CelestialProviders.PARTICLE_TEX, cons);
-        OneTimeEventReceiver.addModListener(owner(), RegisterParticleProvidersEvent.class, e -> e.registerSpriteSet(entry.get(), pvd));
-        return entry;
-    }
-
-    default RegistryEntry<SoundEvent> sound(String name, float range, SoundDefinition def) {
-        SoundEvent sound = SoundEvent.createFixedRangeEvent(new ResourceLocation(owner().getModid(), name), range);
-        owner().addDataGenerator(CelestialProviders.SOUND_EVENT, e -> e.add(sound, def));
-        return owner().simple(this, name, Registries.SOUND_EVENT, () -> sound);
-    }
-
-    default RegistryEntry<SoundEvent> sound(String name, SoundDefinition def) {
-        SoundEvent sound = SoundEvent.createVariableRangeEvent(new ResourceLocation(owner().getModid(), name));
-        owner().addDataGenerator(CelestialProviders.SOUND_EVENT, e -> e.add(sound, def));
-        return owner().simple(this, name, Registries.SOUND_EVENT, () -> sound);
     }
 
     default <T extends Potion> NoConfigBuilder<Potion, T, R> potion(String name, NonNullSupplier<T> sup) {

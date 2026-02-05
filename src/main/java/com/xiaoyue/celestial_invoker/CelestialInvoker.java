@@ -3,7 +3,6 @@ package com.xiaoyue.celestial_invoker;
 import com.mojang.logging.LogUtils;
 import com.xiaoyue.celestial_invoker.content.ancillary.CelestialRegistrate;
 import com.xiaoyue.celestial_invoker.content.generic.network.ClickEmptyPacket;
-import com.xiaoyue.celestial_invoker.content.generic.network.SimpleUseMenuPacket;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import dev.xkmc.l2library.serial.config.PacketHandlerWithConfig;
@@ -22,8 +21,7 @@ public class CelestialInvoker {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final CelestialRegistrate REGISTRATE = new CelestialRegistrate(MODID);
     public static final PacketHandlerWithConfig HANDLER = new PacketHandlerWithConfig(loc("main"), 2,
-            e -> e.create(ClickEmptyPacket.class, NetworkDirection.PLAY_TO_SERVER),
-            e -> e.create(SimpleUseMenuPacket.class, NetworkDirection.PLAY_TO_SERVER));
+            e -> e.create(ClickEmptyPacket.class, NetworkDirection.PLAY_TO_SERVER));
     
     public CelestialInvoker() {
         CIEntities.register();
