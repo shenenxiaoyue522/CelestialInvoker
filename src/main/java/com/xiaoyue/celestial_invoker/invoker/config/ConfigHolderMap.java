@@ -28,7 +28,7 @@ public class ConfigHolderMap {
     public final Map<String, String> TITLE_MAP = new TreeMap<>();
     public final Map<String, ConfigHolder<?>> TEXT_MAP = new TreeMap<>();
 
-    public ConfigPath configPath = null;
+    public Map<ModConfig.Type, String> configPath = new HashMap<>();
 
     public ConfigHolderMap compare(BiFunction<String, String, Integer> func) {
         this.COMMON_MAP = new TreeMap<>(new DirectCompare(func));
@@ -38,15 +38,15 @@ public class ConfigHolderMap {
         return this;
     }
 
-    public ConfigPath initCelestialConfigs(ModConfig.Type type) {
-        return this.initConfigs(type, "celestial_configs/" + ConfigLoader.getConfigName(type));
+    public void initCelestialConfigs(ModConfig.Type type) {
+        this.initConfigs(type, "celestial_configs/" + ConfigLoader.getConfigName(type));
     }
 
-    public ConfigPath initConfigs(ModConfig.Type type) {
-        return this.initConfigs(type, ConfigLoader.getConfigName(type));
+    public void initConfigs(ModConfig.Type type) {
+        this.initConfigs(type, ConfigLoader.getConfigName(type));
     }
 
-    public ConfigPath initConfigs(ModConfig.Type type, String fileName) {
+    public void initConfigs(ModConfig.Type type, String fileName) {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
         String title = SimpleInvoker.getActiveModId() + ".configuration.";
         TITLE_MAP.put(title + "title", StringHelper.caseSpaceCapitalize(title));
@@ -59,9 +59,7 @@ public class ConfigHolderMap {
         SimpleInvoker.getActiveMod().registerConfig(type, builder.build(), fileName);
         String key = title + "section." + fileName.replace("-", ".");
         TITLE_MAP.put(key, ConfigLoader.getConfigTypeText(type));
-        ConfigPath path = new ConfigPath(type, fileName);
-        this.configPath = path;
-        return path;
+        configPath.put(type, fileName);
     }
 
     @SafeVarargs
@@ -127,10 +125,5 @@ public class ConfigHolderMap {
             TITLE_MAP.forEach(pvd::add);
             addConfigDesc(pvd);
         }));
-
-    }
-
-    public record ConfigPath(ModConfig.Type type, String path) {
-
     }
 }
