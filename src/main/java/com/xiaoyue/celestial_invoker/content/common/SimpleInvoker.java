@@ -28,6 +28,11 @@ public class SimpleInvoker {
         return ModLoadingContext.get().getActiveContainer();
     }
 
+    public static ModContainer getMod(String modid) {
+        if (getActiveModId().equals(modid)) return getActiveMod();
+        return ModList.get().getModContainerById(modid).get();
+    }
+
     public static void postClassLoader(String modid, String type) {
         for (ModFileScanData.AnnotationData data : SimpleInvoker.getModAnno(modid, ForceLoadClass.class)) {
             String dataType = (String) data.annotationData().getOrDefault("type", "all");

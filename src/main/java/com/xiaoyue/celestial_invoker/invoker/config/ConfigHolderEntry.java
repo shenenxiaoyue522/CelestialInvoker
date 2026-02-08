@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 public @interface ConfigHolderEntry {
 
-    String category() default "";
+    String[] category() default "";
 
     ModConfig.Type type() default ModConfig.Type.COMMON;
 }

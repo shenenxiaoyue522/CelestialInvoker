@@ -9,8 +9,6 @@ import java.util.function.Function;
 
 public class ConfigHolder<C> {
 
-    public static final ConfigHolderMap CACHE = new ConfigHolderMap();
-
     private final String id, name, rangeText;
     private final List<String> texts = new ArrayList<>();
     private final Function<ModConfigSpec.Builder, C> action;
