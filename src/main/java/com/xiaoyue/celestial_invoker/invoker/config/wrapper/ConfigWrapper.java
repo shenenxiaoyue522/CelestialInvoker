@@ -92,7 +92,7 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
 
         private final AbstractRegistrate<?> registrate;
 
-        private String text = null;
+        private String name = null;
 
         Builder(AbstractRegistrate<?> reg) {
             this.registrate = reg;
@@ -116,15 +116,15 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
             return this;
         }
 
-        public Builder text(String text) {
-            this.text = text;
+        public Builder name(String name) {
+            this.name = name;
             return this;
         }
 
         @Override
         public <T> ModConfigSpec.ConfigValue<T> define(List<String> path, ModConfigSpec.ValueSpec value, Supplier<T> defaultSupplier) {
-            if (text == null) throw new IllegalStateException("text not specified");
-            registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast(), text);
+            if (name == null) throw new IllegalStateException("name not specified");
+            registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast(), name);
             String comment = value.getComment();
             registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast() + ".tooltip", comment == null ? "" : comment);
             return super.define(path, value, defaultSupplier);
