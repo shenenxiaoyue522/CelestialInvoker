@@ -18,6 +18,8 @@ import java.util.function.Function;
 
 public class ConfigHolderMap {
 
+    private final String modid;
+
     private final Map<ModConfig.Type, List<Function<ForgeConfigSpec.Builder, ?>>> extraConfigs = new HashMap<>();
 
     private Map<String, Map<String, ConfigHolder<?>>> COMMON_MAP = new TreeMap<>();
@@ -28,6 +30,10 @@ public class ConfigHolderMap {
     public final Map<String, ConfigHolder<?>> TEXT_MAP = new TreeMap<>();
 
     public ConfigPath configPath = null;
+
+    public ConfigHolderMap(String modid) {
+        this.modid = modid;
+    }
 
     public ConfigHolderMap compare(BiFunction<String, String, Integer> func) {
         this.COMMON_MAP = new TreeMap<>(new QuickCompare(func));
@@ -104,7 +110,7 @@ public class ConfigHolderMap {
     }
 
     public void addConfigDesc(LanguageProvider pvd) {
-        ConfigHolder.CACHE.TEXT_MAP.forEach((key, config) -> {
+        TEXT_MAP.forEach((key, config) -> {
             pvd.add(key, config.getName());
             StringBuilder finalText = new StringBuilder(config.getTexts().get(0));
             if (!config.getRangeText().isEmpty()) {

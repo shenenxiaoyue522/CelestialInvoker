@@ -38,6 +38,7 @@ public class ConfigLoader {
     }
 
     public static ConfigHolderMap mapConfig(String modid) {
+        ConfigHolderMap map = new ConfigHolderMap(modid);
         try {
             for(ModFileScanData.AnnotationData data : SimpleInvoker.getModAnno(modid, ConfigHolderEntry.class)) {
                 String category = (String) data.annotationData().getOrDefault("category", "");
@@ -48,9 +49,9 @@ public class ConfigLoader {
                 Field field = annoCls.getDeclaredField(name);
                 field.setAccessible(true);
                 ConfigHolder<?> holder = cast(field.get(null));
-                ConfigHolder.CACHE.addConfig(category, holder, type);
+               map.addConfig(category, holder, type);
             }
-            return ConfigHolder.CACHE;
+            return map;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
