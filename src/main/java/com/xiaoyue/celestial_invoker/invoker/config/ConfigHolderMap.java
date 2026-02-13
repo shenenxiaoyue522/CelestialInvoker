@@ -19,6 +19,7 @@ import java.util.TreeMap;
 public class ConfigHolderMap {
 
     private final String modid;
+    private boolean allowTitle = true;
 
     private final Map<String, Map<String, ConfigHolder<?>>> COMMON_MAP = new TreeMap<>();
     private final Map<String, Map<String, ConfigHolder<?>>> SERVER_MAP = new TreeMap<>();
@@ -34,6 +35,11 @@ public class ConfigHolderMap {
         this.modid = modid;
     }
 
+    public ConfigHolderMap noTitle() {
+        allowTitle = false;
+        return this;
+    }
+
     public ConfigHolderMap initCelestialConfigs(ModConfig.Type type) {
         return this.initConfigs(type, "celestial_configs/" + ConfigLoader.getConfigName(type, modid));
     }
@@ -42,16 +48,18 @@ public class ConfigHolderMap {
         return this.initConfigs(type, ConfigLoader.getConfigName(type, modid));
     }
 
-    public ConfigHolderMap initConfigs(ModConfig.Type type, String fileName) {
+    public ConfigHolderMap initConfigs(ModConfig.Type type, String name) {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
         String title = modid + ".configuration.";
-        TITLE_MAP.put(title + "title", StringHelper.caseSpaceCapitalize(title));
         this.applyConfig(type, builder, title);
         ModContainer mod = SimpleInvoker.getMod(modid);
-        mod.registerConfig(type, builder.build(), fileName);
-        String key = title + "section." + fileName.replaceAll("[-_/]", ".");
-        TITLE_MAP.put(key, ConfigLoader.getConfigTypeText(type, modid));
-        configPath.put(type, fileName);
+        mod.registerConfig(type, builder.build(), name);
+        String key = title + "section." + name.replaceAll("[-_/]", ".");
+        if (allowTitle) {
+            TITLE_MAP.put(title + "title", StringHelper.caseSpaceCapitalize(title));
+            TITLE_MAP.put(key, ConfigLoader.getConfigTypeText(type, modid));
+        }
+        configPath.put(type, name);
         ConfigLoader.initConfigScreen(mod);
         return this;
     }
@@ -100,19 +108,15 @@ public class ConfigHolderMap {
         TEXT_MAP.forEach((key, config) -> {
             pvd.add(key, config.getName());
             StringBuilder finalText = new StringBuilder(config.getTexts().getFirst());
-            if (!config.getRangeText().isEmpty()) {
-                config.getTexts().add(config.getRangeText());
-            }
-            if (config.getTexts().size() > 1) {
-                for (int i = 1; i < config.getTexts().size(); i++) {
-                    finalText.append("/n ").append(config.getTexts().get(i));
-                }
+            for (int i = 1; i < config.getTexts().size(); i++) {
+                finalText.append("\n ");
+                finalText.append(config.getTexts().get(i));
             }
             pvd.add(key + ".tooltip", finalText.toString());
         });
     }
 
-    public ConfigHolderMap generatorLang(AbstractRegistrate<?> registrate) {
+    public ConfigHolderMap genLang(AbstractRegistrate<?> registrate) {
         RegistrateDistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> registrate.addDataGenerator(ProviderType.LANG, pvd -> {
             TITLE_MAP.forEach(pvd::add);
             addConfigDesc(pvd);

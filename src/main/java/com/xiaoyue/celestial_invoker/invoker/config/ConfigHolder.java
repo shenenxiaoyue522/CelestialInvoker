@@ -9,24 +9,15 @@ import java.util.function.Function;
 
 public class ConfigHolder<C> {
 
-    private final String id, name, rangeText;
+    private final String id, name;
     private final List<String> texts = new ArrayList<>();
     private final Function<ModConfigSpec.Builder, C> action;
     public C entry;
-
-    public ConfigHolder(String id, String name, Function<ModConfigSpec.Builder, C> action, String rangeText, String... text) {
-        this.id = id;
-        this.name = name;
-        this.action = action;
-        this.rangeText = rangeText;
-        this.texts.addAll(Arrays.stream(text).toList());
-    }
 
     public ConfigHolder(String id, String name, Function<ModConfigSpec.Builder, C> action, String... text) {
         this.id = id;
         this.name = name;
         this.action = action;
-        this.rangeText = "";
         this.texts.addAll(Arrays.stream(text).toList());
     }
 
@@ -36,10 +27,6 @@ public class ConfigHolder<C> {
 
     public String getName() {
         return name;
-    }
-
-    public String getRangeText() {
-        return rangeText;
     }
 
     public List<String> getTexts() {

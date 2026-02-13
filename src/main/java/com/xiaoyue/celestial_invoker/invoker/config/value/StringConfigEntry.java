@@ -10,6 +10,7 @@ public class StringConfigEntry extends ConfigHolder<ModConfigSpec.ConfigValue<St
     public StringConfigEntry(String id, String name, String value, String... text) {
         super(id, name, builder -> builder.define(id, value), text);
         this.value = value;
+        getTexts().add(" Default: " + value);
     }
 
     public static StringConfigEntry define(String name, String value, String... text) {

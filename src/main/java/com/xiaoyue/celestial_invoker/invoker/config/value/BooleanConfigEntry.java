@@ -10,6 +10,7 @@ public class BooleanConfigEntry extends ConfigHolder<ModConfigSpec.BooleanValue>
     public BooleanConfigEntry(String id, String name, boolean value, String... text) {
         super(id, name, builder -> builder.define(id, value), text);
         this.value = value;
+        getTexts().add(" Default: " + value);
     }
 
     public static BooleanConfigEntry define(String name, boolean value, String... text) {

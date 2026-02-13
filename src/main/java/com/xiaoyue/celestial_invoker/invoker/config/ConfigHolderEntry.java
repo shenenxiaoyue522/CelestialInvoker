@@ -13,5 +13,5 @@ public @interface ConfigHolderEntry {
 
     String[] category() default "";
 
-    ModConfig.Type type() default ModConfig.Type.COMMON;
+    ModConfig.Type type() default ModConfig.Type.SERVER;
 }

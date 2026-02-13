@@ -2,6 +2,7 @@ package com.xiaoyue.celestial_invoker.invoker.config.value;
 
 import com.xiaoyue.celestial_invoker.content.common.helper.StringHelper;
 import com.xiaoyue.celestial_invoker.invoker.config.ConfigHolder;
+import com.xiaoyue.celestial_invoker.invoker.config.ConfigRange;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class DoubleConfigEntry extends ConfigHolder<ModConfigSpec.DoubleValue> {
@@ -11,10 +12,12 @@ public class DoubleConfigEntry extends ConfigHolder<ModConfigSpec.DoubleValue> {
     private final double max;
 
     public DoubleConfigEntry(String id, String name, double value, double min, double max, String... text) {
-        super(id, name, builder -> builder.defineInRange(id, value, min, max), "Range: " + min + " ~ " + max, text);
+        super(id, name, builder -> builder.defineInRange(id, value, min, max), text);
         this.value = value;
         this.min = min;
         this.max = max;
+        getTexts().add(" Default: " + value);
+        getTexts().add(new ConfigRange<>(Double.class, min, max).toString());
     }
 
     public static DoubleConfigEntry define(String name, double value, double min, double max, String... text) {

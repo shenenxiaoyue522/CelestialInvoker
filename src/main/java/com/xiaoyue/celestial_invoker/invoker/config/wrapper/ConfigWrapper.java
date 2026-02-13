@@ -41,7 +41,7 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
         return path;
     }
 
-    public void celestialFile() {
+    public void setCelestial() {
         file("celestial_configs/");
     }
 
@@ -55,6 +55,22 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
         var spec = builder.build();
         register(registrate, type, spec, ans);
         return ans;
+    }
+
+    public static <T extends ConfigWrapper> T registerServer(AbstractRegistrate<?> registrate, Function<Builder, T> factory) {
+        return register(registrate, ModConfig.Type.SERVER, factory);
+    }
+
+    public static <T extends ConfigWrapper> T registerClient(AbstractRegistrate<?> registrate, Function<Builder, T> factory) {
+        return register(registrate, ModConfig.Type.CLIENT, factory);
+    }
+
+    public static <T extends ConfigWrapper> T registerCommon(AbstractRegistrate<?> registrate, Function<Builder, T> factory) {
+        return register(registrate, ModConfig.Type.COMMON, factory);
+    }
+
+    public static <T extends ConfigWrapper> T registerStartup(AbstractRegistrate<?> registrate, Function<Builder, T> factory) {
+        return register(registrate, ModConfig.Type.STARTUP, factory);
     }
 
     private static void register(AbstractRegistrate<?> registrate, ModConfig.Type type, IConfigSpec spec, ConfigWrapper wrapper) {

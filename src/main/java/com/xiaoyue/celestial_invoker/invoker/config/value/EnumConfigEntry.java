@@ -10,6 +10,7 @@ public class EnumConfigEntry<T extends Enum<T>> extends ConfigHolder<ModConfigSp
     public EnumConfigEntry(String id, String name, T value, String... text) {
         super(id, name, builder -> builder.defineEnum(id, value), text);
         this.value = value;
+        getTexts().add(" Default: " + value);
     }
 
     public static <T extends Enum<T>> EnumConfigEntry<T> define(String name, T value, String... text) {
