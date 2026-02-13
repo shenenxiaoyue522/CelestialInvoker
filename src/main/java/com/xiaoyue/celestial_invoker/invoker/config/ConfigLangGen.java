@@ -4,13 +4,16 @@ import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 
 public class ConfigLangGen extends LanguageProvider {
-    public ConfigLangGen(PackOutput output, String modid) {
+    public final ConfigHolderMap map;
+
+    public ConfigLangGen(PackOutput output, String modid, ConfigHolderMap map) {
         super(output, modid, "en_us");
+        this.map = map;
     }
 
     protected void addTranslations() {
-        ConfigHolder.CACHE.TITLE_MAP.forEach(this::add);
-        ConfigHolder.CACHE.addConfigDesc(this);
+        map.TITLE_MAP.forEach(this::add);
+        map.addConfigDesc(this);
         addNewTranslations();
     }
 
