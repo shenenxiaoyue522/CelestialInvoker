@@ -41,12 +41,12 @@ public interface IRegistrateHelper<R extends AbstractRegistrate<R>> {
                 RegistrateLangProvider.toEnglishName(owner().getModid() + "_" + name);
     }
 
-    default RegistryEntry<CreativeModeTab, CreativeModeTab> buildModNameCreativeTab(Consumer<CreativeModeTab.Builder> config) {
-        return buildModCreativeTab("tab", getTabName("tab"), config);
+    default RegistryEntry<CreativeModeTab, CreativeModeTab> modNameCreativeTab(Consumer<CreativeModeTab.Builder> config) {
+        return CreativeTab("tab", getTabName("tab"), config);
     }
 
-    default RegistryEntry<CreativeModeTab, CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
-        return buildModCreativeTab(name, getTabName(name), config);
+    default RegistryEntry<CreativeModeTab, CreativeModeTab> creativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
+        return CreativeTab(name, getTabName(name), config);
     }
 
     default <T extends Item> ItemEntry<T> armor(String name, String path, ArmorItem.Type type, NonNullFunction<Item.Properties, T> item) {
@@ -92,13 +92,13 @@ public interface IRegistrateHelper<R extends AbstractRegistrate<R>> {
                 .item().build().register();
     }
 
-    default RegistryEntry<CreativeModeTab, CreativeModeTab> buildModCreativeTab(String name, String text, Consumer<CreativeModeTab.Builder> config) {
+    default RegistryEntry<CreativeModeTab, CreativeModeTab> CreativeTab(String name, String text, Consumer<CreativeModeTab.Builder> config) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(owner().getModid(), name);
         owner().defaultCreativeTab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, id));
-        return this.buildCreativeTabImpl(name, owner().addLang("itemGroup", id, text), config);
+        return this.creativeTabImpl(name, owner().addLang("itemGroup", id, text), config);
     }
 
-    default RegistryEntry<CreativeModeTab, CreativeModeTab> buildCreativeTabImpl(String name, Component comp, Consumer<CreativeModeTab.Builder> config) {
+    default RegistryEntry<CreativeModeTab, CreativeModeTab> creativeTabImpl(String name, Component comp, Consumer<CreativeModeTab.Builder> config) {
         return owner().generic(owner(), name, Registries.CREATIVE_MODE_TAB, () -> {
             CreativeModeTab.Builder builder = CreativeModeTab.builder().title(comp).withTabsBefore(CreativeModeTabs.SPAWN_EGGS);
             config.accept(builder);
