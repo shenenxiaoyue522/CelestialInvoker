@@ -4,7 +4,7 @@ import com.google.common.collect.Multimap;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.xiaoyue.celestial_invoker.content.ancillary.BindingHandler;
+import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.simple.ItemAccessor;
 import dev.xkmc.l2damagetracker.contents.curios.AttrTooltip;
 import net.minecraft.ChatFormatting;
@@ -36,7 +36,7 @@ public abstract class ItemStackMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;shouldShowInTooltip(ILnet/minecraft/world/item/ItemStack$TooltipPart;)Z", ordinal = 4), method = "getTooltipLines")
     public void celestial_invoker$setModifiers(Player pPlayer, TooltipFlag pIsAdvanced, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
         ItemStack stack = (ItemStack) (Object) this;
-        if (!stack.is(BindingHandler.CUSTOM_ATTRIBUTE_TOOLTIP)) {
+        if (!stack.is(Bindings.CUSTOM_ATTRIBUTE_TOOLTIP)) {
             return;
         }
         for(EquipmentSlot slot : EquipmentSlot.values()) {
@@ -94,7 +94,7 @@ public abstract class ItemStackMixin {
     @WrapOperation(at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Multimap;isEmpty()Z"), method = "getTooltipLines")
     public boolean celestial_invoker$canModifyTooltips(Multimap<Attribute, AttributeModifier> instance, Operation<Boolean> original) {
         ItemStack stack = (ItemStack) (Object) this;
-        if (stack.is(BindingHandler.CUSTOM_ATTRIBUTE_TOOLTIP)) {
+        if (stack.is(Bindings.CUSTOM_ATTRIBUTE_TOOLTIP)) {
             return true;
         }
         return original.call(instance);

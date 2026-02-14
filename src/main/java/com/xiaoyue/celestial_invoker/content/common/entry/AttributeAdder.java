@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.ancillary.entry;
+package com.xiaoyue.celestial_invoker.content.common.entry;
 
 import com.google.common.collect.Multimap;
 import dev.xkmc.l2library.util.math.MathHelper;

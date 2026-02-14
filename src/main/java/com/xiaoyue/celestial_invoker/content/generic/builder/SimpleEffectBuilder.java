@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.generic.builder;
 
-import com.xiaoyue.celestial_invoker.content.ancillary.entry.AttributeAdder;
+import com.xiaoyue.celestial_invoker.content.common.entry.AttributeAdder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;

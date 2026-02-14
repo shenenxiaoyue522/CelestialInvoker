@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker;
 
 import com.mojang.logging.LogUtils;
-import com.xiaoyue.celestial_invoker.content.ancillary.CelestialRegistrate;
+import com.xiaoyue.celestial_invoker.content.common.CelestialRegistrate;
 import com.xiaoyue.celestial_invoker.content.generic.network.ClickEmptyPacket;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import com.xiaoyue.celestial_invoker.register.CIEntities;

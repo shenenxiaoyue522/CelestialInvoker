@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.ancillary.entry;
+package com.xiaoyue.celestial_invoker.content.common.entry;
 
 import dev.xkmc.l2damagetracker.contents.materials.api.ArmorMat;
 import net.minecraft.sounds.SoundEvent;

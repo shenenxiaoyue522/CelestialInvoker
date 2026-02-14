@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.google.common.collect.Lists;
-import com.xiaoyue.celestial_invoker.content.ancillary.helper.NBTSerialHelper;
+import com.xiaoyue.celestial_invoker.content.common.helper.NBTSerialHelper;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

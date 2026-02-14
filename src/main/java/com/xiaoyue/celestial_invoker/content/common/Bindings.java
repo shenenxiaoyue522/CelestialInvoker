@@ -1,9 +1,9 @@
-package com.xiaoyue.celestial_invoker.content.ancillary;
+package com.xiaoyue.celestial_invoker.content.common;
 
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.DataIngredient;
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
-import com.xiaoyue.celestial_invoker.content.ancillary.entry.MetalItemEntry;
+import com.xiaoyue.celestial_invoker.content.common.entry.MetalItemEntry;
 import com.xiaoyue.celestial_invoker.invoker.handler.ForceLoadClass;
 import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiFunction;
 
-public class BindingHandler {
+public class Bindings {
 
     public static final TagKey<Item> CUSTOM_ATTRIBUTE_TOOLTIP = ItemTags.create(CelestialInvoker.loc("custom_attribute_tooltip"));
 

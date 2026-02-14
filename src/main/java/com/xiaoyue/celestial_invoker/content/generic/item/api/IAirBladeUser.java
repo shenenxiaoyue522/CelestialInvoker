@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.generic.item.api;
 
-import com.xiaoyue.celestial_invoker.content.ancillary.BindingHandler;
+import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntity;
 import com.xiaoyue.celestial_invoker.content.entities.render.AirBladeEntityRender;
 import net.minecraft.core.BlockPos;
@@ -20,7 +20,7 @@ public interface IAirBladeUser {
     }
 
     default DamageSource getSource(AirBladeEntity blade, @Nullable Entity shooter) {
-        return new DamageSource(BindingHandler.getDamageSource(blade.level(), DamageTypes.MOB_PROJECTILE), shooter, blade);
+        return new DamageSource(Bindings.getDamageSource(blade.level(), DamageTypes.MOB_PROJECTILE), shooter, blade);
     }
 
     default boolean canHurt(AirBladeEntity blade, Entity target, float dmg) {

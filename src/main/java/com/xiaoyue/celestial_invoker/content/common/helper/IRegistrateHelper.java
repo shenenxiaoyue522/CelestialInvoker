@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.ancillary.helper;
+package com.xiaoyue.celestial_invoker.content.common.helper;
 
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.builders.NoConfigBuilder;
@@ -8,9 +8,9 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import com.xiaoyue.celestial_invoker.content.ancillary.BindingHandler;
-import com.xiaoyue.celestial_invoker.content.ancillary.CelestialRegistrate;
-import com.xiaoyue.celestial_invoker.content.ancillary.entry.MetalItemEntry;
+import com.xiaoyue.celestial_invoker.content.common.Bindings;
+import com.xiaoyue.celestial_invoker.content.common.CelestialRegistrate;
+import com.xiaoyue.celestial_invoker.content.common.entry.MetalItemEntry;
 import dev.xkmc.l2library.base.L2Registrate;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -86,7 +86,7 @@ public interface IRegistrateHelper<R extends L2Registrate> {
 
     default <T extends Item> ItemEntry<T> armor(String name, String path, ArmorItem.Type type, NonNullFunction<Item.Properties, T> item) {
         return owner().item(name + "_" + type.getName(), item).model((ctx, pvd) ->
-                pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName()))).tag(Tags.Items.ARMORS, BindingHandler.getArmorSlotTag(type)).register();
+                pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName()))).tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register();
     }
 
     default <T extends Item> Map<ArmorItem.Type, ItemEntry<T>> armors(String name, String path, CelestialRegistrate.ArmorTypeCallback<T> item) {
@@ -96,7 +96,7 @@ public interface IRegistrateHelper<R extends L2Registrate> {
     default <T extends Item> Map<ArmorItem.Type, ItemEntry<T>> armors(CelestialRegistrate.ArmorNameCallback name, String path, CelestialRegistrate.ArmorTypeCallback<T> item) {
         return Arrays.stream(ArmorItem.Type.values()).collect(Collectors.toMap(type -> type, type -> owner().item(name.onCallback(type), item.onCallback(type))
                 .model((ctx, pvd) -> pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName())))
-                .tag(Tags.Items.ARMORS, BindingHandler.getArmorSlotTag(type)).register(), (a, b) -> b, TreeMap::new));
+                .tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register(), (a, b) -> b, TreeMap::new));
     }
 
     default MetalItemEntry<Item, Block> slimeMetal(String id) {

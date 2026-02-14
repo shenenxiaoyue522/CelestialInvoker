@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.ancillary.entry;
+package com.xiaoyue.celestial_invoker.content.common.entry;
 
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;

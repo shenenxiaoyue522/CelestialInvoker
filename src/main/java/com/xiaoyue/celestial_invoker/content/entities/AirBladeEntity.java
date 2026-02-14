@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
-import com.xiaoyue.celestial_invoker.content.ancillary.BindingHandler;
-import com.xiaoyue.celestial_invoker.content.ancillary.helper.NBTSerialHelper;
+import com.xiaoyue.celestial_invoker.content.common.Bindings;
+import com.xiaoyue.celestial_invoker.content.common.helper.NBTSerialHelper;
 import com.xiaoyue.celestial_invoker.content.generic.item.api.IAirBladeUser;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import dev.xkmc.l2damagetracker.init.L2DamageTracker;
@@ -95,7 +95,7 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
             if (stack.getItem() instanceof IAirBladeUser user) {
                 source = user.getSource(this, owner);
             } else {
-                source = new DamageSource(BindingHandler.getDamageSource(level(), DamageTypes.MOB_PROJECTILE), owner, this);
+                source = new DamageSource(Bindings.getDamageSource(level(), DamageTypes.MOB_PROJECTILE), owner, this);
             }
             float dmg = damage;
             if (getOwner() instanceof Player player) {

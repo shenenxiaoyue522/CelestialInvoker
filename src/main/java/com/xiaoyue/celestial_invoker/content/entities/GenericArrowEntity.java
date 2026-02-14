@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
-import com.xiaoyue.celestial_invoker.content.ancillary.helper.NBTSerialHelper;
+import com.xiaoyue.celestial_invoker.content.common.helper.NBTSerialHelper;
 import com.xiaoyue.celestial_invoker.content.generic.builder.ArrowDataBuilder;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import net.minecraft.nbt.CompoundTag;

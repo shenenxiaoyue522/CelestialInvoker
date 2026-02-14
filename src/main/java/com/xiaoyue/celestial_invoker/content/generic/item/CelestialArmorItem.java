@@ -3,7 +3,7 @@ package com.xiaoyue.celestial_invoker.content.generic.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import com.xiaoyue.celestial_invoker.content.ancillary.entry.AttributeAdder;
+import com.xiaoyue.celestial_invoker.content.common.entry.AttributeAdder;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.SubscribeTooltip;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipEntry;
 import dev.xkmc.l2library.util.Proxy;
