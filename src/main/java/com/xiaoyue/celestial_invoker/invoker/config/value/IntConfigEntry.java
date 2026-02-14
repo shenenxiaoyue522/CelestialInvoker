@@ -11,7 +11,7 @@ public class IntConfigEntry extends ConfigHolder<ForgeConfigSpec.IntValue> {
     private final int max;
 
     public IntConfigEntry(String id, String name, int value, int min, int max, String... text) {
-        super(id, name, builder -> builder.defineInRange(id, value, min, max), "Range: " + min + " ~ " + max, text);
+        super(id, name, builder -> builder.defineInRange(id, value, min, max), text);
         this.value = value;
         this.min = min;
         this.max = max;

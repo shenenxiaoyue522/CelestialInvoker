@@ -11,7 +11,7 @@ public class DoubleConfigEntry extends ConfigHolder<ForgeConfigSpec.DoubleValue>
     private final double max;
 
     public DoubleConfigEntry(String id, String name, double value, double min, double max, String... text) {
-        super(id, name, builder -> builder.defineInRange(id, value, min, max), "Range: " + min + " ~ " + max, text);
+        super(id, name, builder -> builder.defineInRange(id, value, min, max), text);
         this.value = value;
         this.min = min;
         this.max = max;
