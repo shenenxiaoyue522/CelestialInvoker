@@ -9,8 +9,11 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -58,6 +61,16 @@ public class Bindings {
             }
         }
         return requiredIngredients.isEmpty();
+    }
+
+    public static TagKey<Item> getArmorSlotTag(ArmorItem.Type type) {
+        return switch (type) {
+            case HELMET -> ItemTags.HEAD_ARMOR;
+            case CHESTPLATE -> ItemTags.CHEST_ARMOR;
+            case LEGGINGS -> ItemTags.LEG_ARMOR;
+            case BOOTS -> ItemTags.FOOT_ARMOR;
+            case BODY -> null;
+        };
     }
 
     public static Holder.Reference<DamageType> getDamageSource(Level level, ResourceKey<DamageType> key) {
