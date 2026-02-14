@@ -30,6 +30,10 @@ import java.util.stream.Collectors;
 
 public interface IRegistrateHelper<R extends AbstractRegistrate<R>> {
 
+    static <R extends AbstractRegistrate<R>> IRegistrateHelper<R> simpleHelper(R registrate) {
+        return () -> registrate;
+    }
+
     R owner();
 
     default String getTabName(String name) {
