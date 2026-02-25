@@ -99,13 +99,15 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
         }
 
         @Override
-        public final Builder push(String path) {
+        @Deprecated
+        public Builder push(String path) {
             super.push(path);
             return this;
         }
 
         @Override
-        public final Builder push(List<String> path) {
+        @Deprecated
+        public Builder push(List<String> path) {
             super.push(path);
             return this;
         }
@@ -123,8 +125,9 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
 
         @Override
         public <T> ModConfigSpec.ConfigValue<T> define(List<String> path, ModConfigSpec.ValueSpec value, Supplier<T> defaultSupplier) {
-            if (name == null) throw new IllegalStateException("name not specified");
-            registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast(), name);
+            if (name != null) {
+                registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast(), name);
+            }
             String comment = value.getComment();
             registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast() + ".tooltip", comment == null ? "" : comment);
             return super.define(path, value, defaultSupplier);
