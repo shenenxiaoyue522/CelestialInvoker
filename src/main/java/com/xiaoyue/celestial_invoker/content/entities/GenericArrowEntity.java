@@ -58,7 +58,7 @@ public class GenericArrowEntity extends AbstractArrow implements IEntityAddition
 
     @Override
     protected ItemStack getPickupItem() {
-        return arrow;
+        return arrow.copyWithCount(1);
     }
 
     @Override
