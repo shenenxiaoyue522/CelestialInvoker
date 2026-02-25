@@ -1,5 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
+import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.generic.builder.ArrowDataBuilder;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import net.minecraft.nbt.CompoundTag;
@@ -57,7 +58,7 @@ public class GenericArrowEntity extends AbstractArrow implements IEntityAddition
 
     @Override
     protected ItemStack getPickupItem() {
-        return arrow.copyWithCount(1);
+        return arrow.copy();
     }
 
     @Override
@@ -109,8 +110,8 @@ public class GenericArrowEntity extends AbstractArrow implements IEntityAddition
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        bow = ItemStack.of(tag.getCompound("Bow"));
-        arrow = ItemStack.of(tag.getCompound("Arrow"));
+        bow = Bindings.getItemFromTag(tag, "Bow");
+        arrow = Bindings.getItemFromTag(tag, "Arrow");
     }
 
     @Override
