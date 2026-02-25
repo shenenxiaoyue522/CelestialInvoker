@@ -49,31 +49,20 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
         this.file = str;
     }
 
-    public static <T extends ConfigWrapper> T register(AbstractRegistrate<?> registrate, ModConfig.Type type, Function<Builder, T> factory) {
+    public static void addTitleTooltip(AbstractRegistrate<?> registrate) {
+        String title = registrate.getModid() + ".configuration.";
+        registrate.addRawLang(title + "title", StringHelper.caseSpaceCapitalize(title));
+    }
+
+    public static <T extends ConfigWrapper> T init(AbstractRegistrate<?> registrate, ModConfig.Type type, Function<Builder, T> factory) {
         var builder = new Builder(registrate);
         var ans = factory.apply(builder);
         var spec = builder.build();
-        register(registrate, type, spec, ans);
+        init(registrate, type, spec, ans);
         return ans;
     }
 
-    public static <T extends ConfigWrapper> T registerServer(AbstractRegistrate<?> registrate, Function<Builder, T> factory) {
-        return register(registrate, ModConfig.Type.SERVER, factory);
-    }
-
-    public static <T extends ConfigWrapper> T registerClient(AbstractRegistrate<?> registrate, Function<Builder, T> factory) {
-        return register(registrate, ModConfig.Type.CLIENT, factory);
-    }
-
-    public static <T extends ConfigWrapper> T registerCommon(AbstractRegistrate<?> registrate, Function<Builder, T> factory) {
-        return register(registrate, ModConfig.Type.COMMON, factory);
-    }
-
-    public static <T extends ConfigWrapper> T registerStartup(AbstractRegistrate<?> registrate, Function<Builder, T> factory) {
-        return register(registrate, ModConfig.Type.STARTUP, factory);
-    }
-
-    private static void register(AbstractRegistrate<?> registrate, ModConfig.Type type, IConfigSpec spec, ConfigWrapper wrapper) {
+    private static void init(AbstractRegistrate<?> registrate, ModConfig.Type type, IConfigSpec spec, ConfigWrapper wrapper) {
         ModContainer mod = SimpleInvoker.getMod(registrate.getModid());
         String path = wrapper.file + mod.getModId() + "-" + type.extension() + ".toml";
         mod.registerConfig(type, spec, path);
@@ -83,7 +72,6 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
         CONFIG_MAP.put(path, wrapper);
         ConfigLoader.initConfigScreen(mod);
         String title = registrate.getModid() + ".configuration.";
-        registrate.addRawLang(title + "title", StringHelper.caseSpaceCapitalize(title));
         String key = title + "section." + path.replaceAll("[-_/]", ".");
         registrate.addRawLang(key, ConfigLoader.getConfigTypeText(type, registrate.getModid()));
     }
@@ -125,9 +113,8 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
 
         @Override
         public <T> ModConfigSpec.ConfigValue<T> define(List<String> path, ModConfigSpec.ValueSpec value, Supplier<T> defaultSupplier) {
-            if (name != null) {
-                registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast(), name);
-            }
+            if (name == null) throw new IllegalStateException("Empty name is not allowed");
+            registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast(), name);
             String comment = value.getComment();
             registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast() + ".tooltip", comment == null ? "" : comment);
             return super.define(path, value, defaultSupplier);
