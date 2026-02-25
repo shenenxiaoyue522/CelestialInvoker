@@ -12,6 +12,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -38,6 +40,13 @@ public class Bindings {
 
     public static void setUnbreakable(ItemStack stack) {
         stack.getOrCreateTag().putBoolean("Unbreakable", true);
+    }
+
+    public static ItemStack getItemFromTag(CompoundTag tag, String name) {
+        if (tag.contains(name, Tag.TAG_COMPOUND)) {
+            return ItemStack.of(tag.getCompound(name));
+        }
+        return ItemStack.EMPTY;
     }
 
     public static <C extends Container> boolean checkShapelessInputs(List<Ingredient> materials, C inv) {

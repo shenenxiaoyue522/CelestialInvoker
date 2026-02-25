@@ -1,7 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
-import com.xiaoyue.celestial_invoker.content.common.helper.NBTSerialHelper;
 import com.xiaoyue.celestial_invoker.content.generic.item.api.IAirBladeUser;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import dev.xkmc.l2damagetracker.init.L2DamageTracker;
@@ -149,17 +148,17 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        NBTSerialHelper.save(tag, "Item", stack);
-        NBTSerialHelper.save(tag, "Damage", damage);
-        NBTSerialHelper.save(tag, "ZRot", zRot);
+        tag.put("Item", stack.serializeNBT());
+        tag.putFloat("Damage", damage);
+        tag.putFloat("ZRot", zRot);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        stack = NBTSerialHelper.loadOrDefault(tag, "Item", ItemStack.class, ItemStack.EMPTY);
-        damage = NBTSerialHelper.loadOrDefault(tag, "Damage", Float.class, 2f);
-        zRot = NBTSerialHelper.loadOrDefault(tag, "ZRot", Float.class, 0f);
+        stack = Bindings.getItemFromTag(tag, "Item");
+        damage = tag.getFloat("Damage");
+        zRot = tag.getFloat("ZRot");
     }
 
     @Override
