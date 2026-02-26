@@ -42,11 +42,11 @@ public interface IRegistrateHelper<R extends AbstractRegistrate<R>> {
     }
 
     default RegistryEntry<CreativeModeTab, CreativeModeTab> modNameCreativeTab(Consumer<CreativeModeTab.Builder> config) {
-        return CreativeTab("tab", getTabName("tab"), config);
+        return creativeTab("tab", getTabName("tab"), config);
     }
 
     default RegistryEntry<CreativeModeTab, CreativeModeTab> creativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
-        return CreativeTab(name, getTabName(name), config);
+        return creativeTab(name, getTabName(name), config);
     }
 
     default <T extends Item> ItemEntry<T> armor(String name, String path, ArmorItem.Type type, NonNullFunction<Item.Properties, T> item) {
@@ -92,7 +92,7 @@ public interface IRegistrateHelper<R extends AbstractRegistrate<R>> {
                 .item().build().register();
     }
 
-    default RegistryEntry<CreativeModeTab, CreativeModeTab> CreativeTab(String name, String text, Consumer<CreativeModeTab.Builder> config) {
+    default RegistryEntry<CreativeModeTab, CreativeModeTab> creativeTab(String name, String text, Consumer<CreativeModeTab.Builder> config) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(owner().getModid(), name);
         owner().defaultCreativeTab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, id));
         return this.creativeTabImpl(name, owner().addLang("itemGroup", id, text), config);
