@@ -74,6 +74,7 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
         String title = registrate.getModid() + ".configuration.";
         String key = title + "section." + path.replaceAll("[-_/]", ".");
         registrate.addRawLang(key, ConfigLoader.getConfigTypeText(type, registrate.getModid()));
+        registrate.addRawLang(key + ".title", "");
     }
 
     public static class Builder extends ModConfigSpec.Builder {
@@ -101,7 +102,14 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
         }
 
         public Builder push(String path, String name) {
-            registrate.addRawLang(registrate.getModid() + ".configuration." + path, name);
+            return push(path, name, "");
+        }
+
+        public Builder push(String path, String name, String desc) {
+            String key = registrate.getModid() + ".configuration." + path;
+            registrate.addRawLang(key, name);
+            registrate.addRawLang(key + ".button", "");
+            registrate.addRawLang(key + ".tooltip", desc);
             super.push(path);
             return this;
         }

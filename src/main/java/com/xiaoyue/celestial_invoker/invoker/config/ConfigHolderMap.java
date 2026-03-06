@@ -56,7 +56,7 @@ public class ConfigHolderMap {
         mod.registerConfig(type, builder.build(), name);
         String key = title + "section." + name.replaceAll("[-_/]", ".");
         if (allowTitle) {
-            TITLE_MAP.put(title + "title", StringHelper.caseSpaceCapitalize(title));
+            TITLE_MAP.put(title + ".title", StringHelper.caseSpaceCapitalize(title));
             TITLE_MAP.put(key, ConfigLoader.getConfigTypeText(type, modid));
         }
         configPath.put(type, name);
@@ -97,6 +97,12 @@ public class ConfigHolderMap {
         } else {
             if (!key.isEmpty()) {
                 TITLE_MAP.put(key, category[1]);
+                if (category[2] != null) {
+                    TITLE_MAP.put(key + ".tooltip", category[2]);
+                } else {
+                    TITLE_MAP.put(key + ".tooltip", "");
+                }
+                TITLE_MAP.put(key + ".button", "");
             }
             Map<String, ConfigHolder<?>> defMap = new TreeMap<>();
             defMap.put(holder.getId(), holder);
