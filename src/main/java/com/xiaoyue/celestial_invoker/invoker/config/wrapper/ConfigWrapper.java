@@ -102,14 +102,10 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
         }
 
         public Builder push(String path, String name) {
-            return push(path, name, "");
-        }
-
-        public Builder push(String path, String name, String desc) {
             String key = registrate.getModid() + ".configuration." + path;
             registrate.addRawLang(key, name);
             registrate.addRawLang(key + ".button", "");
-            registrate.addRawLang(key + ".tooltip", desc);
+            registrate.addRawLang(key + ".tooltip", "");
             super.push(path);
             return this;
         }
