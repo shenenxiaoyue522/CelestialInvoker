@@ -104,8 +104,6 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
         public Builder push(String path, String name) {
             String key = registrate.getModid() + ".configuration." + path;
             registrate.addRawLang(key, name);
-            registrate.addRawLang(key + ".button", "");
-            registrate.addRawLang(key + ".tooltip", "");
             super.push(path);
             return this;
         }
@@ -120,7 +118,9 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
             if (name == null) throw new IllegalStateException("Empty name is not allowed");
             registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast(), name);
             String comment = value.getComment();
-            registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast() + ".tooltip", comment == null ? "" : comment);
+            if (comment != null && !comment.isEmpty()) {
+                registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast() + ".tooltip", comment);
+            }
             return super.define(path, value, defaultSupplier);
         }
     }

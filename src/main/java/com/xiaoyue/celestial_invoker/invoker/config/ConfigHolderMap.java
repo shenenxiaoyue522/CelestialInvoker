@@ -56,9 +56,8 @@ public class ConfigHolderMap {
         mod.registerConfig(type, builder.build(), name);
         String key = title + "section." + name.replaceAll("[-_/]", ".");
         if (allowTitle) {
-            TITLE_MAP.put(title + ".title", StringHelper.caseSpaceCapitalize(title));
+            TITLE_MAP.put(title + "title", StringHelper.caseSpaceCapitalize(title));
             TITLE_MAP.put(key, ConfigLoader.getConfigTypeText(type, modid));
-            TITLE_MAP.put(key + ".title", ConfigLoader.getConfigTypeText(type, modid));
         }
         configPath.put(type, name);
         ConfigLoader.initConfigScreen(mod);
@@ -90,32 +89,30 @@ public class ConfigHolderMap {
         }
     }
 
-    public void addConfig(String[] category, ConfigHolder<?> holder, ModConfig.Type type) {
-        String key = category[0];
+    public void addConfig(String category, String categoryName, ConfigHolder<?> holder, ModConfig.Type type) {
+        String key = modid + ".configuration." + category;
         Map<String, Map<String, ConfigHolder<?>>> map = this.getMap(type);
-        if (map.containsKey(key)) {
-            (map.get(key)).put(holder.getId(), holder);
+        if (map.containsKey(category)) {
+            (map.get(category)).put(holder.getId(), holder);
         } else {
-            if (!key.isEmpty()) {
-                TITLE_MAP.put(key, category[1]);
-                TITLE_MAP.put(key + ".tooltip", "");
-                TITLE_MAP.put(key + ".button", "");
-            }
+            TITLE_MAP.put(key, categoryName);
             Map<String, ConfigHolder<?>> defMap = new TreeMap<>();
             defMap.put(holder.getId(), holder);
-            map.put(key, defMap);
+            map.put(category, defMap);
         }
     }
 
     public void addConfigDesc(LanguageProvider pvd) {
         TEXT_MAP.forEach((key, config) -> {
             pvd.add(key, config.getName());
-            StringBuilder finalText = new StringBuilder(config.getTexts().getFirst());
-            for (int i = 1; i < config.getTexts().size(); i++) {
-                finalText.append("\n ");
-                finalText.append(config.getTexts().get(i));
+            if (!config.getTexts().isEmpty()) {
+                StringBuilder finalText = new StringBuilder(config.getTexts().getFirst());
+                for (int i = 1; i < config.getTexts().size(); i++) {
+                    finalText.append("\n");
+                    finalText.append(config.getTexts().get(i));
+                }
+                pvd.add(key + ".tooltip", finalText.toString());
             }
-            pvd.add(key + ".tooltip", finalText.toString());
         });
     }
 

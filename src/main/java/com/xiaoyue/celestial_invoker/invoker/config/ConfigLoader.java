@@ -44,7 +44,8 @@ public class ConfigLoader {
         ConfigHolderMap map = new ConfigHolderMap(modid);
         try {
             for(ModFileScanData.AnnotationData data : SimpleInvoker.getModAnno(modid, ConfigHolderEntry.class)) {
-                String[] category = (String[]) data.annotationData().getOrDefault("category", new String[]{""});
+                String category = (String) data.annotationData().getOrDefault("category", "");
+                String categoryName = (String) data.annotationData().getOrDefault("categoryName", "");
                 ModConfig.Type type = (ModConfig.Type) data.annotationData().getOrDefault("type", ModConfig.Type.SERVER);
                 Type clazz = data.clazz();
                 String name = data.memberName();
@@ -52,7 +53,7 @@ public class ConfigLoader {
                 Field field = annoCls.getDeclaredField(name);
                 field.setAccessible(true);
                 ConfigHolder<?> holder = cast(field.get(null));
-                map.addConfig(category, holder, type);
+                map.addConfig(category, categoryName, holder, type);
             }
             return map;
         } catch (Exception e) {
