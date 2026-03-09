@@ -76,7 +76,7 @@ public interface IRegistrateHelper<R extends L2Registrate> {
                 RegistrateLangProvider.toEnglishName(owner().getModid() + "_" + name);
     }
 
-    default RegistryEntry<CreativeModeTab> buildModNameCreativeTab(Consumer<CreativeModeTab.Builder> config) {
+    default RegistryEntry<CreativeModeTab> buildCreativeTab(Consumer<CreativeModeTab.Builder> config) {
         return owner().buildModCreativeTab("tab", getTabName("tab"), config);
     }
 
