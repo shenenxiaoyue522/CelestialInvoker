@@ -216,10 +216,12 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
     @Override
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         ItemStack.OPTIONAL_STREAM_CODEC.encode(buffer, getPickupItem());
+        buffer.writeBoolean(foil);
     }
 
     @Override
     public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
         setWeapon(ItemStack.OPTIONAL_STREAM_CODEC.decode(additionalData));
+        foil = additionalData.readBoolean();
     }
 }
