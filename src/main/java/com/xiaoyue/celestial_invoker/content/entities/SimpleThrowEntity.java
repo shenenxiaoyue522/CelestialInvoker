@@ -226,10 +226,12 @@ public abstract class SimpleThrowEntity extends AbstractArrow implements IEntity
     @Override
     public void writeSpawnData(FriendlyByteBuf buf) {
         buf.writeItemStack(weapon, true);
+        buf.writeBoolean(foil);
     }
 
     @Override
     public void readSpawnData(FriendlyByteBuf buf) {
         weapon = buf.readItem();
+        foil = buf.readBoolean();
     }
 }
