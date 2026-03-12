@@ -98,8 +98,8 @@ public class CelestialCrossbowItem extends CrossbowItem {
         int i = this.getUseDuration(stack, entityLiving) - timeLeft;
         float f = getPowerForTime(i, stack, entityLiving);
         if (f >= 1.0F && !isCharged(stack) && tryLoadProjectiles(entityLiving, stack)) {
-            ChargingSounds crossbowitem$chargingsounds = this.getChargingSounds(stack);
-            crossbowitem$chargingsounds.end().ifPresent((s) -> level.playSound(null, entityLiving.getX(),
+            ChargingSounds sounds = this.getChargingSounds(stack);
+            sounds.end().ifPresent((s) -> level.playSound(null, entityLiving.getX(),
                     entityLiving.getY(), entityLiving.getZ(), s.value(), entityLiving.getSoundSource(),
                     1.0F, 1.0F / (level.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F));
         }
