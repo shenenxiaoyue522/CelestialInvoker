@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.simple;
+package com.xiaoyue.celestial_invoker.content.common.entry;
 
 import net.minecraft.world.item.Item;
 

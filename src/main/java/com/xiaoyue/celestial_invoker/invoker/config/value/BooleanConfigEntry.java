@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.invoker.config.value;
 
+import com.xiaoyue.celestial_invoker.content.common.helper.StringHelper;
 import com.xiaoyue.celestial_invoker.invoker.config.ConfigHolder;
-import com.xiaoyue.celestial_invoker.simple.StringCaser;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class BooleanConfigEntry extends ConfigHolder<ForgeConfigSpec.BooleanValue> {
@@ -13,7 +13,7 @@ public class BooleanConfigEntry extends ConfigHolder<ForgeConfigSpec.BooleanValu
     }
 
     public static BooleanConfigEntry define(String name, boolean value, String... text) {
-        return new BooleanConfigEntry(StringCaser.toCamelCase(name), name, value, text);
+        return new BooleanConfigEntry(StringHelper.toCamelCase(name), name, value, text);
     }
 
     public boolean get() {

@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.invoker.config;
 
-import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
-import com.xiaoyue.celestial_invoker.simple.StringCaser;
+import com.xiaoyue.celestial_invoker.content.common.SimpleInvoker;
+import com.xiaoyue.celestial_invoker.content.common.helper.StringHelper;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.forgespi.language.ModFileScanData;
@@ -14,7 +14,7 @@ public class ConfigLoader {
 
     public static String getConfigTypeText(ModConfig.Type type) {
         String modId = getActiveModId();
-        return StringCaser.caseSpaceCapitalize(modId + "." + type.extension() + ".configuration");
+        return StringHelper.caseSpaceCapitalize(modId + "." + type.extension() + ".configuration");
     }
 
     public static String getActiveModId() {
@@ -22,7 +22,7 @@ public class ConfigLoader {
     }
 
     public static String getSpaceCaseModId() {
-        return StringCaser.caseSpaceCapitalize(getActiveModId());
+        return StringHelper.caseSpaceCapitalize(getActiveModId());
     }
 
     public static String getConfigName(ModConfig.Type type) {

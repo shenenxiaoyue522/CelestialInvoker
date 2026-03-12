@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.event.ForgeEventFactory;
 
 public class CelestialBowItem extends BowItem {
@@ -22,10 +21,6 @@ public class CelestialBowItem extends BowItem {
 
     public float getDrawSpeed(LivingEntity user, ItemStack bow) {
         return 1.0f;
-    }
-
-    public void getDrawingFov(Player player, ItemStack bow, ComputeFovModifierEvent event) {
-
     }
 
     @Override

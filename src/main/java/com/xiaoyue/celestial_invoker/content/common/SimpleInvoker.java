@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.simple;
+package com.xiaoyue.celestial_invoker.content.common;
 
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.ModFileScanData;

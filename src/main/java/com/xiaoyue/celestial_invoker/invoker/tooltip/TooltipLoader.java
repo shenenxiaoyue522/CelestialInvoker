@@ -2,7 +2,7 @@ package com.xiaoyue.celestial_invoker.invoker.tooltip;
 
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.providers.ProviderType;
-import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
+import com.xiaoyue.celestial_invoker.content.common.SimpleInvoker;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.forgespi.language.ModFileScanData;

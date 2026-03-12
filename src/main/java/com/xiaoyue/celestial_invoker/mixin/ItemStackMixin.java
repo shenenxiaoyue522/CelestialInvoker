@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
-import com.xiaoyue.celestial_invoker.simple.ItemAccessor;
+import com.xiaoyue.celestial_invoker.content.common.entry.ItemAccessor;
 import dev.xkmc.l2damagetracker.contents.curios.AttrTooltip;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;

@@ -4,18 +4,14 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.xiaoyue.celestial_invoker.content.client.overlay.HudManager;
-import com.xiaoyue.celestial_invoker.content.generic.item.CelestialBowItem;
 import com.xiaoyue.celestial_invoker.mixin.LevelRenderAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -64,17 +60,6 @@ public class ClientEvents {
             RenderSystem.depthMask(true);
             RenderSystem.enableDepthTest();
             mc.renderBuffers().bufferSource().endBatch(RenderType.lines());
-        }
-    }
-
-    @SubscribeEvent
-    public static void getDrawingFov(ComputeFovModifierEvent event) {
-        Player player = event.getPlayer();
-        if (player.isUsingItem()) {
-            ItemStack stack = player.getUseItem();
-            if (stack.getItem() instanceof CelestialBowItem bow) {
-                bow.getDrawingFov(player, stack, event);
-            }
         }
     }
 

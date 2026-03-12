@@ -5,7 +5,6 @@ import com.tterrag.registrate.util.DataIngredient;
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
 import com.xiaoyue.celestial_invoker.content.common.entry.MetalItemEntry;
 import com.xiaoyue.celestial_invoker.invoker.handler.ForceLoadClass;
-import com.xiaoyue.celestial_invoker.simple.SimpleInvoker;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
