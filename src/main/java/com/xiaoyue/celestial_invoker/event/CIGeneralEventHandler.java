@@ -1,18 +1,48 @@
 package com.xiaoyue.celestial_invoker.event;
 
+import com.xiaoyue.celestial_invoker.content.generic.shared.ClickEmptyPayload;
 import com.xiaoyue.celestial_invoker.content.generic.shared.IBouncyProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
 
 @EventBusSubscriber(modid = MODID)
 public class CIGeneralEventHandler {
+
+    @SubscribeEvent
+    public static void initPayload(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar("1");
+        registrar.playToServer(ClickEmptyPayload.ID, ClickEmptyPayload.CODEC, ClickEmptyPayload::handlePacket);
+    }
+
+    @SubscribeEvent
+    public static void leftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
+        if (event.getSide().equals(LogicalSide.SERVER)) {
+            ClickEmptyPayload.acceptItem(event.getEntity(), event.getHand(), false);
+        } else {
+            PacketDistributor.sendToServer(new ClickEmptyPayload(false, event.getHand()));
+        }
+    }
+
+    @SubscribeEvent
+    public static void rightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
+        if (event.getSide().equals(LogicalSide.SERVER)) {
+            ClickEmptyPayload.acceptItem(event.getEntity(), event.getHand(), true);
+        } else {
+            PacketDistributor.sendToServer(new ClickEmptyPayload(true, event.getHand()));
+        }
+    }
 
     @SubscribeEvent
     public static void onProjectileImpact(ProjectileImpactEvent event) {
