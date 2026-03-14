@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.generic.shared;
 
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
-import com.xiaoyue.celestial_invoker.content.generic.items.api.IClickInteract;
+import com.xiaoyue.celestial_invoker.content.generic.items.api.IClickInteraction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.PacketFlow;
@@ -32,7 +32,7 @@ public record ClickEmptyPayload(boolean right, InteractionHand hand) implements 
 
     public static void acceptItem(Player player, InteractionHand hand, boolean right) {
         ItemStack stack = player.getItemInHand(hand);
-        if (stack.getItem() instanceof IClickInteract item) {
+        if (stack.getItem() instanceof IClickInteraction item) {
             if (right) {
                 item.onRightClickEmpty(player, stack, hand);
             } else {
