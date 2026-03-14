@@ -7,7 +7,6 @@ import dev.xkmc.l2serial.serialization.SerialClass;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.network.NetworkEvent;
 
 @SerialClass
@@ -33,15 +32,11 @@ public class ClickEmptyPacket extends SerialPacketBase {
         ServerPlayer player = context.getSender();
         if (player != null) {
             ItemStack stack = player.getItemInHand(hand);
-            if (right) {
-                if (stack.getItem() instanceof IClickInteraction item) {
-                    PlayerInteractEvent.RightClickEmpty event = new PlayerInteractEvent.RightClickEmpty(player, hand);
-                    item.onRightClickEmpty(stack, event, player);
-                }
-            } else {
-                if (stack.getItem() instanceof IClickInteraction item) {
-                    PlayerInteractEvent.LeftClickEmpty event = new PlayerInteractEvent.LeftClickEmpty(player);
-                    item.onLeftClickEmpty(stack, event, player);
+            if (stack.getItem() instanceof IClickInteraction item) {
+                if (right) {
+                    item.onRightClickEmpty(player, stack, hand);
+                } else {
+                    item.onLeftClickEmpty(player, stack, hand);
                 }
             }
         }

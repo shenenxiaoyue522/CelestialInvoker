@@ -7,7 +7,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
-import java.util.Map;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
@@ -66,22 +65,17 @@ public class AttributeAdder {
         return this;
     }
 
-    public AttributeModifier toModifier() {
+    public AttributeModifier modifier() {
         return new AttributeModifier(this.uuid, this.name, this.value, this.operation);
     }
 
-    public AttributeAdder toMap(Map<Attribute, AttributeModifier> user) {
-        user.put(attr, this.toModifier());
-        return this;
-    }
-
     public AttributeAdder toMap(Multimap<Attribute, AttributeModifier> user) {
-        user.put(attr, this.toModifier());
+        user.put(attr, this.modifier());
         return this;
     }
 
     public AttributeAdder toCons(BiConsumer<Attribute, AttributeModifier> user) {
-        user.accept(attr, this.toModifier());
+        user.accept(attr, this.modifier());
         return this;
     }
 }
