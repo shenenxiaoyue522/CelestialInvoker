@@ -1,6 +1,6 @@
 package com.xiaoyue.celestial_invoker.event;
 
-import com.xiaoyue.celestial_invoker.content.generic.shared.ClickEmptyPacket;
+import com.xiaoyue.celestial_invoker.content.generic.shared.ClickEmptyPayload;
 import com.xiaoyue.celestial_invoker.content.generic.shared.IBouncyProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.BlockHitResult;
@@ -46,14 +46,14 @@ public class CIGeneralEventHandler {
     @SubscribeEvent
     public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
         if (event.getEntity().level().isClientSide()) {
-            new ClickEmptyPacket(false, event.getHand()).toServer();
+            new ClickEmptyPayload(false, event.getHand()).toServer();
         }
     }
 
     @SubscribeEvent
     public static void onRightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
         if (event.getEntity().level().isClientSide()) {
-            new ClickEmptyPacket(true, event.getHand()).toServer();
+            new ClickEmptyPayload(true, event.getHand()).toServer();
         }
     }
 }

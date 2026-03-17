@@ -1,5 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.common.helper;
 
+import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.builders.NoConfigBuilder;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
@@ -9,10 +10,10 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
-import com.xiaoyue.celestial_invoker.content.common.CelestialRegistrate;
 import com.xiaoyue.celestial_invoker.content.common.entry.MetalItemEntry;
-import dev.xkmc.l2library.base.L2Registrate;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -20,6 +21,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.Recipe;
@@ -37,9 +39,9 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-public interface IRegistrateHelper<R extends L2Registrate> {
+public interface IRegistrateHelper<R extends AbstractRegistrate<R>> {
 
-    static <R extends L2Registrate> IRegistrateHelper<L2Registrate> simpleHelper(R registrate) {
+    static <R extends AbstractRegistrate<R>> IRegistrateHelper<R> simple(R registrate) {
         return () -> registrate;
     }
 
@@ -77,11 +79,25 @@ public interface IRegistrateHelper<R extends L2Registrate> {
     }
 
     default RegistryEntry<CreativeModeTab> buildCreativeTab(Consumer<CreativeModeTab.Builder> config) {
-        return owner().buildModCreativeTab("tab", getTabName("tab"), config);
+        return buildModCreativeTab("tab", getTabName("tab"), config);
     }
 
     default RegistryEntry<CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
-        return owner().buildModCreativeTab(name, getTabName(name), config);
+        return buildModCreativeTab(name, getTabName(name), config);
+    }
+
+    default RegistryEntry<CreativeModeTab> buildModCreativeTab(String name, String def, Consumer<CreativeModeTab.Builder> config) {
+        ResourceLocation id = new ResourceLocation(owner().getModid(), name);
+        owner().defaultCreativeTab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, id));
+        return this.buildCreativeTabImpl(name, owner().addLang("itemGroup", id, def), config);
+    }
+
+    default RegistryEntry<CreativeModeTab> buildCreativeTabImpl(String name, Component comp, Consumer<CreativeModeTab.Builder> config) {
+        return owner().generic(owner(), name, Registries.CREATIVE_MODE_TAB, () -> {
+            CreativeModeTab.Builder builder = CreativeModeTab.builder().title(comp).withTabsBefore(CreativeModeTabs.SPAWN_EGGS);
+            config.accept(builder);
+            return builder.build();
+        }).register();
     }
 
     default <T extends Item> ItemEntry<T> armor(String name, String path, ArmorItem.Type type, NonNullFunction<Item.Properties, T> item) {
@@ -89,11 +105,11 @@ public interface IRegistrateHelper<R extends L2Registrate> {
                 pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName()))).tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register();
     }
 
-    default <T extends Item> Map<ArmorItem.Type, ItemEntry<T>> armors(String name, String path, CelestialRegistrate.ArmorTypeCallback<T> item) {
+    default <T extends Item> Map<ArmorItem.Type, ItemEntry<T>> armors(String name, String path, ArmorTypeCallback<T> item) {
         return armors(type -> name + "_" + type.getName(), path, item);
     }
 
-    default <T extends Item> Map<ArmorItem.Type, ItemEntry<T>> armors(CelestialRegistrate.ArmorNameCallback name, String path, CelestialRegistrate.ArmorTypeCallback<T> item) {
+    default <T extends Item> Map<ArmorItem.Type, ItemEntry<T>> armors(ArmorNameCallback name, String path, ArmorTypeCallback<T> item) {
         return Arrays.stream(ArmorItem.Type.values()).collect(Collectors.toMap(type -> type, type -> owner().item(name.onCallback(type), item.onCallback(type))
                 .model((ctx, pvd) -> pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName())))
                 .tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register(), (a, b) -> b, TreeMap::new));
@@ -116,7 +132,7 @@ public interface IRegistrateHelper<R extends L2Registrate> {
         return metalBuilder(id, "nugget", item).register();
     }
 
-    default <T extends Item> ItemBuilder<T, L2Registrate> metalBuilder(String id, String type, NonNullFunction<Item.Properties, T> item) {
+    default <T extends Item> ItemBuilder<T, R> metalBuilder(String id, String type, NonNullFunction<Item.Properties, T> item) {
         return owner().item(id + "_" + type, item).model((ctx, pvd) ->
                 pvd.generated(ctx, pvd.modLoc("item/metal/" + ctx.getName()))).tag(forgeTag(type + "s/" + id));
     }

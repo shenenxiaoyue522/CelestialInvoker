@@ -1,16 +1,14 @@
 package com.xiaoyue.celestial_invoker;
 
 import com.mojang.logging.LogUtils;
-import com.xiaoyue.celestial_invoker.content.common.CelestialRegistrate;
-import com.xiaoyue.celestial_invoker.content.generic.shared.ClickEmptyPacket;
+import com.tterrag.registrate.Registrate;
+import com.xiaoyue.celestial_invoker.content.generic.shared.NetworkHandler;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
-import dev.xkmc.l2library.serial.config.PacketHandlerWithConfig;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.slf4j.Logger;
 
 @Mod(CelestialInvoker.MODID)
@@ -19,18 +17,16 @@ public class CelestialInvoker {
 
     public static final String MODID = "celestial_invoker";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final CelestialRegistrate REGISTRATE = new CelestialRegistrate(MODID);
-    public static final PacketHandlerWithConfig HANDLER = new PacketHandlerWithConfig(loc("main"), 2,
-            e -> e.create(ClickEmptyPacket.class, NetworkDirection.PLAY_TO_SERVER));
-    
+    public static final Registrate REGISTRATE = Registrate.create(MODID);
+
     public CelestialInvoker() {
         CIEntities.register();
         TooltipLoader.generator(MODID, REGISTRATE);
     }
 
     @SubscribeEvent
-    public static void onGatherData(GatherDataEvent event) {
-
+    public static void onCommonStep(FMLCommonSetupEvent event) {
+        event.enqueueWork(NetworkHandler::register);
     }
 
     public static ResourceLocation loc(String s) {
