@@ -11,6 +11,7 @@ import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.common.entry.MetalItemEntry;
+import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -55,6 +56,12 @@ public interface IRegistrateHelper<R extends AbstractRegistrate<R>> {
 
     R owner();
 
+    default TooltipLoader genSubscribeTooltips() {
+        TooltipLoader loader = new TooltipLoader(owner().getModid());
+        loader.generator(owner());
+        return loader;
+    }
+
     default <T> ResourceKey<T> createKey(ResourceKey<? extends Registry<T>> key, String id) {
         return ResourceKey.create(key, new ResourceLocation(owner().getModid(), id));
     }
@@ -79,14 +86,14 @@ public interface IRegistrateHelper<R extends AbstractRegistrate<R>> {
     }
 
     default RegistryEntry<CreativeModeTab> buildCreativeTab(Consumer<CreativeModeTab.Builder> config) {
-        return buildModCreativeTab("tab", getTabName("tab"), config);
+        return buildCreativeTab("tab", getTabName("tab"), config);
     }
 
     default RegistryEntry<CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
-        return buildModCreativeTab(name, getTabName(name), config);
+        return buildCreativeTab(name, getTabName(name), config);
     }
 
-    default RegistryEntry<CreativeModeTab> buildModCreativeTab(String name, String def, Consumer<CreativeModeTab.Builder> config) {
+    default RegistryEntry<CreativeModeTab> buildCreativeTab(String name, String def, Consumer<CreativeModeTab.Builder> config) {
         ResourceLocation id = new ResourceLocation(owner().getModid(), name);
         owner().defaultCreativeTab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, id));
         return this.buildCreativeTabImpl(name, owner().addLang("itemGroup", id, def), config);
