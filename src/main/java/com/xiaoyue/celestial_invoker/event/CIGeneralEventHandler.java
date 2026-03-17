@@ -1,8 +1,10 @@
 package com.xiaoyue.celestial_invoker.event;
 
+import com.xiaoyue.celestial_invoker.content.generic.items.api.IClickInteraction;
 import com.xiaoyue.celestial_invoker.content.generic.shared.ClickEmptyPayload;
 import com.xiaoyue.celestial_invoker.content.generic.shared.IBouncyProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -21,7 +23,7 @@ import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
 public class CIGeneralEventHandler {
 
     @SubscribeEvent
-    public static void initPayload(RegisterPayloadHandlersEvent event) {
+    public static void registerPayload(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar("1");
         registrar.playToServer(ClickEmptyPayload.ID, ClickEmptyPayload.CODEC, ClickEmptyPayload::handlePacket);
     }
@@ -41,6 +43,22 @@ public class CIGeneralEventHandler {
             ClickEmptyPayload.acceptItem(event.getEntity(), event.getHand(), true);
         } else {
             PacketDistributor.sendToServer(new ClickEmptyPayload(true, event.getHand()));
+        }
+    }
+
+    @SubscribeEvent
+    public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+        ItemStack stack = event.getItemStack();
+        if (stack.getItem() instanceof IClickInteraction item) {
+            item.onLeftClickBlock(event.getEntity(), stack, event);
+        }
+    }
+
+    @SubscribeEvent
+    public static void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        ItemStack stack = event.getItemStack();
+        if (stack.getItem() instanceof IClickInteraction item) {
+            item.onRightClickBlock(event.getEntity(), stack, event);
         }
     }
 
