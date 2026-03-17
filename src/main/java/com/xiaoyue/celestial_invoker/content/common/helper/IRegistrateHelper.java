@@ -9,6 +9,7 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.common.MetalItemEntry;
+import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -30,11 +31,17 @@ import java.util.stream.Collectors;
 
 public interface IRegistrateHelper<R extends AbstractRegistrate<R>> {
 
-    static <R extends AbstractRegistrate<R>> IRegistrateHelper<R> simpleHelper(R registrate) {
+    static <R extends AbstractRegistrate<R>> IRegistrateHelper<R> simple(R registrate) {
         return () -> registrate;
     }
 
     R owner();
+
+    default TooltipLoader genSubscribeTooltips() {
+        TooltipLoader loader = new TooltipLoader(owner().getModid());
+        loader.generator(owner());
+        return loader;
+    }
 
     default String getTabName(String name) {
         return name.equals("tab") ? RegistrateLangProvider.toEnglishName(owner().getModid()) :
@@ -95,10 +102,10 @@ public interface IRegistrateHelper<R extends AbstractRegistrate<R>> {
     default RegistryEntry<CreativeModeTab, CreativeModeTab> buildCreativeTab(String name, String text, Consumer<CreativeModeTab.Builder> config) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(owner().getModid(), name);
         owner().defaultCreativeTab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, id));
-        return this.creativeTabImpl(name, owner().addLang("itemGroup", id, text), config);
+        return this.buildCreativeTabImpl(name, owner().addLang("itemGroup", id, text), config);
     }
 
-    default RegistryEntry<CreativeModeTab, CreativeModeTab> creativeTabImpl(String name, Component comp, Consumer<CreativeModeTab.Builder> config) {
+    default RegistryEntry<CreativeModeTab, CreativeModeTab> buildCreativeTabImpl(String name, Component comp, Consumer<CreativeModeTab.Builder> config) {
         return owner().generic(owner(), name, Registries.CREATIVE_MODE_TAB, () -> {
             CreativeModeTab.Builder builder = CreativeModeTab.builder().title(comp).withTabsBefore(CreativeModeTabs.SPAWN_EGGS);
             config.accept(builder);
