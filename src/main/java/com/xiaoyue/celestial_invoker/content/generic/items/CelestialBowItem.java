@@ -22,7 +22,7 @@ public class CelestialBowItem extends BowItem {
     }
 
     public float getPullTime(LivingEntity user, ItemStack bow) {
-        return 1.0f;
+        return 20f;
     }
 
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
@@ -75,7 +75,7 @@ public class CelestialBowItem extends BowItem {
     }
 
     public float getPullForTime(LivingEntity user, ItemStack bow, float time) {
-        float actual = this.getPullTime(user, bow) * 20.0F;
+        float actual = this.getPullTime(user, bow);
         float f = time / actual * 1.5F;
         return Math.min(1.0F, f);
     }

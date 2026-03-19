@@ -3,7 +3,6 @@ package com.xiaoyue.celestial_invoker.content.generic.items;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.SubscribeTooltip;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipEntry;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
@@ -22,9 +21,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumMap;
 import java.util.List;
-import java.util.UUID;
 
 public class CelestialArmorItem extends ArmorItem {
 
@@ -32,12 +29,6 @@ public class CelestialArmorItem extends ArmorItem {
     public static TooltipEntry setEffect = TooltipEntry.define("Set effect: ");
     @SubscribeTooltip(id = "alt_down")
     public static TooltipEntry altDown = TooltipEntry.define("Press [%s] to display set effects");
-    public static final EnumMap<Type, UUID> ARMOR_MODIFIER_UUID_PER_TYPE = Util.make(new EnumMap<>(Type.class), (map) -> {
-        map.put(Type.BOOTS, UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"));
-        map.put(Type.LEGGINGS, UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"));
-        map.put(Type.CHESTPLATE, UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"));
-        map.put(Type.HELMET, UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150"));
-    });
 
     public CelestialArmorItem(Holder<ArmorMaterial> material, Type pType, Properties pProperties) {
         super(material, pType, pProperties);
@@ -50,7 +41,7 @@ public class CelestialArmorItem extends ArmorItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> list, TooltipFlag tooltipFlag) {
         this.addTooltips(stack, list, type.getSlot());
-        if (hasArmorSetTooltip(stack) && Screen.hasAltDown()) {
+        if (hasArmorSetTooltip(stack) && !Screen.hasAltDown()) {
             addArmorSetTooltips(stack, list);
         } else {
             list.add(altDown.withGray(Component.literal("ALT").withStyle(ChatFormatting.YELLOW)));
