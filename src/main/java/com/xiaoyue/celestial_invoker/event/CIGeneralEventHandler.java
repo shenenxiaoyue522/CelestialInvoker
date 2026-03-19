@@ -14,19 +14,11 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
 
 @EventBusSubscriber(modid = MODID)
 public class CIGeneralEventHandler {
-
-    @SubscribeEvent
-    public static void registerPayload(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar("1");
-        registrar.playToServer(ClickEmptyPayload.ID, ClickEmptyPayload.CODEC, ClickEmptyPayload::handlePacket);
-    }
 
     @SubscribeEvent
     public static void leftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
