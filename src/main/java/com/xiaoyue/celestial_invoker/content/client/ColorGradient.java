@@ -10,6 +10,11 @@ public class ColorGradient {
         this.positions = positions;
     }
 
+    public ColorGradient(int color1, int color2) {
+        this.colors = new int[]{color1, color2};
+        this.positions = new float[]{0f, 1f};
+    }
+
     public int getColorAt(float position) {
         if (colors.length == 1) return colors[0];
         for (int i = 0; i < positions.length - 1; i++) {
