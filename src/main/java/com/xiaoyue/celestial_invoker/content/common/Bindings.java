@@ -7,6 +7,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -22,12 +24,49 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.CommonHooks;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 public class Bindings {
+
+    public static <A> Map<String, A> deserializeMap(CompoundTag tag, String key, BiFunction<CompoundTag, String, A> func) {
+        Map<String, A> map = new HashMap<>();
+        CompoundTag output = tag.getCompound(key);
+        for (String outputKey : output.getAllKeys()) {
+            map.put(outputKey, func.apply(output, outputKey));
+        }
+        return map;
+    }
+
+    public static <A> CompoundTag serializeMap(Map<String, A> map, TriConsumer<CompoundTag, String, A> func) {
+        CompoundTag output = new CompoundTag();
+        for (Map.Entry<String, A> entry : map.entrySet()) {
+            func.accept(output, entry.getKey(), entry.getValue());
+        }
+        return output;
+    }
+
+    public static <A> List<A> deserializeList(CompoundTag tag, String key, int type, BiFunction<ListTag, Integer, A> func) {
+        List<A> list = new ArrayList<>();
+        ListTag output = tag.getList(key, type);
+        for (int i = 0; i < output.size(); i++) {
+            list.add(func.apply(output, i));
+        }
+        return list;
+    }
+
+    public static <A> ListTag serializeList(List<A> list, BiConsumer<ListTag, A> func) {
+        ListTag output = new ListTag();
+        for (A obj : list) {
+            func.accept(output, obj);
+        }
+        return output;
+    }
+
+    public static boolean isArmorSlotIndex(int slot) {
+        return slot >= 36 && slot <= 39;
+    }
 
     public static int getEnchantmentLv(ItemStack stack, ResourceKey<Enchantment> enchantment) {
         var resolved = CommonHooks.resolveLookup(Registries.ENCHANTMENT);

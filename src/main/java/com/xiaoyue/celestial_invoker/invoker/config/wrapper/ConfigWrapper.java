@@ -50,8 +50,8 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
     }
 
     public static void addTitleTooltip(AbstractRegistrate<?> registrate) {
-        String title = registrate.getModid() + ".configuration.";
-        registrate.addRawLang(title + "title", StringHelper.caseSpaceCapitalize(title));
+        String title = registrate.getModid() + ".configuration.title";
+        registrate.addRawLang(title, StringHelper.caseSpaceCapitalize(title));
     }
 
     public static <T extends ConfigWrapper> T init(AbstractRegistrate<?> registrate, ModConfig.Type type, Function<Builder, T> factory) {

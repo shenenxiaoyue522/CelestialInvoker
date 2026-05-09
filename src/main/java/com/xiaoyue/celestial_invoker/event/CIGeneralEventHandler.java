@@ -1,5 +1,6 @@
 package com.xiaoyue.celestial_invoker.event;
 
+import com.xiaoyue.celestial_invoker.content.common.helper.DelayHelper;
 import com.xiaoyue.celestial_invoker.content.generic.items.api.IClickInteraction;
 import com.xiaoyue.celestial_invoker.content.generic.shared.ClickEmptyPayload;
 import com.xiaoyue.celestial_invoker.content.generic.shared.IBouncyProjectile;
@@ -13,6 +14,7 @@ import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
@@ -52,6 +54,11 @@ public class CIGeneralEventHandler {
         if (stack.getItem() instanceof IClickInteraction item) {
             item.onRightClickBlock(event.getEntity(), stack, event);
         }
+    }
+
+    @SubscribeEvent
+    public static void onServerTick(ServerTickEvent.Post event) {
+        DelayHelper.serverTick();
     }
 
     @SubscribeEvent

@@ -2,9 +2,11 @@ package com.xiaoyue.celestial_invoker;
 
 import com.mojang.logging.LogUtils;
 import com.tterrag.registrate.Registrate;
+import com.xiaoyue.celestial_invoker.content.common.registrar.RegistrateExtra;
 import com.xiaoyue.celestial_invoker.content.generic.shared.ClickEmptyPayload;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
+import com.xiaoyue.celestial_invoker.register.CIObjects;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -22,8 +24,10 @@ public class CelestialInvoker {
     public static final String MODID = "celestial_invoker";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final Registrate REGISTRATE = Registrate.create(MODID);
-    
+    public static final RegistrateExtra<Registrate> EXTRA = new RegistrateExtra<>(REGISTRATE);
+
     public CelestialInvoker() {
+        CIObjects.register();
         CIEntities.register();
         TooltipLoader.generator(MODID, REGISTRATE);
     }

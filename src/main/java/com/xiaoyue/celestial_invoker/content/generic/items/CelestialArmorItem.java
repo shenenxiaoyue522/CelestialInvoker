@@ -1,5 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.generic.items;
 
+import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.SubscribeTooltip;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipEntry;
 import net.minecraft.ChatFormatting;
@@ -119,13 +120,10 @@ public class CelestialArmorItem extends ArmorItem {
     @Override
     public final void inventoryTick(ItemStack pStack, Level pLevel, Entity entity, int pSlotId, boolean selected) {
         if (!(entity instanceof LivingEntity self)) return;
-        if (pSlotId >= 36) {
-            int vanillaIndex = pSlotId - 36;
-            if (vanillaIndex < 4) {
-                this.onArmorTick(pStack, pLevel, self, type.getSlot());
-            }
-            this.onInventoryTick(pStack, pLevel, self, type.getSlot(), selected);
+        if (Bindings.isArmorSlotIndex(pSlotId)) {
+            this.onArmorTick(pStack, pLevel, self, type.getSlot());
         }
+        this.onInventoryTick(pStack, pLevel, self, type.getSlot(), selected);
     }
 
     protected void onArmorTick(ItemStack stack, Level level, LivingEntity entity, EquipmentSlot slot) {
