@@ -3,6 +3,7 @@ package com.xiaoyue.celestial_invoker.invoker.tooltip;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.RegistrateDistExecutor;
+import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.common.SimpleInvoker;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforgespi.language.ModFileScanData;
@@ -41,8 +42,8 @@ public class TooltipLoader {
         try {
             for (ModFileScanData.AnnotationData data : SimpleInvoker.getModAnno(modid, SubscribeTooltip.class)) {
                 String tooltipKey = "";
-                String key = (String) data.annotationData().getOrDefault("key", "");
-                String id = (String) data.annotationData().getOrDefault("id", "");
+                String key = Bindings.cast(data.annotationData().getOrDefault("key", ""), String.class);
+                String id = Bindings.cast(data.annotationData().getOrDefault("id", ""), String.class);
                 if (!key.isEmpty()) {
                     tooltipKey = key;
                 } else if (id != null) {

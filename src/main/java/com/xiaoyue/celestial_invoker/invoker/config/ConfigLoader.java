@@ -1,6 +1,7 @@
 package com.xiaoyue.celestial_invoker.invoker.config;
 
 import com.tterrag.registrate.util.RegistrateDistExecutor;
+import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.common.SimpleInvoker;
 import com.xiaoyue.celestial_invoker.content.common.helper.StringHelper;
 import net.neoforged.api.distmarker.Dist;
@@ -44,9 +45,9 @@ public class ConfigLoader {
         ConfigHolderMap map = new ConfigHolderMap(modid);
         try {
             for(ModFileScanData.AnnotationData data : SimpleInvoker.getModAnno(modid, ConfigHolderEntry.class)) {
-                String category = (String) data.annotationData().getOrDefault("category", "");
-                String categoryName = (String) data.annotationData().getOrDefault("categoryName", "");
-                ModConfig.Type type = (ModConfig.Type) data.annotationData().getOrDefault("type", ModConfig.Type.SERVER);
+                String category = Bindings.cast(data.annotationData().getOrDefault("category", ""), String.class);
+                String categoryName = Bindings.cast(data.annotationData().getOrDefault("categoryName", ""), String.class);
+                ModConfig.Type type = Bindings.cast(data.annotationData().getOrDefault("type", ModConfig.Type.SERVER), ModConfig.Type.class);
                 Type clazz = data.clazz();
                 String name = data.memberName();
                 Class<?> annoCls = Class.forName(clazz.getClassName());

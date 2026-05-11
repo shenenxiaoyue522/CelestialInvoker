@@ -40,6 +40,10 @@ import java.util.stream.Collectors;
 public record RegistrateExtra<R extends AbstractRegistrate<R>>(R owner) {
     public static boolean addConfigTitle = true;
 
+    public static <R, T extends R> IEntryWrapper<T> entry(RegistryEntry<R, T> entry) {
+        return new EntryWrapper<>(entry);
+    }
+
     public  <T> NeoForgeRegister<T> neoforgeRegister(Registry<T> registry) {
         DeferredRegister<T> register = DeferredRegister.create(registry, owner().getModid());
         register.register(Objects.requireNonNull(owner().getModEventBus()));
@@ -142,12 +146,12 @@ public record RegistrateExtra<R extends AbstractRegistrate<R>>(R owner) {
     }
 
     @FunctionalInterface
-    interface ArmorTypeCallback<T> {
+    public interface ArmorTypeCallback<T> {
         NonNullFunction<Item.Properties, T> onCallback(ArmorItem.Type type);
     }
 
     @FunctionalInterface
-    interface ArmorNameCallback {
+    public interface ArmorNameCallback {
         String onCallback(ArmorItem.Type type);
     }
 }

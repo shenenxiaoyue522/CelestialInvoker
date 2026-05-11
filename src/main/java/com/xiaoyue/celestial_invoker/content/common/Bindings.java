@@ -30,6 +30,10 @@ import java.util.function.BiFunction;
 
 public class Bindings {
 
+    public static <A> A cast(Object obj, Class<A> aClass) {
+        return aClass.cast(obj);
+    }
+
     public static <A> Map<String, A> deserializeMap(CompoundTag tag, String key, BiFunction<CompoundTag, String, A> func) {
         Map<String, A> map = new HashMap<>();
         CompoundTag output = tag.getCompound(key);
