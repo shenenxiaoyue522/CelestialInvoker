@@ -64,36 +64,44 @@ public record ArmorMate(String name, int durability, int[] defense, int enchant,
         public float toughness, knockResist = 0f;
         public Supplier<Ingredient> repair = Ingredient::of;
 
-        public void setName(String name) {
+        public Builder name(String name) {
             this.name = name;
+            return this;
         }
 
-        public void durability(int durability) {
+        public Builder durability(int durability) {
             this.durability = durability;
+            return this;
         }
 
-        public void enchant(int enchant) {
+        public Builder enchant(int enchant) {
             this.enchant = enchant;
+            return this;
         }
 
-        public void defense(int[] defense) {
+        public Builder defense(int[] defense) {
             this.defense = defense;
+            return this;
         }
 
-        public void sound(SoundEvent sound) {
+        public Builder sound(SoundEvent sound) {
             this.sound = sound;
+            return this;
         }
 
-        public void toughness(float toughness) {
+        public Builder toughness(float toughness) {
             this.toughness = toughness;
+            return this;
         }
 
-        public void knockResist(float knockResist) {
+        public Builder knockResist(float knockResist) {
             this.knockResist = knockResist;
+            return this;
         }
 
-        public void repair(Supplier<Ingredient> repair) {
+        public Builder repair(Supplier<Ingredient> repair) {
             this.repair = repair;
+            return this;
         }
 
         public ArmorMate build() {

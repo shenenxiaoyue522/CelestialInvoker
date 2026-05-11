@@ -47,10 +47,12 @@ public class CelestialArmorItem extends ArmorItem {
     @Override
     public final void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> list, TooltipFlag pIsAdvanced) {
         this.addTooltips(stack, list, type.getSlot());
-        if (hasArmorSetTooltip(stack) && Screen.hasAltDown()) {
-            addArmorSetTooltips(stack, list);
-        } else {
-            list.add(altDown.withGray(Component.literal("ALT").withStyle(ChatFormatting.YELLOW)));
+        if (hasArmorSetTooltip(stack)) {
+            if (Screen.hasAltDown()) {
+                addArmorSetTooltips(stack, list);
+            } else {
+                list.add(altDown.withGray(Component.literal("ALT").withStyle(ChatFormatting.YELLOW)));
+            }
         }
     }
 
