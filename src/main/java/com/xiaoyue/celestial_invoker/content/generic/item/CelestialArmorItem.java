@@ -133,8 +133,9 @@ public class CelestialArmorItem extends ArmorItem {
             int vanillaIndex = pSlotId - 36;
             if (vanillaIndex < 4) {
                 this.onArmorTick(pStack, pLevel, self, type.getSlot());
+            } else {
+                this.onInventoryTick(pStack, pLevel, self, type.getSlot(), selected);
             }
-            this.onInventoryTick(pStack, pLevel, self, type.getSlot(), selected);
         }
     }
 
