@@ -129,13 +129,10 @@ public class CelestialArmorItem extends ArmorItem {
     @Override
     public final void inventoryTick(ItemStack pStack, Level pLevel, Entity entity, int pSlotId, boolean selected) {
         if (!(entity instanceof LivingEntity self)) return;
-        if (pSlotId >= 36) {
-            int vanillaIndex = pSlotId - 36;
-            if (vanillaIndex < 4) {
-                this.onArmorTick(pStack, pLevel, self, type.getSlot());
-            } else {
-                this.onInventoryTick(pStack, pLevel, self, type.getSlot(), selected);
-            }
+        if (pSlotId >= 36 && pSlotId < 40) {
+            this.onArmorTick(pStack, pLevel, self, type.getSlot());
+        } else {
+            onInventoryTick(pStack, pLevel, self, type.getSlot(), selected);
         }
     }
 
