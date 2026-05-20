@@ -21,7 +21,8 @@ public class CIGeneralEventHandler {
     @SubscribeEvent
     public static void onProjectileImpact(ProjectileImpactEvent event) {
         Projectile projectile = event.getProjectile();
-        if (event.getRayTraceResult().getType() != HitResult.Type.BLOCK) return;
+        HitResult hit = event.getRayTraceResult();
+        if (hit == null || hit.getType() != HitResult.Type.BLOCK) return;
         if (!(projectile instanceof IBouncyProjectile bouncy)) return;
         if (bouncy.canBounce(projectile)) {
             int maxBounces = bouncy.getMaxBounces();
@@ -30,7 +31,7 @@ public class CIGeneralEventHandler {
                 return;
             }
             event.setCanceled(true);
-            BlockHitResult result = (BlockHitResult) event.getRayTraceResult();
+            BlockHitResult result = (BlockHitResult) hit;
             Vec3 incoming = projectile.getDeltaMovement();
             Vec3 normal = Vec3.atLowerCornerOf(result.getDirection().getNormal());
             double dot = incoming.dot(normal);
