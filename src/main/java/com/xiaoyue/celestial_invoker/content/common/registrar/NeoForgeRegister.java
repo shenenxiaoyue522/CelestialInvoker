@@ -8,20 +8,47 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-public record NeoForgeRegister<E>(DeferredRegister<E> register) {
+public interface NeoForgeRegister<E> {
 
-    public <T extends E> Supplier<T> object(String id, Supplier<T> sup) {
-        return register.register(id, sup);
-    }
+    <T extends E> Supplier<T> object(String id, Supplier<T> sup);
 
-    public <T extends E> Supplier<T> object(String id, Function<ResourceLocation, ? extends T> func) {
-        return register.register(id, func);
-    }
+    <T extends E> Supplier<T> object(String id, Function<ResourceLocation, ? extends T> func);
 
-    public <T> Supplier<DataComponentType<T>> component(String id, UnaryOperator<DataComponentType.Builder<T>> builder) {
-        if (register instanceof DeferredRegister.DataComponents components) {
-            return components.registerComponentType(id, builder);
+    <T> Supplier<DataComponentType<T>> component(String id, UnaryOperator<DataComponentType.Builder<T>> builder);
+
+    record Basic<R>(DeferredRegister<R> register) implements NeoForgeRegister<R> {
+
+        @Override
+        public <T extends R> Supplier<T> object(String id, Supplier<T> sup) {
+            return register.register(id, sup);
         }
-        return null;
+
+        @Override
+        public <T extends R> Supplier<T> object(String id, Function<ResourceLocation, ? extends T> func) {
+            return register.register(id, func);
+        }
+
+        @Override
+        public <T> Supplier<DataComponentType<T>> component(String id, UnaryOperator<DataComponentType.Builder<T>> builder) {
+            return null;
+        }
+    }
+
+    record Component(DeferredRegister.DataComponents register) implements NeoForgeRegister<DataComponentType<?>> {
+
+        @Override
+        public <T extends DataComponentType<?>> Supplier<T> object(String id, Supplier<T> sup) {
+            return null;
+        }
+
+        @Override
+        public <T extends DataComponentType<?>> Supplier<T> object(String id, Function<ResourceLocation, ? extends T> func) {
+            return null;
+        }
+
+        @Override
+        public <T> Supplier<DataComponentType<T>> component(String id, UnaryOperator<DataComponentType.Builder<T>> builder) {
+            return register.registerComponentType(id, builder);
+        }
     }
 }

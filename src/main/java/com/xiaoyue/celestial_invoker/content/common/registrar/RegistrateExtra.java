@@ -47,13 +47,13 @@ public record RegistrateExtra<R extends AbstractRegistrate<R>>(R owner) {
     public  <T> NeoForgeRegister<T> neoforgeRegister(Registry<T> registry) {
         DeferredRegister<T> register = DeferredRegister.create(registry, owner().getModid());
         register.register(Objects.requireNonNull(owner().getModEventBus()));
-        return new NeoForgeRegister<>(register);
+        return new NeoForgeRegister.Basic<>(register);
     }
 
     public NeoForgeRegister<DataComponentType<?>> neoforgeRegister(ResourceKey<Registry<DataComponentType<?>>> registry) {
         DeferredRegister.DataComponents register = DeferredRegister.createDataComponents(registry, owner().getModid());
         register.register(Objects.requireNonNull(owner().getModEventBus()));
-        return new NeoForgeRegister<>(register);
+        return new NeoForgeRegister.Component(register);
     }
 
     public <T extends ConfigWrapper> T initConfig(ModConfig.Type type, Function<ConfigWrapper.Builder, T> factory) {
