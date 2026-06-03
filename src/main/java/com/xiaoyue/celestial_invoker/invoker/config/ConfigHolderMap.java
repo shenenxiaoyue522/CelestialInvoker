@@ -89,13 +89,13 @@ public class ConfigHolderMap {
         }
     }
 
-    public void addConfig(String category, String categoryName, ConfigHolder<?> holder, ModConfig.Type type) {
+    public void addConfig(String category, ConfigHolder<?> holder, ModConfig.Type type) {
         String key = modid + ".configuration." + category;
         Map<String, Map<String, ConfigHolder<?>>> map = this.getMap(type);
         if (map.containsKey(category)) {
             (map.get(category)).put(holder.getId(), holder);
         } else {
-            TITLE_MAP.put(key, categoryName);
+            TITLE_MAP.put(key, StringHelper.camelToCapitalizedWords(key));
             Map<String, ConfigHolder<?>> defMap = new TreeMap<>();
             defMap.put(holder.getId(), holder);
             map.put(category, defMap);

@@ -33,25 +33,25 @@ public class DelayHelper {
         this.action = action;
     }
 
-    public static Optional<DelayHelper> getUtils(ResourceLocation id) {
+    public static Optional<DelayHelper> get(ResourceLocation id) {
         return Optional.ofNullable(MAP.get(id));
     }
 
     public static void serverTick() {
         if (MAP.isEmpty()) return;
-        MAP.forEach((key, utils) -> {
-            if (utils.runTick >= utils.needRunTick) {
-                utils.action.run();
-                utils.runCount++;
-                if (utils.runCount >= utils.needRunCount) {
-                    utils.isEnd = true;
+        MAP.forEach((key, helper) -> {
+            if (helper.runTick >= helper.needRunTick) {
+                helper.action.run();
+                helper.runCount++;
+                if (helper.runCount >= helper.needRunCount) {
+                    helper.isEnd = true;
                 } else {
-                    utils.runTick = 0;
-                    utils.isEnd = false;
+                    helper.runTick = 0;
+                    helper.isEnd = false;
                 }
             } else {
-                utils.runTick++;
-                utils.isEnd = false;
+                helper.runTick++;
+                helper.isEnd = false;
             }
         });
         MAP.entrySet().removeIf(entry -> entry.getValue().isEnd);

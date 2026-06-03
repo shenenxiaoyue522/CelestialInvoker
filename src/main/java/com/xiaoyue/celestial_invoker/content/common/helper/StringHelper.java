@@ -38,4 +38,30 @@ public class StringHelper {
         }
         return result.toString().trim();
     }
+
+    public static String camelToCapitalizedWords(String camel) {
+        if (camel == null || camel.isEmpty()) {
+            return "";
+        }
+        StringBuilder spaced = new StringBuilder();
+        for (int i = 0; i < camel.length(); i++) {
+            char c = camel.charAt(i);
+            if (i > 0 && Character.isUpperCase(c)) {
+                spaced.append(' ');
+            }
+            spaced.append(c);
+        }
+        String[] words = spaced.toString().split(" ");
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            if (word.isEmpty()) continue;
+            String transformed = word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
+            result.append(transformed);
+            if (i < words.length - 1) {
+                result.append(' ');
+            }
+        }
+        return result.toString();
+    }
 }

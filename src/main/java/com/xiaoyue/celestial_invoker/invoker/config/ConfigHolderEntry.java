@@ -13,8 +13,6 @@ public @interface ConfigHolderEntry {
 
     String category() default "";
 
-    String categoryName() default "";
-
     ModConfig.Type type() default ModConfig.Type.SERVER;
 
 }
