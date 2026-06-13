@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.common.helper;
+package com.xiaoyue.celestial_invoker.content.common;
 
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.ItemBuilder;
@@ -9,7 +9,6 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.common.entry.MetalItemEntry;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import net.minecraft.core.Registry;
@@ -40,9 +39,9 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-public interface IRegistrateHelper<R extends AbstractRegistrate<R>> {
+public interface IRegistrateExtra<R extends AbstractRegistrate<R>> {
 
-    static <R extends AbstractRegistrate<R>> IRegistrateHelper<R> simple(R registrate) {
+    static <R extends AbstractRegistrate<R>> IRegistrateExtra<R> simple(R registrate) {
         return () -> registrate;
     }
 
