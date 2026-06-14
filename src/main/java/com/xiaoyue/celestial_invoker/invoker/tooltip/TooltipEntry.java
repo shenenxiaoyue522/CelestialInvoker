@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.text.DecimalFormat;
@@ -63,10 +64,20 @@ public final class TooltipEntry {
         return Component.translatable(key, obj).withStyle(color);
     }
 
-    public static final DecimalFormat format = new DecimalFormat("#.#");
+    public MutableComponent withColor(int color) {
+        return Component.translatable(key, obj).withStyle(style -> style.withColor(color));
+    }
+
+    public MutableComponent withColor(int color, Object... obj) {
+        return Component.translatable(key, obj).withStyle(style -> style.withColor(color));
+    }
+
+    public static final DecimalFormat intFormat = new DecimalFormat("#");
+    public static final DecimalFormat floatFormat = new DecimalFormat("#.#");
+    public static final DecimalFormat doubleFormat = new DecimalFormat("#.##");
 
     public static MutableComponent per(double v) {
-        return Component.literal(Float.parseFloat(format.format(v * 100f)) + "%").withStyle(ChatFormatting.AQUA);
+        return Component.literal(Float.parseFloat(floatFormat.format(v * 100f)) + "%").withStyle(ChatFormatting.AQUA);
     }
 
     public static MutableComponent round(double v) {
@@ -74,15 +85,15 @@ public final class TooltipEntry {
     }
 
     public static MutableComponent num(int v) {
-        return Component.literal(format.format(v)).withStyle(ChatFormatting.AQUA);
+        return Component.literal(intFormat.format(v)).withStyle(ChatFormatting.AQUA);
     }
 
     public static MutableComponent num(float v) {
-        return Component.literal(format.format(v)).withStyle(ChatFormatting.AQUA);
+        return Component.literal(floatFormat.format(v)).withStyle(ChatFormatting.AQUA);
     }
 
     public static MutableComponent num(double v) {
-        return Component.literal(format.format(v)).withStyle(ChatFormatting.AQUA);
+        return Component.literal(doubleFormat.format(v)).withStyle(ChatFormatting.AQUA);
     }
 
     public static MutableComponent entity(EntityType<?> type) {
@@ -95,5 +106,9 @@ public final class TooltipEntry {
 
     public static MutableComponent enchantment(Enchantment enchantment) {
         return Component.translatable(enchantment.getDescriptionId());
+    }
+
+    public static MutableComponent attr(Attribute attr) {
+        return Component.translatable(attr.getDescriptionId());
     }
 }
