@@ -72,7 +72,6 @@ public final class TooltipEntry {
         return Component.translatable(key, obj).withStyle(style -> style.withColor(color));
     }
 
-    public static final DecimalFormat intFormat = new DecimalFormat("#");
     public static final DecimalFormat floatFormat = new DecimalFormat("#.#");
     public static final DecimalFormat doubleFormat = new DecimalFormat("#.##");
 
@@ -85,7 +84,7 @@ public final class TooltipEntry {
     }
 
     public static MutableComponent num(int v) {
-        return Component.literal(intFormat.format(v)).withStyle(ChatFormatting.AQUA);
+        return Component.literal(floatFormat.format(v)).withStyle(ChatFormatting.AQUA);
     }
 
     public static MutableComponent num(float v) {
