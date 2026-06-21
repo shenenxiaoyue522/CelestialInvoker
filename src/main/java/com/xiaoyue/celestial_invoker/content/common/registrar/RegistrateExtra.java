@@ -40,10 +40,6 @@ import java.util.stream.Collectors;
 public record RegistrateExtra<R extends AbstractRegistrate<R>>(R owner) {
     public static boolean addConfigTitle = true;
 
-    public static <R, T extends R> IEntryWrapper<T> entry(RegistryEntry<R, T> entry) {
-        return new EntryWrapper<>(entry);
-    }
-
     public  <T> NeoForgeRegister<T> neoforgeRegister(Registry<T> registry) {
         DeferredRegister<T> register = DeferredRegister.create(registry, owner().getModid());
         register.register(Objects.requireNonNull(owner().getModEventBus()));
