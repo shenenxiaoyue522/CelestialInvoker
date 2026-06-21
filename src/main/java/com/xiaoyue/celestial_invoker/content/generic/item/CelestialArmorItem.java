@@ -144,15 +144,15 @@ public class CelestialArmorItem extends ArmorItem {
 
     }
 
-    public static boolean fullSetArmor(@Nullable LivingEntity entity) {
+    public boolean fullSetArmor(@Nullable LivingEntity entity) {
         return getSetArmorAmount(entity) >= 4;
     }
 
-    public static int getSetArmorAmount(@Nullable LivingEntity entity) {
+    public int getSetArmorAmount(@Nullable LivingEntity entity) {
         int amount = 0;
         if (entity == null) return amount;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (slot.isArmor() && entity.getItemBySlot(slot).getItem() instanceof CelestialArmorItem armor && armor.hasSetArmor(entity, slot)) amount++;
+            if (slot.isArmor() && hasSetArmor(entity, slot)) amount++;
         }
         return amount;
     }
