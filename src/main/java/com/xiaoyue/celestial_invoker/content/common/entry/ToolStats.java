@@ -75,7 +75,7 @@ public record ToolStats(int dur, float speed, float attack, TagKey<Block> lv, in
             return this;
         }
 
-        public Builder setRepair(Supplier<Ingredient> repair) {
+        public Builder repair(Supplier<Ingredient> repair) {
             this.repair = repair;
             return this;
         }
