@@ -72,7 +72,7 @@ public record ToolStats(int dur, float speed, float attack, int lv, int enchant,
             return this;
         }
 
-        public Builder setRepair(Supplier<Ingredient> repair) {
+        public Builder repair(Supplier<Ingredient> repair) {
             this.repair = repair;
             return this;
         }
