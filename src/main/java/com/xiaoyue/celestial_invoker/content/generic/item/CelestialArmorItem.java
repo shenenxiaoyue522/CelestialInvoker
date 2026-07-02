@@ -155,7 +155,7 @@ public class CelestialArmorItem extends ArmorItem {
         return stack.is(entry.get());
     }
 
-    public <T extends Item> ArmorSetEntry<T> getSetArmors() {
+    public ArmorSetEntry<Item> getSetArmors() {
         return null;
     }
 
