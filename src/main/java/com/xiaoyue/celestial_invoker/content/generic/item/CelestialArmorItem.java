@@ -9,9 +9,9 @@ import com.xiaoyue.celestial_invoker.content.common.entry.ArmorSetEntry;
 import com.xiaoyue.celestial_invoker.content.common.entry.AttributeAdder;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.SubscribeTooltip;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipEntry;
-import dev.xkmc.l2library.util.Proxy;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -67,7 +67,7 @@ public class CelestialArmorItem extends ArmorItem {
     }
 
     public void addArmorSetTooltips(ItemStack stack, List<Component> list) {
-        Player player = Proxy.getClientPlayer();
+        Player player = Minecraft.getInstance().player;
         list.add(getArmorSetTitle(player));
         addArmorSetEffectTooltips(stack, list);
         getSetArmors().getSet().keySet().forEach(type -> {

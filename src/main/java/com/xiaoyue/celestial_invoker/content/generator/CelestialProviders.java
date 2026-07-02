@@ -7,7 +7,4 @@ public class CelestialProviders {
     public static final ProviderType<RegistrateLootModifierProvider> LOOT_MODIFIER = ProviderType.register("global_loot_modifier",
             (r, e) -> new RegistrateLootModifierProvider(e.getGenerator().getPackOutput(), r));
 
-    public static final ProviderType<RegistrateRecordDataProvider> RECORD_DATA = ProviderType.register("record_data",
-            (r, e) -> new RegistrateRecordDataProvider(e.getGenerator(), r));
-
 }

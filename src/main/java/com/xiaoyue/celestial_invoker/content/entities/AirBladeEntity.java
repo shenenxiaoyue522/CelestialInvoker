@@ -3,8 +3,6 @@ package com.xiaoyue.celestial_invoker.content.entities;
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.generic.item.api.IAirBladeUser;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
-import dev.xkmc.l2damagetracker.init.L2DamageTracker;
-import dev.xkmc.l2library.util.math.MathHelper;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -17,7 +15,6 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -58,7 +55,7 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
         this.zRot = zRot;
         this.stack = stack;
         Vec3 v3 = this.getDeltaMovement();
-        float f = Mth.sqrt((float) MathHelper.horSq(v3));
+        float f = Mth.sqrt((float) (v3.x * v3.x + v3.z * v3.z));
         this.setXRot((float) (Mth.atan2(v3.y(), f) * (double) (180F / (float) Math.PI)));
         this.setYRot((float) (Mth.atan2(v3.x(), v3.z()) * (double) (180F / (float) Math.PI)));
         this.xRotO = this.getXRot();
@@ -97,15 +94,6 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
                 source = new DamageSource(Bindings.getDamageSource(level(), DamageTypes.MOB_PROJECTILE), owner, this);
             }
             float dmg = damage;
-            if (getOwner() instanceof Player player) {
-                double cr = L2DamageTracker.CRIT_RATE.get().getWrappedValue(player);
-                double cd = L2DamageTracker.CRIT_DMG.get().getWrappedValue(player);
-                double strength = L2DamageTracker.BOW_STRENGTH.get().getWrappedValue(player);
-                if (player.getRandom().nextDouble() < cr) {
-                    strength *= 1.0 + cd;
-                }
-                dmg *= (float) strength;
-            }
             if (stack.getItem() instanceof IAirBladeUser user) {
                 if (user.canHurt(this, entity, dmg)) {
                     entity.hurt(source, dmg);
