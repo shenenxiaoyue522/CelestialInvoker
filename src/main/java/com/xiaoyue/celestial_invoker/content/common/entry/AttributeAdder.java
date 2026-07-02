@@ -1,7 +1,6 @@
 package com.xiaoyue.celestial_invoker.content.common.entry;
 
 import com.google.common.collect.Multimap;
-import dev.xkmc.l2library.util.math.MathHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -40,13 +39,13 @@ public class AttributeAdder {
     public AttributeAdder nameWithUUID(ResourceLocation name) {
         String res = name.toString();
         this.name = res;
-        this.uuid = MathHelper.getUUIDFromString(res);
+        this.uuid = UUID.nameUUIDFromBytes(res.getBytes());
         return this;
     }
 
     public AttributeAdder nameWithUUID(String name) {
         this.name = name;
-        this.uuid = MathHelper.getUUIDFromString(name);
+        this.uuid = UUID.nameUUIDFromBytes(name.getBytes());
         return this;
     }
 
