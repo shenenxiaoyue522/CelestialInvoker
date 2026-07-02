@@ -1,6 +1,8 @@
 package com.xiaoyue.celestial_invoker.content.generic.items;
 
+import com.tterrag.registrate.util.entry.ItemEntry;
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
+import com.xiaoyue.celestial_invoker.content.common.registrar.ArmorSetEntry;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.SubscribeTooltip;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipEntry;
 import net.minecraft.ChatFormatting;
@@ -49,8 +51,7 @@ public class CelestialArmorItem extends ArmorItem {
         }
     }
 
-    protected void addTooltips(ItemStack stack, List<Component> list, EquipmentSlot slot) {
-
+    public void addTooltips(ItemStack stack, List<Component> list, EquipmentSlot slot) {
     }
 
     public boolean hasArmorSetTooltip(ItemStack stack) {
@@ -61,13 +62,14 @@ public class CelestialArmorItem extends ArmorItem {
         Player player = Minecraft.getInstance().player;
         list.add(getArmorSetTitle(player));
         addArmorSetEffectTooltips(stack, list);
-        List<Item> items = getSetArmors();
-        for (Item armor : items) {
-            MutableComponent cmp = Component.literal("> ").append(armor.getDescription());
-            EquipmentSlot slot = ((ArmorItem) armor).getEquipmentSlot();
-            cmp.withStyle(hasSetArmor(player, slot) ? ChatFormatting.GREEN : ChatFormatting.GRAY);
-            list.add(cmp);
-        }
+        getSetArmors().getSet().keySet().forEach(type -> {
+            ItemEntry<Item> entry = getSetArmors().getSet().get(type);
+            if (entry != null) {
+                MutableComponent cmp = Component.literal("> ").append(entry.get().getDescription());
+                cmp.withStyle(hasSetArmor(player, type) ? ChatFormatting.GREEN : ChatFormatting.GRAY);
+                list.add(cmp);
+            }
+        });
     }
 
     public MutableComponent getArmorSetName() {
@@ -75,7 +77,7 @@ public class CelestialArmorItem extends ArmorItem {
     }
 
     private MutableComponent getArmorSetTitle(Player player) {
-        Component end = getArmorSetName().append(" (" + getSetArmorAmount(player) + "/" + getSetArmorRequiredAmount() + ")")
+        Component end = getArmorSetName().append(" (" + getSetArmorCount(player) + "/" + getSetArmorRequiredAmount() + ")")
                 .withStyle(ChatFormatting.GRAY);
         return setEffect.get().append(" ").append(end);
     }
@@ -85,7 +87,7 @@ public class CelestialArmorItem extends ArmorItem {
     }
 
     public int getSetArmorRequiredAmount() {
-        return getSetArmors().size();
+        return getSetArmors().getSet().size();
     }
 
     @Override
@@ -120,49 +122,32 @@ public class CelestialArmorItem extends ArmorItem {
     @Override
     public final void inventoryTick(ItemStack pStack, Level pLevel, Entity entity, int pSlotId, boolean selected) {
         if (!(entity instanceof LivingEntity self)) return;
-        if (Bindings.isArmorSlotIndex(pSlotId)) {
-            this.onArmorTick(pStack, pLevel, self, type.getSlot());
-        }
-        this.onInventoryTick(pStack, pLevel, self, type.getSlot(), selected);
+        this.onInventoryTick(pStack, pLevel, self, type.getSlot(), selected, Bindings.isArmorSlotIndex(pSlotId));
     }
 
-    protected void onArmorTick(ItemStack stack, Level level, LivingEntity entity, EquipmentSlot slot) {
-
+    public void onInventoryTick(ItemStack stack, Level level, LivingEntity entity, EquipmentSlot slot, boolean selected, boolean current) {
     }
 
-    protected void onInventoryTick(ItemStack stack, Level level, LivingEntity entity, EquipmentSlot slot, boolean selected) {
-
+    public int getSetArmorCount(@Nullable LivingEntity entity) {
+        if (entity == null) return 0;
+        return getSetArmors().getSetArmorCount(entity);
     }
 
-    public boolean fullSetArmor(@Nullable LivingEntity entity) {
-        return getSetArmorAmount(entity) >= 4;
-    }
-
-    public int getSetArmorAmount(@Nullable LivingEntity entity) {
-        int amount = 0;
-        if (entity == null) return amount;
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (slot.isArmor() && hasSetArmor(entity, slot)) amount++;
-        }
-        return amount;
-    }
-
-    public boolean hasSetArmor(@Nullable LivingEntity entity, EquipmentSlot slot) {
+    public boolean hasSetArmor(@Nullable LivingEntity entity, Type slot) {
         if (entity == null) return false;
-        ItemStack stack = entity.getItemBySlot(slot);
+        ItemStack stack = entity.getItemBySlot(slot.getSlot());
         if (stack.isEmpty()) return false;
         return isSetArmor(stack, slot);
     }
 
-    public boolean isSetArmor(ItemStack stack, EquipmentSlot slot) {
-        for (Item armor : getSetArmors()) {
-            if (stack.is(armor)) return true;
-        }
-        return false;
+    public boolean isSetArmor(ItemStack stack, Type slot) {
+        ItemEntry<Item> entry = getSetArmors().getSet().get(slot);
+        if (entry == null) return false;
+        return stack.is(entry.get());
     }
 
-    public List<Item> getSetArmors() {
-        return List.of();
+    public <T extends Item> ArmorSetEntry<T> getSetArmors() {
+        return null;
     }
 
     public record DefenseData(float armor, float toughness, float knockbackResistance) {

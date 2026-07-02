@@ -30,7 +30,6 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 import java.util.function.Consumer;
@@ -84,14 +83,15 @@ public record RegistrateExtra<R extends AbstractRegistrate<R>>(R owner) {
                 pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName()))).tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register();
     }
 
-    public  <T extends Item> Map<ArmorItem.Type, ItemEntry<T>> armors(String name, String path, ArmorTypeCallback<T> item) {
+    public  <T extends Item> ArmorSetEntry<T> armors(String name, String path, ArmorTypeCallback<T> item) {
         return armors(type -> name + "_" + type.getName(), path, item);
     }
 
-    public  <T extends Item> Map<ArmorItem.Type, ItemEntry<T>> armors(ArmorNameCallback name, String path, ArmorTypeCallback<T> item) {
-        return Arrays.stream(ArmorItem.Type.values()).collect(Collectors.toMap(type -> type, type -> owner().item(name.onCallback(type), item.onCallback(type))
+    public  <T extends Item> ArmorSetEntry<T> armors(ArmorNameCallback name, String path, ArmorTypeCallback<T> item) {
+        var map = Arrays.stream(ArmorItem.Type.values()).collect(Collectors.toMap(type -> type, type -> owner().item(name.onCallback(type), item.onCallback(type))
                 .model((ctx, pvd) -> pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName())))
                 .tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register(), (a, b) -> b, TreeMap::new));
+        return ArmorSetEntry.of(map);
     }
 
     public MetalItemEntry<Item, Block> slimeMetal(String id) {
