@@ -71,7 +71,7 @@ public class CelestialArmorItem extends ArmorItem {
         list.add(getArmorSetTitle(player));
         addArmorSetEffectTooltips(stack, list);
         getSetArmors().getSet().keySet().forEach(type -> {
-            ItemEntry<Item> entry = getSetArmors().getSet().get(type);
+            ItemEntry<? extends Item> entry = getSetArmors().getSet().get(type);
             if (entry != null) {
                 MutableComponent cmp = Component.literal("> ").append(entry.get().getDescription());
                 cmp.withStyle(hasSetArmor(player, type) ? ChatFormatting.GREEN : ChatFormatting.GRAY);
@@ -150,12 +150,12 @@ public class CelestialArmorItem extends ArmorItem {
     }
 
     public boolean isSetArmor(ItemStack stack, Type slot) {
-        ItemEntry<Item> entry = getSetArmors().getSet().get(slot);
+        ItemEntry<? extends Item> entry = getSetArmors().getSet().get(slot);
         if (entry == null) return false;
         return stack.is(entry.get());
     }
 
-    public ArmorSetEntry<Item> getSetArmors() {
+    public ArmorSetEntry<? extends Item> getSetArmors() {
         return null;
     }
 
