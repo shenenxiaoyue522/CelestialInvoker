@@ -71,7 +71,13 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
         if (life <= 0) {
             discard();
         }
-        ParticleOptions particle = stack.getItem() instanceof IAirBladeUser user ? user.getTrajectoryParticles() : ParticleTypes.CRIT;
+        ParticleOptions particle;
+        if (stack.getItem() instanceof IAirBladeUser user) {
+            particle = user.getTrajectoryParticles();
+            user.tickUpdate(this);
+        } else {
+            particle = ParticleTypes.CRIT;
+        }
         double vx = speed.x;
         double vy = speed.y;
         double vz = speed.z;

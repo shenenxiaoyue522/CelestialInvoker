@@ -15,6 +15,9 @@ import javax.annotation.Nullable;
 
 public interface IAirBladeUser {
 
+    default void tickUpdate(AirBladeEntity blade) {
+    }
+
     default ParticleOptions getTrajectoryParticles() {
         return ParticleTypes.CRIT;
     }
