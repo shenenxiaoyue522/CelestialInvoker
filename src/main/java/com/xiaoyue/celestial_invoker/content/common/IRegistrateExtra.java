@@ -9,6 +9,7 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import com.xiaoyue.celestial_invoker.content.common.entry.ArmorSetEntry;
 import com.xiaoyue.celestial_invoker.content.common.entry.MetalItemEntry;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import net.minecraft.core.Registry;
@@ -24,8 +25,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -33,8 +32,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -63,10 +61,6 @@ public interface IRegistrateExtra<R extends AbstractRegistrate<R>> {
 
     default <T> ResourceKey<T> createKey(ResourceKey<? extends Registry<T>> key, String id) {
         return ResourceKey.create(key, new ResourceLocation(owner().getModid(), id));
-    }
-
-    default <T extends Recipe<?>> RegistryEntry<RecipeSerializer<T>> recipeSerial(String name, NonNullSupplier<RecipeSerializer<T>> sup) {
-        return owner().simple(this, name, ForgeRegistries.Keys.RECIPE_SERIALIZERS, sup);
     }
 
     default <T extends Potion> NoConfigBuilder<Potion, T, R> potion(String name, NonNullSupplier<T> sup) {
@@ -111,14 +105,15 @@ public interface IRegistrateExtra<R extends AbstractRegistrate<R>> {
                 pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName()))).tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register();
     }
 
-    default <T extends Item> Map<ArmorItem.Type, ItemEntry<T>> armors(String name, String path, ArmorTypeCallback<T> item) {
+    default <T extends Item> ArmorSetEntry<T> armors(String name, String path, ArmorTypeCallback<T> item) {
         return armors(type -> name + "_" + type.getName(), path, item);
     }
 
-    default <T extends Item> Map<ArmorItem.Type, ItemEntry<T>> armors(ArmorNameCallback name, String path, ArmorTypeCallback<T> item) {
-        return Arrays.stream(ArmorItem.Type.values()).collect(Collectors.toMap(type -> type, type -> owner().item(name.onCallback(type), item.onCallback(type))
+    default <T extends Item> ArmorSetEntry<T> armors(ArmorNameCallback name, String path, ArmorTypeCallback<T> item) {
+        var map = Arrays.stream(ArmorItem.Type.values()).collect(Collectors.toMap(type -> type, type -> owner().item(name.onCallback(type), item.onCallback(type))
                 .model((ctx, pvd) -> pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName())))
-                .tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register(), (a, b) -> b, TreeMap::new));
+                .tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register(), (a, b) -> b, HashMap::new));
+        return ArmorSetEntry.of(map);
     }
 
     default MetalItemEntry<Item, Block> slimeMetal(String id) {

@@ -118,4 +118,8 @@ public class Bindings {
     public static ResourceLocation prefix(ResourceLocation res, String prefix) {
         return new ResourceLocation(res.getNamespace(), prefix + res.getPath());
     }
+
+    public static boolean isArmorSlotIndex(int slot) {
+        return slot >= 36 && slot <= 39;
+    }
 }
