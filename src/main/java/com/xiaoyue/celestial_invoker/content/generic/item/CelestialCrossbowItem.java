@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.items;
+package com.xiaoyue.celestial_invoker.content.generic.item;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvent;

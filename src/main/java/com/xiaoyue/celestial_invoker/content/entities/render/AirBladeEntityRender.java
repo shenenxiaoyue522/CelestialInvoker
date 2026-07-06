@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
 import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntity;
-import com.xiaoyue.celestial_invoker.content.generic.items.api.IAirBladeUser;
+import com.xiaoyue.celestial_invoker.content.generic.item.api.IAirBladeUser;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
     public static final ResourceLocation DEFAULT_TEXTURE = CelestialInvoker.loc("textures/entity/air_blade.png");
@@ -34,7 +35,12 @@ public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
         matrix.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partial, entity.xRotO, entity.getXRot())));
         matrix.mulPose(Axis.XP.rotationDegrees(entity.zRot));
         matrix.mulPose(Axis.ZP.rotationDegrees(-90f));
-        matrix.scale(0.05625F, 0.05625F, 0.05625F);
+        if (entity.stack.getItem() instanceof IAirBladeUser user) {
+            Vector3f size = user.getBladeSize(entity);
+            matrix.scale(size.x(), size.y(), size.z());
+        } else {
+            matrix.scale(0.05625F, 0.05625F, 0.05625F);
+        }
         VertexConsumer cons = buffer.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
         PoseStack.Pose entry = matrix.last();
         Matrix4f matrix4f = entry.pose();
@@ -59,6 +65,9 @@ public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(AirBladeEntity blade) {
-        return blade.stack.getItem() instanceof IAirBladeUser user ? user.getTexture(blade) : DEFAULT_TEXTURE;
+        if (blade.stack.getItem() instanceof IAirBladeUser user) {
+            return user.getTexture(blade);
+        }
+        return DEFAULT_TEXTURE;
     }
 }

@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.items.api;
+package com.xiaoyue.celestial_invoker.content.generic.item.api;
 
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntity;
@@ -10,10 +10,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 
 public interface IAirBladeUser {
+
+    default void tickUpdate(AirBladeEntity blade) {
+    }
 
     default ParticleOptions getTrajectoryParticles() {
         return ParticleTypes.CRIT;
@@ -40,5 +44,9 @@ public interface IAirBladeUser {
 
     default ResourceLocation getTexture(AirBladeEntity blade) {
         return AirBladeEntityRender.DEFAULT_TEXTURE;
+    }
+
+    default Vector3f getBladeSize(AirBladeEntity blade) {
+        return new Vector3f(0.05625f, 0.05625f, 0.05625f);
     }
 }

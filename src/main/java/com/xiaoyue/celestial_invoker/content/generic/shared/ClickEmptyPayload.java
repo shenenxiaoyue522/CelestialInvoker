@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.generic.shared;
 
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
-import com.xiaoyue.celestial_invoker.content.generic.items.api.IClickInteraction;
+import com.xiaoyue.celestial_invoker.content.generic.item.api.IClickInteraction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.PacketFlow;

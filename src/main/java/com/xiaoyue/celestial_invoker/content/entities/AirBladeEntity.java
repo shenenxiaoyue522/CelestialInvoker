@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.entities;
 
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
-import com.xiaoyue.celestial_invoker.content.generic.items.api.IAirBladeUser;
+import com.xiaoyue.celestial_invoker.content.generic.item.api.IAirBladeUser;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -71,7 +71,13 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityWithCo
         if (life <= 0) {
             discard();
         }
-        ParticleOptions particle = stack.getItem() instanceof IAirBladeUser user ? user.getTrajectoryParticles() : ParticleTypes.CRIT;
+        ParticleOptions particle;
+        if (stack.getItem() instanceof IAirBladeUser user) {
+            particle = user.getTrajectoryParticles();
+            user.tickUpdate(this);
+        } else {
+            particle = ParticleTypes.CRIT;
+        }
         double vx = speed.x;
         double vy = speed.y;
         double vz = speed.z;

@@ -1,19 +1,25 @@
 package com.xiaoyue.celestial_invoker.event;
 
 import com.xiaoyue.celestial_invoker.content.common.helper.DelayHelper;
-import com.xiaoyue.celestial_invoker.content.generic.items.api.IClickInteraction;
+import com.xiaoyue.celestial_invoker.content.common.registrar.ArmorSetEntry;
+import com.xiaoyue.celestial_invoker.content.generic.item.api.IClickInteraction;
 import com.xiaoyue.celestial_invoker.content.generic.shared.ClickEmptyPayload;
 import com.xiaoyue.celestial_invoker.content.generic.shared.IBouncyProjectile;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -21,6 +27,31 @@ import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
 
 @EventBusSubscriber(modid = MODID)
 public class CIGeneralEventHandler {
+
+    @SubscribeEvent
+    public static void onLivingTick(EntityTickEvent.Post event) {
+        if (event.getEntity() instanceof LivingEntity entity) {
+            ArmorSetEntry.handlers.forEach((set, handler) -> {
+                if (set.isFullSet(entity, handler.requiredCount())) handler.onSetTick(entity);
+            });
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void onDamage(LivingDamageEvent.Pre event) {
+        LivingEntity entity = event.getEntity();
+        ArmorSetEntry.handlers.forEach((set, handler) -> {
+            if (set.isFullSet(entity, handler.requiredCount())) handler.onDamaged(entity, event, event.getSource());
+        });
+    }
+
+    @SubscribeEvent
+    public static void onDeath(LivingDeathEvent event) {
+        LivingEntity entity = event.getEntity();
+        ArmorSetEntry.handlers.forEach((set, handler) -> {
+            if (set.isFullSet(entity, handler.requiredCount())) handler.onDeath(entity, event, event.getSource());
+        });
+    }
 
     @SubscribeEvent
     public static void leftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {

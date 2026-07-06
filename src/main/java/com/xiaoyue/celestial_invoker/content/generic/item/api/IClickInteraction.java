@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.items.api;
+package com.xiaoyue.celestial_invoker.content.generic.item.api;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;

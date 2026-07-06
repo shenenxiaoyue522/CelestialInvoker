@@ -91,7 +91,7 @@ public record RegistrateExtra<R extends AbstractRegistrate<R>>(R owner) {
         var map = Arrays.stream(ArmorItem.Type.values()).collect(Collectors.toMap(type -> type, type -> owner().item(name.onCallback(type), item.onCallback(type))
                 .model((ctx, pvd) -> pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName())))
                 .tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register(), (a, b) -> b, TreeMap::new));
-        return ArmorSetEntry.of(map);
+        return ArmorSetEntry.handler(owner, new ArmorSetEntry<>(map));
     }
 
     public MetalItemEntry<Item, Block> slimeMetal(String id) {
