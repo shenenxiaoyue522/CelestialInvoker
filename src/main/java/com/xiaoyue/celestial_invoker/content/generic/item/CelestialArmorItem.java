@@ -7,6 +7,7 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.common.entry.ArmorSetEntry;
 import com.xiaoyue.celestial_invoker.content.common.entry.AttributeAdder;
+import com.xiaoyue.celestial_invoker.content.generic.item.api.ISetHandler;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.SubscribeTooltip;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipEntry;
 import net.minecraft.ChatFormatting;
@@ -28,14 +29,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class CelestialArmorItem extends ArmorItem {
 
     @SubscribeTooltip(id = "set_effect")
-    public static TooltipEntry setEffect = TooltipEntry.define("Set effect: ");
+    public static TooltipEntry setEffectTooltip = TooltipEntry.define("Set effect: ");
     @SubscribeTooltip(id = "alt_down")
-    public static TooltipEntry altDown = TooltipEntry.define("Press [%s] to display set effects");
+    public static TooltipEntry altDownTooltip = TooltipEntry.define("Press [%s] to display set effects");
     public static final EnumMap<Type, UUID> ARMOR_MODIFIER_UUID_PER_TYPE = Util.make(new EnumMap<>(Type.class), (map) -> {
         map.put(Type.BOOTS, UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"));
         map.put(Type.LEGGINGS, UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"));
@@ -50,11 +52,25 @@ public class CelestialArmorItem extends ArmorItem {
     @Override
     public final void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> list, TooltipFlag pIsAdvanced) {
         this.addTooltips(stack, list, type.getSlot());
-        if (hasArmorSetTooltip(stack) && getSetArmors() != null) {
-            if (Screen.hasAltDown()) {
-                addArmorSetTooltips(stack, list);
-            } else {
-                list.add(altDown.withGray(Component.literal("ALT").withStyle(ChatFormatting.YELLOW)));
+        if (getArmorSet() != null) {
+            if (Screen.hasAltDown() || !requiredAltDown()) {
+                Player player = Minecraft.getInstance().player;
+                list.add(getSetTitle(player));
+                addSetTooltips(stack, list);
+                Set<Type> types = getArmorSet().getSet().keySet();
+                if (!types.isEmpty()) {
+                    list.add(Component.empty());
+                }
+                types.forEach(type -> {
+                    ItemEntry<? extends Item> entry = getArmorSet().getSet().get(type);
+                    if (entry != null) {
+                        MutableComponent cmp = Component.literal("> ").append(entry.get().getDescription());
+                        cmp.withStyle(hasSetArmor(player, type) ? ChatFormatting.GREEN : ChatFormatting.GRAY);
+                        list.add(cmp);
+                    }
+                });
+            } else if (requiredAltDown()) {
+                list.add(altDownTooltip.withGray(Component.literal("ALT").withStyle(ChatFormatting.YELLOW)));
             }
         }
     }
@@ -62,40 +78,25 @@ public class CelestialArmorItem extends ArmorItem {
     public void addTooltips(ItemStack stack, List<Component> list, EquipmentSlot slot) {
     }
 
-    public boolean hasArmorSetTooltip(ItemStack stack) {
-        return false;
+    public boolean requiredAltDown() {
+        return true;
     }
 
-    public void addArmorSetTooltips(ItemStack stack, List<Component> list) {
-        Player player = Minecraft.getInstance().player;
-        list.add(getArmorSetTitle(player));
-        addArmorSetEffectTooltips(stack, list);
-        getSetArmors().getSet().keySet().forEach(type -> {
-            ItemEntry<? extends Item> entry = getSetArmors().getSet().get(type);
-            if (entry != null) {
-                MutableComponent cmp = Component.literal("> ").append(entry.get().getDescription());
-                cmp.withStyle(hasSetArmor(player, type) ? ChatFormatting.GREEN : ChatFormatting.GRAY);
-                list.add(cmp);
-            }
-        });
-    }
-
-    public MutableComponent getArmorSetName() {
+    public MutableComponent getSetName() {
         return Component.literal("");
     }
 
-    private MutableComponent getArmorSetTitle(Player player) {
-        Component end = getArmorSetName().append(" (" + getSetArmorCount(player) + "/" + getSetArmorRequiredAmount() + ")")
+    private MutableComponent getSetTitle(Player player) {
+        Component end = getSetName().append(" (" + getSetArmorCount(player) + "/" + getRequiredCount() + ")")
                 .withStyle(ChatFormatting.GRAY);
-        return setEffect.get().append(" ").append(end);
+        return setEffectTooltip.get().append(" ").append(end);
     }
 
-    public void addArmorSetEffectTooltips(ItemStack stack, List<Component> list) {
-
+    public void addSetTooltips(ItemStack stack, List<Component> list) {
     }
 
-    public int getSetArmorRequiredAmount() {
-        return getSetArmors().getSet().size();
+    public int getRequiredCount() {
+        return this instanceof ISetHandler handler ? handler.requiredCount() : getArmorSet().getSet().size();
     }
 
     @Override
@@ -139,7 +140,7 @@ public class CelestialArmorItem extends ArmorItem {
 
     public int getSetArmorCount(@Nullable LivingEntity entity) {
         if (entity == null) return 0;
-        return getSetArmors().getSetArmorCount(entity);
+        return getArmorSet().getSetArmorCount(entity);
     }
 
     public boolean hasSetArmor(@Nullable LivingEntity entity, Type slot) {
@@ -150,12 +151,12 @@ public class CelestialArmorItem extends ArmorItem {
     }
 
     public boolean isSetArmor(ItemStack stack, Type slot) {
-        ItemEntry<? extends Item> entry = getSetArmors().getSet().get(slot);
+        ItemEntry<? extends Item> entry = getArmorSet().getSet().get(slot);
         if (entry == null) return false;
         return stack.is(entry.get());
     }
 
-    public ArmorSetEntry<? extends Item> getSetArmors() {
+    public ArmorSetEntry<? extends Item> getArmorSet() {
         return null;
     }
 

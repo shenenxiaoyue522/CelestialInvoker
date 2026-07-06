@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 
@@ -43,5 +44,9 @@ public interface IAirBladeUser {
 
     default ResourceLocation getTexture(AirBladeEntity blade) {
         return AirBladeEntityRender.DEF_TEXTURE;
+    }
+
+    default Vector3f getBladeSize(AirBladeEntity blade) {
+        return new Vector3f(0.05625f, 0.05625f, 0.05625f);
     }
 }

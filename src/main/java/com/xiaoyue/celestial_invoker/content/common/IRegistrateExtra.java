@@ -113,7 +113,7 @@ public interface IRegistrateExtra<R extends AbstractRegistrate<R>> {
         var map = Arrays.stream(ArmorItem.Type.values()).collect(Collectors.toMap(type -> type, type -> owner().item(name.onCallback(type), item.onCallback(type))
                 .model((ctx, pvd) -> pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName())))
                 .tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register(), (a, b) -> b, HashMap::new));
-        return ArmorSetEntry.of(map);
+        return ArmorSetEntry.handler(owner(), new ArmorSetEntry<>(map));
     }
 
     default MetalItemEntry<Item, Block> slimeMetal(String id) {
