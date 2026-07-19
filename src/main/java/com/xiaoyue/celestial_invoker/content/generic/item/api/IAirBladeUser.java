@@ -1,8 +1,10 @@
 package com.xiaoyue.celestial_invoker.content.generic.item.api;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntity;
 import com.xiaoyue.celestial_invoker.content.entities.render.AirBladeEntityRender;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -42,11 +44,11 @@ public interface IAirBladeUser {
         return true;
     }
 
-    default ResourceLocation getTexture(AirBladeEntity blade) {
-        return AirBladeEntityRender.DEFAULT_TEXTURE;
+    default void renderExtra(AirBladeEntity blade, PoseStack stack, float partial, MultiBufferSource buffer) {
+        stack.scale(0.05625F, 0.05625F, 0.05625F);
     }
 
-    default Vector3f getBladeSize(AirBladeEntity blade) {
-        return new Vector3f(0.05625f, 0.05625f, 0.05625f);
+    default ResourceLocation getTexture(AirBladeEntity blade) {
+        return AirBladeEntityRender.DEFAULT_TEXTURE;
     }
 }
