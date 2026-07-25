@@ -115,7 +115,9 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
 
         @Override
         public <T> ModConfigSpec.ConfigValue<T> define(List<String> path, ModConfigSpec.ValueSpec value, Supplier<T> defaultSupplier) {
-            if (name == null) throw new IllegalStateException("Empty name is not allowed");
+            if (name == null || !name.equals(path.getLast())) {
+                name(StringHelper.camelToCapitalizedWords(path.getLast()));
+            }
             registrate.addRawLang(registrate.getModid() + ".configuration." + path.getLast(), name);
             String comment = value.getComment();
             if (comment != null && !comment.isEmpty()) {

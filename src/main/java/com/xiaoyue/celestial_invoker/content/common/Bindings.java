@@ -15,7 +15,9 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -29,6 +31,19 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 public class Bindings {
+
+    public static EquipmentSlot getSlot(ItemStack stack) {
+        EquipmentSlot slot = stack.getEquipmentSlot();
+        if (slot != null) {
+            return slot;
+        } else {
+            Equipable equipable = Equipable.get(stack);
+            if (equipable != null) {
+                return equipable.getEquipmentSlot();
+            }
+        }
+        return EquipmentSlot.MAINHAND;
+    }
 
     public static <A> A cast(Object obj, Class<A> aClass) {
         return aClass.cast(obj);

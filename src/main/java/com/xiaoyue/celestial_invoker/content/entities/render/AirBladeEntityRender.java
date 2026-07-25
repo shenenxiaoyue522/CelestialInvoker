@@ -35,9 +35,8 @@ public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
         matrix.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partial, entity.xRotO, entity.getXRot())));
         matrix.mulPose(Axis.XP.rotationDegrees(entity.zRot));
         matrix.mulPose(Axis.ZP.rotationDegrees(-90f));
-        if (entity.stack.getItem() instanceof IAirBladeUser user) {
-            Vector3f size = user.getBladeSize(entity);
-            matrix.scale(size.x(), size.y(), size.z());
+        if (entity.user != null) {
+            entity.user.renderExtra(entity, matrix, partial, buffer);
         } else {
             matrix.scale(0.05625F, 0.05625F, 0.05625F);
         }

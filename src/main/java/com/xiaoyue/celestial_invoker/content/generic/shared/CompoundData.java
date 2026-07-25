@@ -7,6 +7,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.function.Consumer;
+
 public record CompoundData(CompoundTag tag) {
 
     public static final Codec<CompoundData> CODEC = CompoundTag.CODEC.xmap(CompoundData::new, CompoundData::tag);
@@ -16,6 +18,21 @@ public record CompoundData(CompoundTag tag) {
 
     public boolean isEmpty() {
         return tag.isEmpty();
+    }
+
+    public void update(ItemStack stack, Consumer<CompoundTag> tag) {
+        CompoundData data = getOrCreate(stack).update(tag);
+        if (data.tag.isEmpty()) {
+            stack.remove(CIObjects.COMPOUND_DATA);
+        } else {
+            stack.set(CIObjects.COMPOUND_DATA, data);
+        }
+    }
+
+    public CompoundData update(Consumer<CompoundTag> tag) {
+        CompoundTag data = this.tag.copy();
+        tag.accept(data);
+        return of(data);
     }
 
     public static CompoundData of(CompoundTag tag) {
@@ -29,6 +46,6 @@ public record CompoundData(CompoundTag tag) {
             stack.set(CIObjects.COMPOUND_DATA, emptyData);
             return emptyData;
         }
-        return stack.get(CIObjects.COMPOUND_DATA);
+        return data;
     }
 }
