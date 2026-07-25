@@ -18,7 +18,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 @OnlyIn(value = Dist.CLIENT)
 public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
@@ -30,7 +29,7 @@ public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
 
     @Override
     public void render(AirBladeEntity entity, float yRot, float partial, PoseStack matrix, MultiBufferSource buffer, int light) {
-        if (entity.stack.getItem() instanceof IAirBladeUser user && user.isGlow()) {
+        if (entity.user != null && entity.user.isGlow()) {
             light = LightTexture.pack(15, 15);
         }
         matrix.pushPose();
@@ -39,9 +38,8 @@ public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
         matrix.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partial, entity.xRotO, entity.getXRot())));
         matrix.mulPose(Axis.XP.rotationDegrees(entity.zRot));
         matrix.mulPose(Axis.ZP.rotationDegrees(-90f));
-        if (entity.stack.getItem() instanceof IAirBladeUser user) {
-            Vector3f size = user.getBladeSize(entity);
-            matrix.scale(size.x(), size.y(), size.z());
+        if (entity.user != null) {
+            entity.user.renderExtra(entity, matrix, partial, buffer);
         } else {
             matrix.scale(0.05625F, 0.05625F, 0.05625F);
         }

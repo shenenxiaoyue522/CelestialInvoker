@@ -30,6 +30,7 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
     public int life = 100;
     public float zRot = 0f;
     public ItemStack stack = ItemStack.EMPTY;
+    public IAirBladeUser user = null;
 
     public AirBladeEntity(EntityType<? extends ThrowableProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -60,6 +61,13 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
         this.setYRot((float) (Mth.atan2(v3.x(), v3.z()) * (double) (180F / (float) Math.PI)));
         this.xRotO = this.getXRot();
         this.yRotO = this.getYRot();
+        if (stack.getItem() instanceof IAirBladeUser item) {
+            setUser(item);
+        }
+    }
+
+    public void setUser(IAirBladeUser user) {
+        this.user = user;
     }
 
     @Override
@@ -72,7 +80,7 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
             discard();
         }
         ParticleOptions particle;
-        if (stack.getItem() instanceof IAirBladeUser user) {
+        if (user != null) {
             particle = user.getTrajectoryParticles();
             user.tickUpdate(this);
         } else {
@@ -81,9 +89,11 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
         double vx = speed.x;
         double vy = speed.y;
         double vz = speed.z;
-        for (int i = 0; i < 4; ++i) {
-            level().addParticle(particle, this.getX() + vx * (double) i / 4.0D, this.getY() + vy * (double) i / 4.0D,
-                    this.getZ() + vz * (double) i / 4.0D, 0, 0, 0);
+        if (particle != null && level().isClientSide()) {
+            for (int i = 0; i < 4; ++i) {
+                level().addParticle(particle, this.getX() + vx * (double) i / 4.0D, this.getY() + vy * (double) i / 4.0D,
+                        this.getZ() + vz * (double) i / 4.0D, 0, 0, 0);
+            }
         }
     }
 
@@ -94,13 +104,13 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
             Entity entity = result.getEntity();
             Entity owner = this.getOwner();
             DamageSource source;
-            if (stack.getItem() instanceof IAirBladeUser user) {
+            if (user != null) {
                 source = user.getSource(this, owner);
             } else {
                 source = new DamageSource(Bindings.getDamageSource(level(), DamageTypes.MOB_PROJECTILE), owner, this);
             }
             float dmg = damage;
-            if (stack.getItem() instanceof IAirBladeUser user) {
+            if (user != null) {
                 if (user.canHurt(this, entity, dmg)) {
                     entity.hurt(source, dmg);
                 }
@@ -110,7 +120,7 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
             if (owner instanceof LivingEntity) {
                 doEnchantDamageEffects((LivingEntity) owner, entity);
             }
-            if (stack.getItem() instanceof IAirBladeUser user) {
+            if (user != null) {
                 user.onHitEntity(this, entity);
             } else {
                 discard();
@@ -122,7 +132,7 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (!level().isClientSide) {
-            if (stack.getItem() instanceof IAirBladeUser user) {
+            if (user != null) {
                 user.onHitBlock(this, result.getBlockPos());
             }
             discard();
