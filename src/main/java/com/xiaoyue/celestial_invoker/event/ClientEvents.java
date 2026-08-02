@@ -3,7 +3,6 @@ package com.xiaoyue.celestial_invoker.event;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.xiaoyue.celestial_invoker.content.client.overlay.HudManager;
 import com.xiaoyue.celestial_invoker.mixin.LevelRenderAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -13,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -60,13 +58,6 @@ public class ClientEvents {
             RenderSystem.depthMask(true);
             RenderSystem.enableDepthTest();
             mc.renderBuffers().bufferSource().endBatch(RenderType.lines());
-        }
-    }
-
-    @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            HudManager.INSTANCE.tick();
         }
     }
 }

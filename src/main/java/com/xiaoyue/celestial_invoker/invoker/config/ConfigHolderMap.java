@@ -5,14 +5,13 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Consumer;
 
 public class ConfigHolderMap {
 
     public final String modid;
-
-    private final Map<ModConfig.Type, List<Function<ForgeConfigSpec.Builder, ?>>> extraConfigs = new HashMap<>();
 
     private final Map<String, Map<String, ConfigHolder<?>>> COMMON_MAP = new TreeMap<>();
     private final Map<String, Map<String, ConfigHolder<?>>> SERVER_MAP = new TreeMap<>();
@@ -35,20 +34,14 @@ public class ConfigHolderMap {
     public ConfigPath initConfigs(ModConfig.Type type, String fileName) {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
         this.applyConfig(type, builder);
-        if (!extraConfigs.isEmpty()) {
-            extraConfigs.forEach((extraType, func) -> {
-                if (extraType.equals(type)) func.forEach(builder::configure);
-            });
-        }
         ModLoadingContext.get().registerConfig(type, builder.build(), fileName);
         ConfigPath path = new ConfigPath(type, fileName);
         this.configPath = path;
         return path;
     }
 
-    @SafeVarargs
-    public final ConfigHolderMap addExtra(ModConfig.Type type, Function<ForgeConfigSpec.Builder, ?>... extraConfig) {
-        this.extraConfigs.put(type, Arrays.stream(extraConfig).toList());
+    public final ConfigHolderMap addExtra(Consumer<ConfigHolderMap> map) {
+        map.accept(this);
         return this;
     }
 
