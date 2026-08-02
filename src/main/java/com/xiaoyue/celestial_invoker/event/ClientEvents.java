@@ -3,7 +3,6 @@ package com.xiaoyue.celestial_invoker.event;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.xiaoyue.celestial_invoker.content.client.overlay.HudManager;
 import com.xiaoyue.celestial_invoker.mixin.LevelRendererAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -61,10 +60,5 @@ public class ClientEvents {
             RenderSystem.enableDepthTest();
             mc.renderBuffers().bufferSource().endBatch(RenderType.lines());
         }
-    }
-
-    @SubscribeEvent
-    public static void onClientTick(ClientTickEvent.Post event) {
-        HudManager.INSTANCE.tick();
     }
 }
