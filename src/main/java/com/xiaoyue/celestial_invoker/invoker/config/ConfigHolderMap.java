@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 
 public class ConfigHolderMap {
 
@@ -61,6 +62,11 @@ public class ConfigHolderMap {
         }
         configPath.put(type, name);
         ConfigLoader.initConfigScreen(mod);
+        return this;
+    }
+
+    public final ConfigHolderMap addExtra(Consumer<ConfigHolderMap> map) {
+        map.accept(this);
         return this;
     }
 

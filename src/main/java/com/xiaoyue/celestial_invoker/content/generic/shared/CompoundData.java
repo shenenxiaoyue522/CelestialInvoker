@@ -20,7 +20,7 @@ public record CompoundData(CompoundTag tag) {
         return tag.isEmpty();
     }
 
-    public void update(ItemStack stack, Consumer<CompoundTag> tag) {
+    public static void update(ItemStack stack, Consumer<CompoundTag> tag) {
         CompoundData data = getOrCreate(stack).update(tag);
         if (data.tag.isEmpty()) {
             stack.remove(CIObjects.COMPOUND_DATA);

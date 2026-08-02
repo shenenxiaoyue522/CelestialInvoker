@@ -1,7 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.generic.item.api;
 
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
@@ -11,12 +11,18 @@ public interface ISetHandler {
         return 4;
     }
 
-    default void onSetTick(LivingEntity entity) {
+    default void onSetActivate(Player player) {
     }
 
-    default void onDamaged(LivingEntity entity, LivingDamageEvent.Pre event, DamageSource source) {
+    default void onSetDeactivate(Player player) {
     }
 
-    default void onDeath(LivingEntity entity, LivingDeathEvent event, DamageSource source) {
+    default void onSetTick(Player player) {
+    }
+
+    default void onPlayerDamaged(Player player, LivingDamageEvent event, DamageSource source) {
+    }
+
+    default void onPlayerDeath(Player player, LivingDeathEvent event, DamageSource source) {
     }
 }

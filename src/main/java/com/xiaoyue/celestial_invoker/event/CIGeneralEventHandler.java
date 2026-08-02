@@ -3,53 +3,78 @@ package com.xiaoyue.celestial_invoker.event;
 import com.xiaoyue.celestial_invoker.content.common.helper.DelayHelper;
 import com.xiaoyue.celestial_invoker.content.common.registrar.ArmorSetEntry;
 import com.xiaoyue.celestial_invoker.content.generic.item.api.IClickInteraction;
+import com.xiaoyue.celestial_invoker.content.generic.item.api.ISetHandler;
 import com.xiaoyue.celestial_invoker.content.generic.shared.ClickEmptyPayload;
-import com.xiaoyue.celestial_invoker.content.generic.shared.IBouncyProjectile;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+
+import java.util.*;
 
 import static com.xiaoyue.celestial_invoker.CelestialInvoker.MODID;
 
 @EventBusSubscriber(modid = MODID)
 public class CIGeneralEventHandler {
 
+    private static final Map<Integer, List<ISetHandler>> LAST_SET_MAP = new HashMap<>();
+
     @SubscribeEvent
-    public static void onLivingTick(EntityTickEvent.Post event) {
-        if (event.getEntity() instanceof LivingEntity entity) {
-            ArmorSetEntry.handlers.forEach((set, handler) -> {
-                if (set.isFullSet(entity, handler.requiredCount())) handler.onSetTick(entity);
-            });
+    public static void onLivingTick(PlayerTickEvent.Post event) {
+        Player player = event.getEntity();
+        if (player.level().isClientSide()) return;
+        int entityId = player.getId();
+        List<ISetHandler> currentSets = new ArrayList<>();
+        for (Map.Entry<ArmorSetEntry<? extends Item>, ISetHandler> entry : ArmorSetEntry.handlers.entrySet()) {
+            ISetHandler handler = entry.getValue();
+            if (entry.getKey().isFullSet(player, handler.requiredCount())) {
+                currentSets.add(handler);
+            }
+        }
+        List<ISetHandler> lastSets = LAST_SET_MAP.getOrDefault(entityId, Collections.emptyList());
+        for (ISetHandler handler : lastSets) {
+            if (!currentSets.contains(handler)) {
+                handler.onSetDeactivate(player);
+            }
+        }
+        for (ISetHandler handler : currentSets) {
+            if (!lastSets.contains(handler)) {
+                handler.onSetActivate(player);
+            }
+            handler.onSetTick(player);
+        }
+        if (currentSets.isEmpty()) {
+            LAST_SET_MAP.remove(entityId);
+        } else {
+            LAST_SET_MAP.put(entityId, currentSets);
         }
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void onDamage(LivingDamageEvent.Pre event) {
         LivingEntity entity = event.getEntity();
+        if (!(entity instanceof Player player)) return;
         ArmorSetEntry.handlers.forEach((set, handler) -> {
-            if (set.isFullSet(entity, handler.requiredCount())) handler.onDamaged(entity, event, event.getSource());
+            if (set.isFullSet(entity, handler.requiredCount())) handler.onPlayerDamaged(player, event, event.getSource());
         });
     }
 
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
         LivingEntity entity = event.getEntity();
+        if (!(entity instanceof Player player)) return;
         ArmorSetEntry.handlers.forEach((set, handler) -> {
-            if (set.isFullSet(entity, handler.requiredCount())) handler.onDeath(entity, event, event.getSource());
+            if (set.isFullSet(entity, handler.requiredCount())) handler.onPlayerDeath(player, event, event.getSource());
         });
     }
 
@@ -90,31 +115,5 @@ public class CIGeneralEventHandler {
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
         DelayHelper.serverTick();
-    }
-
-    @SubscribeEvent
-    public static void onProjectileImpact(ProjectileImpactEvent event) {
-        Projectile projectile = event.getProjectile();
-        if (event.getRayTraceResult().getType() != HitResult.Type.BLOCK) return;
-        if (projectile instanceof IBouncyProjectile bouncy) {
-            if (!bouncy.canBounce(projectile)) return;
-            int maxBounces = bouncy.getMaxBounces();
-            int currentBounces = bouncy.getBounceCount();
-            if (maxBounces > 0 && currentBounces >= maxBounces) {
-                return;
-            }
-            event.setCanceled(true);
-            BlockHitResult result = (BlockHitResult) event.getRayTraceResult();
-            Vec3 incoming = projectile.getDeltaMovement();
-            Vec3 normal = Vec3.atLowerCornerOf(result.getDirection().getNormal());
-            double dot = incoming.dot(normal);
-            Vec3 reflected = incoming.subtract(normal.scale(2.0 * dot));
-            reflected = reflected.scale(bouncy.getBounceEnergy());
-            projectile.setDeltaMovement(reflected);
-            bouncy.setBounceCount(currentBounces + 1);
-            projectile.setPos(result.getLocation().add(reflected.normalize().scale(0.1)));
-            bouncy.onBounce(projectile, result);
-            projectile.hasImpulse = true;
-        }
     }
 }

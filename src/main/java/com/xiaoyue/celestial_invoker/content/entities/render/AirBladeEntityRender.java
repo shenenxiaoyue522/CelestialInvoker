@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
     public static final ResourceLocation DEFAULT_TEXTURE = CelestialInvoker.loc("textures/entity/air_blade.png");
