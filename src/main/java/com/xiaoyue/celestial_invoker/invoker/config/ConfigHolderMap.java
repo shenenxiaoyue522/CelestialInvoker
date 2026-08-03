@@ -5,6 +5,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Consumer;
@@ -13,9 +14,9 @@ public class ConfigHolderMap {
 
     public final String modid;
 
-    private final Map<String, Map<String, ConfigHolder<?>>> COMMON_MAP = new TreeMap<>();
-    private final Map<String, Map<String, ConfigHolder<?>>> SERVER_MAP = new TreeMap<>();
-    private final Map<String, Map<String, ConfigHolder<?>>> CLIENT_MAP = new TreeMap<>();
+    private final Map<String, Map<String, ConfigHolder<?>>> COMMON_MAP = new TreeMap<>(itemTogglesFinal());
+    private final Map<String, Map<String, ConfigHolder<?>>> SERVER_MAP = new TreeMap<>(itemTogglesFinal());
+    private final Map<String, Map<String, ConfigHolder<?>>> CLIENT_MAP = new TreeMap<>(itemTogglesFinal());
 
     public ConfigPath configPath = null;
 
@@ -78,6 +79,14 @@ public class ConfigHolderMap {
             defMap.put(holder.getId(), holder);
             map.put(category, defMap);
         }
+    }
+
+    public Comparator<String> itemTogglesFinal() {
+        return (s1, s2) -> {
+            if (s1.equals("itemToggles")) return 1;
+            if (s2.equals("itemToggles")) return -1;
+            return s1.compareTo(s2);
+        };
     }
 
     public record ConfigPath(ModConfig.Type type, String path) {
