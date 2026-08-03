@@ -12,6 +12,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -22,10 +23,10 @@ public class ConfigHolderMap {
     private final String modid;
     private boolean allowTitle = true;
 
-    private final Map<String, Map<String, ConfigHolder<?>>> COMMON_MAP = new TreeMap<>();
-    private final Map<String, Map<String, ConfigHolder<?>>> SERVER_MAP = new TreeMap<>();
-    private final Map<String, Map<String, ConfigHolder<?>>> CLIENT_MAP = new TreeMap<>();
-    private final Map<String, Map<String, ConfigHolder<?>>> STARTUP_MAP = new TreeMap<>();
+    private final Map<String, Map<String, ConfigHolder<?>>> COMMON_MAP = new TreeMap<>(upperCaseFinal());
+    private final Map<String, Map<String, ConfigHolder<?>>> SERVER_MAP = new TreeMap<>(upperCaseFinal());
+    private final Map<String, Map<String, ConfigHolder<?>>> CLIENT_MAP = new TreeMap<>(upperCaseFinal());
+    private final Map<String, Map<String, ConfigHolder<?>>> STARTUP_MAP = new TreeMap<>(upperCaseFinal());
 
     public final Map<String, String> TITLE_MAP = new TreeMap<>();
     public final Map<String, ConfigHolder<?>> TEXT_MAP = new TreeMap<>();
@@ -128,5 +129,16 @@ public class ConfigHolderMap {
             addConfigDesc(pvd);
         }));
         return this;
+    }
+
+    public Comparator<String> upperCaseFinal() {
+        return (a, b) -> {
+            boolean aHasUpper = a.chars().anyMatch(Character::isUpperCase);
+            boolean bHasUpper = b.chars().anyMatch(Character::isUpperCase);
+            if (aHasUpper != bHasUpper) {
+                return Boolean.compare(aHasUpper, bHasUpper);
+            }
+            return a.compareTo(b);
+        };
     }
 }
