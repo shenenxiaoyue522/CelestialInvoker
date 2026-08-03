@@ -14,9 +14,9 @@ public class ConfigHolderMap {
 
     public final String modid;
 
-    private final Map<String, Map<String, ConfigHolder<?>>> COMMON_MAP = new TreeMap<>(itemTogglesFinal());
-    private final Map<String, Map<String, ConfigHolder<?>>> SERVER_MAP = new TreeMap<>(itemTogglesFinal());
-    private final Map<String, Map<String, ConfigHolder<?>>> CLIENT_MAP = new TreeMap<>(itemTogglesFinal());
+    private final Map<String, Map<String, ConfigHolder<?>>> COMMON_MAP = new TreeMap<>(upperCaseFinal());
+    private final Map<String, Map<String, ConfigHolder<?>>> SERVER_MAP = new TreeMap<>(upperCaseFinal());
+    private final Map<String, Map<String, ConfigHolder<?>>> CLIENT_MAP = new TreeMap<>(upperCaseFinal());
 
     public ConfigPath configPath = null;
 
@@ -81,11 +81,14 @@ public class ConfigHolderMap {
         }
     }
 
-    public Comparator<String> itemTogglesFinal() {
-        return (s1, s2) -> {
-            if (s1.equals("itemToggles")) return 1;
-            if (s2.equals("itemToggles")) return -1;
-            return s1.compareTo(s2);
+    public Comparator<String> upperCaseFinal() {
+        return (a, b) -> {
+            boolean aHasUpper = a.chars().anyMatch(Character::isUpperCase);
+            boolean bHasUpper = b.chars().anyMatch(Character::isUpperCase);
+            if (aHasUpper != bHasUpper) {
+                return Boolean.compare(aHasUpper, bHasUpper);
+            }
+            return a.compareTo(b);
         };
     }
 
