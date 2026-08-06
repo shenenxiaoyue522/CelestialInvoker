@@ -186,9 +186,7 @@ public class SimpleParticleHelper {
         }
         if (targetPosition == null && !useCustomVelocity) {
             double range = spreadMax > 0 ? spreadMax : 1.0;
-            serverLevel.sendParticles(particle,
-                    position.x, position.y, position.z,
-                    Math.min(count, 50), range, range, range, speed);
+            serverLevel.sendParticles(particle, position.x, position.y, position.z, Math.min(count, 50), range, range, range, speed);
             return;
         }
         int sendCount = count;
