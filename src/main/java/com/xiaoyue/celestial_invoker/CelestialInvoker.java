@@ -2,7 +2,7 @@ package com.xiaoyue.celestial_invoker;
 
 import com.mojang.logging.LogUtils;
 import com.tterrag.registrate.Registrate;
-import com.xiaoyue.celestial_invoker.content.generic.shared.NetworkHandler;
+import com.xiaoyue.celestial_invoker.content.network.NetworkHandler;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import net.minecraft.resources.ResourceLocation;

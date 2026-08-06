@@ -1,4 +1,4 @@
-package com.xiaoyue.celestial_invoker.content.generic.shared;
+package com.xiaoyue.celestial_invoker.content.network;
 
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,6 +20,7 @@ public class NetworkHandler {
 
     public static void register() {
         registerMSG(ClickEmptyPayload.class, ClickEmptyPayload::encode, ClickEmptyPayload::decode, ClickEmptyPayload::handle);
+        registerMSG(SpawnParticlePayload.class, SpawnParticlePayload::encode, SpawnParticlePayload::decode, SpawnParticlePayload::handle);
     }
 
     public static <MSG> void registerMSG(Class<MSG> msg, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> ctx) {
