@@ -4,7 +4,7 @@ import com.xiaoyue.celestial_invoker.content.common.helper.DelayHelper;
 import com.xiaoyue.celestial_invoker.content.common.registrar.ArmorSetEntry;
 import com.xiaoyue.celestial_invoker.content.generic.item.api.IClickInteraction;
 import com.xiaoyue.celestial_invoker.content.generic.item.api.ISetHandler;
-import com.xiaoyue.celestial_invoker.content.generic.shared.ClickEmptyPayload;
+import com.xiaoyue.celestial_invoker.content.network.ClickEmptyPayload;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;

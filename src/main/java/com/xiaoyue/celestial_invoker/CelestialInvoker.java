@@ -3,7 +3,8 @@ package com.xiaoyue.celestial_invoker;
 import com.mojang.logging.LogUtils;
 import com.tterrag.registrate.Registrate;
 import com.xiaoyue.celestial_invoker.content.common.registrar.RegistrateExtra;
-import com.xiaoyue.celestial_invoker.content.generic.shared.ClickEmptyPayload;
+import com.xiaoyue.celestial_invoker.content.network.ClickEmptyPayload;
+import com.xiaoyue.celestial_invoker.content.network.SpawnParticlePayload;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipLoader;
 import com.xiaoyue.celestial_invoker.register.CIEntities;
 import com.xiaoyue.celestial_invoker.register.CIObjects;
@@ -36,6 +37,7 @@ public class CelestialInvoker {
     public static void registerPayload(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar("1");
         registrar.playToServer(ClickEmptyPayload.ID, ClickEmptyPayload.CODEC, ClickEmptyPayload::handlePacket);
+        registrar.playToClient(SpawnParticlePayload.ID, SpawnParticlePayload.CODEC, SpawnParticlePayload::handlePacket);
     }
 
     public static ResourceLocation loc(String s) {

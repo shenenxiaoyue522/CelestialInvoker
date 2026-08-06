@@ -1,11 +1,13 @@
 package com.xiaoyue.celestial_invoker.content.client.helper;
 
+import com.xiaoyue.celestial_invoker.content.network.SpawnParticlePayload;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class SimpleParticleHelper {
     private final List<Function<Vec3, Vec3>> modifiers = new ArrayList<>();
     private boolean useCustomVelocity = false;
     private Vec3 customVelocity;
+    private boolean useBatchMode = false;
 
     public SimpleParticleHelper(Level level) {
         this.level = level;
@@ -102,6 +105,11 @@ public class SimpleParticleHelper {
         return this;
     }
 
+    public SimpleParticleHelper batchMode() {
+        this.useBatchMode = true;
+        return this;
+    }
+
     public SimpleParticleHelper ring(double radius, double height) {
         this.spreadMin = radius;
         this.spreadMax = radius;
@@ -164,12 +172,28 @@ public class SimpleParticleHelper {
     }
 
     private void spawnServer(ServerLevel serverLevel) {
-        for (int i = 0; i < count; i++) {
+        boolean shouldBatch = useBatchMode || ((targetPosition != null || useCustomVelocity) && count > 8);
+        if (shouldBatch) {
+            List<Vec3> positions = new ArrayList<>();
+            List<Vec3> velocities = new ArrayList<>();
+            int actualCount = Math.min(count, 256);
+            for (int i = 0; i < actualCount; i++) {
+                positions.add(calculateSpawnPosition());
+                velocities.add(calculateVelocity(positions.get(i)));
+            }
+            SpawnParticlePayload payload = new SpawnParticlePayload(particle.getType(), positions, velocities);
+            PacketDistributor.sendToPlayersNear(serverLevel, null, position.x, position.y, position.z, 32, payload);
+            return;
+        }
+        if (targetPosition == null && !useCustomVelocity) {
+            double range = spreadMax > 0 ? spreadMax : 1.0;
+            serverLevel.sendParticles(particle, position.x, position.y, position.z, Math.min(count, 50), range, range, range, speed);
+            return;
+        }
+        int sendCount = count;
+        for (int i = 0; i < sendCount; i++) {
             Vec3 spawnPos = calculateSpawnPosition();
             Vec3 velocity = calculateVelocity(spawnPos);
-            for (Function<Vec3, Vec3> modifier : modifiers) {
-                velocity = modifier.apply(velocity);
-            }
             serverLevel.sendParticles(particle, spawnPos.x, spawnPos.y, spawnPos.z, 0, velocity.x, velocity.y, velocity.z, 1.0);
         }
     }
