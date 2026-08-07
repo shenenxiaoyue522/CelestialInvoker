@@ -72,7 +72,7 @@ public class ConfigWrapper extends ModConfigSpec.Builder {
         CONFIG_MAP.put(path, wrapper);
         ConfigLoader.initConfigScreen(mod);
         String title = registrate.getModid() + ".configuration.";
-        String key = title + "section." + path.replaceAll("[-_/]", ".");
+        String key = title + "section." + path.replaceAll("[-/]", ".");
         registrate.addRawLang(key, ConfigLoader.getConfigTypeText(type, registrate.getModid()));
         registrate.addRawLang(key + ".title", "");
     }
