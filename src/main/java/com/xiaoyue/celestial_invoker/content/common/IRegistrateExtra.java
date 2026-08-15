@@ -37,11 +37,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-public interface IRegistrateExtra<R extends AbstractRegistrate<R>> {
-
-    static <R extends AbstractRegistrate<R>> IRegistrateExtra<R> simple(R registrate) {
-        return () -> registrate;
-    }
+public record IRegistrateExtra<R extends AbstractRegistrate<R>>(R registrate) {
 
     static TagKey<Item> forgeTag(String id) {
         return ItemTags.create(forgeLoc(id));
@@ -51,106 +47,104 @@ public interface IRegistrateExtra<R extends AbstractRegistrate<R>> {
         return new ResourceLocation("forge", path);
     }
 
-    R owner();
-
-    default TooltipLoader genSubscribeTooltips() {
-        TooltipLoader loader = new TooltipLoader(owner().getModid());
-        loader.generator(owner());
+    public TooltipLoader genSubscribeTooltips() {
+        TooltipLoader loader = new TooltipLoader(registrate.getModid());
+        loader.generator(registrate);
         return loader;
     }
 
-    default <T> ResourceKey<T> createKey(ResourceKey<? extends Registry<T>> key, String id) {
-        return ResourceKey.create(key, new ResourceLocation(owner().getModid(), id));
+    public <T> ResourceKey<T> createKey(ResourceKey<? extends Registry<T>> key, String id) {
+        return ResourceKey.create(key, new ResourceLocation(registrate.getModid(), id));
     }
 
-    default <T extends Potion> NoConfigBuilder<Potion, T, R> potion(String name, NonNullSupplier<T> sup) {
-        return owner().entry(name, cb -> new NoConfigBuilder<>(owner(), owner(), name, cb, ForgeRegistries.Keys.POTIONS, sup));
+    public <T extends Potion> NoConfigBuilder<Potion, T, R> potion(String name, NonNullSupplier<T> sup) {
+        return registrate.entry(name, cb -> new NoConfigBuilder<>(registrate, registrate, name, cb, ForgeRegistries.Keys.POTIONS, sup));
     }
 
-    default <T extends MobEffect> NoConfigBuilder<MobEffect, T, R> simpleEffect(String name, NonNullSupplier<T> sup, String desc) {
-        owner().addRawLang("effect." + owner().getModid() + "." + name + ".description", desc);
-        return owner().entry(name, cb -> new NoConfigBuilder<>(owner(), owner(), name, cb, ForgeRegistries.Keys.MOB_EFFECTS, sup)
+    public <T extends MobEffect> NoConfigBuilder<MobEffect, T, R> simpleEffect(String name, NonNullSupplier<T> sup, String desc) {
+        registrate.addRawLang("effect." + registrate.getModid() + "." + name + ".description", desc);
+        return registrate.entry(name, cb -> new NoConfigBuilder<>(registrate, registrate, name, cb, ForgeRegistries.Keys.MOB_EFFECTS, sup)
                 .lang(MobEffect::getDescriptionId));
     }
 
-    default String getTabName(String name) {
-        return name.equals("tab") ? RegistrateLangProvider.toEnglishName(owner().getModid()) :
-                RegistrateLangProvider.toEnglishName(owner().getModid() + "_" + name);
+    public String getTabName(String name) {
+        return name.equals("tab") ? RegistrateLangProvider.toEnglishName(registrate.getModid()) :
+                RegistrateLangProvider.toEnglishName(registrate.getModid() + "_" + name);
     }
 
-    default RegistryEntry<CreativeModeTab> buildCreativeTab(Consumer<CreativeModeTab.Builder> config) {
+    public RegistryEntry<CreativeModeTab> buildCreativeTab(Consumer<CreativeModeTab.Builder> config) {
         return buildCreativeTab("tab", getTabName("tab"), config);
     }
 
-    default RegistryEntry<CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
+    public RegistryEntry<CreativeModeTab> buildCreativeTab(String name, Consumer<CreativeModeTab.Builder> config) {
         return buildCreativeTab(name, getTabName(name), config);
     }
 
-    default RegistryEntry<CreativeModeTab> buildCreativeTab(String name, String def, Consumer<CreativeModeTab.Builder> config) {
-        ResourceLocation id = new ResourceLocation(owner().getModid(), name);
-        owner().defaultCreativeTab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, id));
-        return this.buildCreativeTabImpl(name, owner().addLang("itemGroup", id, def), config);
+    public RegistryEntry<CreativeModeTab> buildCreativeTab(String name, String def, Consumer<CreativeModeTab.Builder> config) {
+        ResourceLocation id = new ResourceLocation(registrate.getModid(), name);
+        registrate.defaultCreativeTab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, id));
+        return this.buildCreativeTabImpl(name, registrate.addLang("itemGroup", id, def), config);
     }
 
-    default RegistryEntry<CreativeModeTab> buildCreativeTabImpl(String name, Component comp, Consumer<CreativeModeTab.Builder> config) {
-        return owner().generic(owner(), name, Registries.CREATIVE_MODE_TAB, () -> {
+    public RegistryEntry<CreativeModeTab> buildCreativeTabImpl(String name, Component comp, Consumer<CreativeModeTab.Builder> config) {
+        return registrate.generic(registrate, name, Registries.CREATIVE_MODE_TAB, () -> {
             CreativeModeTab.Builder builder = CreativeModeTab.builder().title(comp).withTabsBefore(CreativeModeTabs.SPAWN_EGGS);
             config.accept(builder);
             return builder.build();
         }).register();
     }
 
-    default <T extends Item> ItemEntry<T> armor(String name, String path, ArmorItem.Type type, NonNullFunction<Item.Properties, T> item) {
-        return owner().item(name + "_" + type.getName(), item).model((ctx, pvd) ->
+    public <T extends Item> ItemEntry<T> armor(String name, String path, ArmorItem.Type type, NonNullFunction<Item.Properties, T> item) {
+        return registrate.item(name + "_" + type.getName(), item).model((ctx, pvd) ->
                 pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName()))).tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register();
     }
 
-    default <T extends Item> ArmorSetEntry<T> armors(String name, String path, ArmorTypeCallback<T> item) {
+    public <T extends Item> ArmorSetEntry<T> armors(String name, String path, ArmorTypeCallback<T> item) {
         return armors(type -> name + "_" + type.getName(), path, item);
     }
 
-    default <T extends Item> ArmorSetEntry<T> armors(ArmorNameCallback name, String path, ArmorTypeCallback<T> item) {
-        var map = Arrays.stream(ArmorItem.Type.values()).collect(Collectors.toMap(type -> type, type -> owner().item(name.onCallback(type), item.onCallback(type))
+    public <T extends Item> ArmorSetEntry<T> armors(ArmorNameCallback name, String path, ArmorTypeCallback<T> item) {
+        var map = Arrays.stream(ArmorItem.Type.values()).collect(Collectors.toMap(type -> type, type -> registrate.item(name.onCallback(type), item.onCallback(type))
                 .model((ctx, pvd) -> pvd.generated(ctx, pvd.modLoc("item/" + path + ctx.getName())))
                 .tag(Tags.Items.ARMORS, Bindings.getArmorSlotTag(type)).register(), (a, b) -> b, HashMap::new));
-        return ArmorSetEntry.handler(owner(), new ArmorSetEntry<>(map));
+        return ArmorSetEntry.handler(registrate, new ArmorSetEntry<>(map));
     }
 
-    default MetalItemEntry<Item, Block> slimeMetal(String id) {
+    public MetalItemEntry<Item, Block> slimeMetal(String id) {
         return this.metal(id, Item::new, p -> new Block(BlockBehaviour.Properties
                 .of().sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5f)));
     }
 
-    default <T extends Item, B extends Block> MetalItemEntry<T, B> metal(String id, NonNullFunction<Item.Properties, T> item, NonNullFunction<BlockBehaviour.Properties, B> block) {
+    public <T extends Item, B extends Block> MetalItemEntry<T, B> metal(String id, NonNullFunction<Item.Properties, T> item, NonNullFunction<BlockBehaviour.Properties, B> block) {
         return new MetalItemEntry<>(ingotItem(id, item), nuggetItem(id, item), metalBlock(id, block));
     }
 
-    default <T extends Item> ItemEntry<T> ingotItem(String id, NonNullFunction<Item.Properties, T> item) {
+    public <T extends Item> ItemEntry<T> ingotItem(String id, NonNullFunction<Item.Properties, T> item) {
         return metalBuilder(id, "ingot", item).register();
     }
 
-    default <T extends Item> ItemEntry<T> nuggetItem(String id, NonNullFunction<Item.Properties, T> item) {
+    public <T extends Item> ItemEntry<T> nuggetItem(String id, NonNullFunction<Item.Properties, T> item) {
         return metalBuilder(id, "nugget", item).register();
     }
 
-    default <T extends Item> ItemBuilder<T, R> metalBuilder(String id, String type, NonNullFunction<Item.Properties, T> item) {
-        return owner().item(id + "_" + type, item).model((ctx, pvd) ->
+    public <T extends Item> ItemBuilder<T, R> metalBuilder(String id, String type, NonNullFunction<Item.Properties, T> item) {
+        return registrate.item(id + "_" + type, item).model((ctx, pvd) ->
                 pvd.generated(ctx, pvd.modLoc("item/metal/" + ctx.getName()))).tag(forgeTag(type + "s/" + id));
     }
 
-    default <B extends Block> BlockEntry<B> metalBlock(String id, NonNullFunction<BlockBehaviour.Properties, B> block) {
-        return owner().block(id + "_block", block).blockstate((ctx, pvd) ->
+    public <B extends Block> BlockEntry<B> metalBlock(String id, NonNullFunction<BlockBehaviour.Properties, B> block) {
+        return registrate.block(id + "_block", block).blockstate((ctx, pvd) ->
                         pvd.simpleBlock(ctx.get(), pvd.models().cubeAll(ctx.getName(), pvd.modLoc("block/metal/" + ctx.getName()))))
                 .item().tag(forgeTag("storage_blocks/" + id)).build().register();
     }
 
     @FunctionalInterface
-    interface ArmorTypeCallback<T> {
+    public interface ArmorTypeCallback<T> {
         NonNullFunction<Item.Properties, T> onCallback(ArmorItem.Type type);
     }
 
     @FunctionalInterface
-    interface ArmorNameCallback {
+    public interface ArmorNameCallback {
         String onCallback(ArmorItem.Type type);
     }
 }
