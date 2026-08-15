@@ -3,6 +3,7 @@ package com.xiaoyue.celestial_invoker.event;
 import com.xiaoyue.celestial_invoker.content.common.helper.DelayHelper;
 import com.xiaoyue.celestial_invoker.content.common.registrar.ArmorSetEntry;
 import com.xiaoyue.celestial_invoker.content.generic.item.api.IClickInteraction;
+import com.xiaoyue.celestial_invoker.content.generic.item.api.IEquipChanged;
 import com.xiaoyue.celestial_invoker.content.generic.item.api.ISetHandler;
 import com.xiaoyue.celestial_invoker.content.network.ClickEmptyPayload;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,6 +16,7 @@ import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
@@ -57,6 +59,17 @@ public class CIGeneralEventHandler {
             LAST_SET_MAP.remove(entityId);
         } else {
             LAST_SET_MAP.put(entityId, currentSets);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onChangeEquip(LivingEquipmentChangeEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (event.getTo().getItem() instanceof IEquipChanged changed) {
+            changed.onEquipItem(entity, event.getTo(), event.getFrom(), event.getSlot());
+        }
+        if (event.getFrom().getItem() instanceof IEquipChanged changed) {
+            changed.onUnequipItem(entity, event.getFrom(), event.getTo(), event.getSlot());
         }
     }
 
