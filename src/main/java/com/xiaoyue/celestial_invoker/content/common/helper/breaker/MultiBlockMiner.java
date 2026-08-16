@@ -52,7 +52,7 @@ public class MultiBlockMiner {
     private static void findAdjacentBlocks(Level level, BlockPos center, BlockState targetState, MinerConfig config, Set<BlockPos> mined, Queue<BlockPos> queue) {
         for (Direction dir : config.getAllowedDirections()) {
             BlockPos neighbor = center.relative(dir);
-            if (isBeyondMaxDistance(center, neighbor, config.getMaxDistance(), dir)) {
+            if (isBeyondMaxDistance(center, neighbor, config.getMaxDistance())) {
                 continue;
             }
             if (!mined.contains(neighbor)) {
@@ -65,14 +65,9 @@ public class MultiBlockMiner {
         }
     }
 
-    private static boolean isBeyondMaxDistance(BlockPos center, BlockPos neighbor, int maxDistance, Direction dir) {
-        int dx = Math.abs(neighbor.getX() - center.getX());
-        int dy = Math.abs(neighbor.getY() - center.getY());
-        int dz = Math.abs(neighbor.getZ() - center.getZ());
-        return switch (dir) {
-            case UP, DOWN -> dy > maxDistance;
-            case NORTH, SOUTH -> dz > maxDistance;
-            case EAST, WEST -> dx > maxDistance;
-        };
+    private static boolean isBeyondMaxDistance(BlockPos center, BlockPos neighbor, int maxDistance) {
+        return Math.abs(neighbor.getX() - center.getX()) > maxDistance ||
+                Math.abs(neighbor.getY() - center.getY()) > maxDistance ||
+                Math.abs(neighbor.getZ() - center.getZ()) > maxDistance;
     }
 }
