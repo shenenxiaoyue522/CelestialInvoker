@@ -1,14 +1,12 @@
 package com.xiaoyue.celestial_invoker.content.common.helper.breaker;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -20,7 +18,6 @@ public class MinerConfigBuilder {
     private Predicate<BlockState> blockFilter = state -> true;
     private Predicate<Player> playerFilter = player -> true;
     private Consumer<BlockPos> onBlockBreak = pos -> {};
-    private Set<Direction> allowedDirections = EnumSet.allOf(Direction.class);
 
     public MinerConfigBuilder setMaxBlocks(int maxBlocks) {
         this.maxBlocks = maxBlocks;
@@ -74,43 +71,8 @@ public class MinerConfigBuilder {
         return this;
     }
 
-    public MinerConfigBuilder setAllowedDirections(Set<Direction> directions) {
-        this.allowedDirections = EnumSet.copyOf(directions);
-        return this;
-    }
-
-    public MinerConfigBuilder upwardOnly() {
-        this.allowedDirections = EnumSet.of(Direction.UP);
-        return this;
-    }
-
-    public MinerConfigBuilder downwardOnly() {
-        this.allowedDirections = EnumSet.of(Direction.DOWN);
-        return this;
-    }
-
-    public MinerConfigBuilder horizontalOnly() {
-        this.allowedDirections = EnumSet.of(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
-        return this;
-    }
-
-    public MinerConfigBuilder allDirections() {
-        this.allowedDirections = EnumSet.allOf(Direction.class);
-        return this;
-    }
-
-    public MinerConfigBuilder verticalOnly() {
-        this.allowedDirections = EnumSet.of(Direction.UP, Direction.DOWN);
-        return this;
-    }
-
-    public MinerConfigBuilder directions(Direction... directions) {
-        this.allowedDirections = EnumSet.of(directions[0], directions);
-        return this;
-    }
-
     public MinerConfig build() {
-        return new MinerConfig(maxBlocks, maxDistance, blockFilter, playerFilter, onBlockBreak, allowedDirections);
+        return new MinerConfig(maxBlocks, maxDistance, blockFilter, playerFilter, onBlockBreak);
     }
 }
 

@@ -18,8 +18,6 @@ public class MinerConfig {
     private final Predicate<Player> playerFilter;
     private final Consumer<BlockPos> onBlockBreak;
     private final Set<Direction> allowedDirections;
-    private final boolean includeVertical;
-    private final boolean includeHorizontal;
 
     public MinerConfig(int maxBlocks, int maxDistance, Predicate<BlockState> blockFilter, Predicate<Player> playerFilter, Consumer<BlockPos> onBlockBreak, Set<Direction> allowedDirections) {
         this.maxBlocks = maxBlocks;
@@ -28,8 +26,6 @@ public class MinerConfig {
         this.playerFilter = playerFilter;
         this.onBlockBreak = onBlockBreak;
         this.allowedDirections = EnumSet.copyOf(allowedDirections);
-        this.includeVertical = allowedDirections.contains(Direction.UP) || allowedDirections.contains(Direction.DOWN);
-        this.includeHorizontal = allowedDirections.stream().anyMatch(dir -> dir == Direction.NORTH || dir == Direction.SOUTH || dir == Direction.EAST || dir == Direction.WEST);
     }
 
     public MinerConfig(int maxBlocks, int maxDistance, Predicate<BlockState> blockFilter, Predicate<Player> playerFilter, Consumer<BlockPos> onBlockBreak) {
@@ -58,13 +54,5 @@ public class MinerConfig {
 
     public Set<Direction> getAllowedDirections() {
         return allowedDirections;
-    }
-
-    public boolean includeVertical() {
-        return includeVertical;
-    }
-
-    public boolean includeHorizontal() {
-        return includeHorizontal;
     }
 }
