@@ -37,7 +37,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-public record IRegistrateExtra<R extends AbstractRegistrate<R>>(R registrate) {
+public record RegistrateExtra<R extends AbstractRegistrate<R>>(R registrate) {
 
     static TagKey<Item> forgeTag(String id) {
         return ItemTags.create(forgeLoc(id));
