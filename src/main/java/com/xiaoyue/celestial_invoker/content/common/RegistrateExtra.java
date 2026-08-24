@@ -37,7 +37,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-public record RegistrateExtra<R extends AbstractRegistrate<R>>(R registrate) {
+public record RegistrateExtra<R extends AbstractRegistrate<?>>(R registrate) {
 
     static TagKey<Item> forgeTag(String id) {
         return ItemTags.create(forgeLoc(id));
@@ -127,7 +127,7 @@ public record RegistrateExtra<R extends AbstractRegistrate<R>>(R registrate) {
         return metalBuilder(id, "nugget", item).register();
     }
 
-    public <T extends Item> ItemBuilder<T, R> metalBuilder(String id, String type, NonNullFunction<Item.Properties, T> item) {
+    public <T extends Item> ItemBuilder<T, ?> metalBuilder(String id, String type, NonNullFunction<Item.Properties, T> item) {
         return registrate.item(id + "_" + type, item).model((ctx, pvd) ->
                 pvd.generated(ctx, pvd.modLoc("item/metal/" + ctx.getName()))).tag(forgeTag(type + "s/" + id));
     }
