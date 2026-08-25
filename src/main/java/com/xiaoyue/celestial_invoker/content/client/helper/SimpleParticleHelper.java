@@ -2,7 +2,6 @@ package com.xiaoyue.celestial_invoker.content.client.helper;
 
 import com.xiaoyue.celestial_invoker.content.network.SpawnParticlePayload;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -42,12 +41,8 @@ public class SimpleParticleHelper {
         return this;
     }
 
-    public SimpleParticleHelper particle(ParticleType<?> type) {
-        if (type instanceof SimpleParticleType simple) {
-            this.particle = simple;
-        } else {
-            throw new IllegalArgumentException("Complex particle types are not supported; please use SimpleParticleType");
-        }
+    public SimpleParticleHelper particle(SimpleParticleType type) {
+        this.particle = type;
         return this;
     }
 
