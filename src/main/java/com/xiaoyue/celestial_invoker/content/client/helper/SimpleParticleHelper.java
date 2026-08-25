@@ -41,12 +41,8 @@ public class SimpleParticleHelper {
         return this;
     }
 
-    public SimpleParticleHelper particle(ParticleType<?> type) {
-        if (type instanceof SimpleParticleType simple) {
-            this.particle = simple;
-        } else {
-            throw new IllegalArgumentException("Complex particle types are not supported; please use SimpleParticleType");
-        }
+    public SimpleParticleHelper particle(SimpleParticleType type) {
+        this.particle = type;
         return this;
     }
 
