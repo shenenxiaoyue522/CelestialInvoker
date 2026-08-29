@@ -1,12 +1,15 @@
 package com.xiaoyue.celestial_invoker.content.client.helper;
 
 import com.xiaoyue.celestial_invoker.content.network.SpawnParticlePayload;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -190,6 +193,20 @@ public class SimpleParticleHelper {
             Vec3 spawnPos = calculateSpawnPosition();
             Vec3 velocity = calculateVelocity(spawnPos);
             serverLevel.sendParticles(particle, spawnPos.x, spawnPos.y, spawnPos.z, 0, velocity.x, velocity.y, velocity.z, 1.0);
+        }
+    }
+
+    public static void spawn(ResourceLocation particleId, List<Vec3> positions, List<Vec3> velocities) {
+        Minecraft mc = Minecraft.getInstance();
+        Level level = mc.level;
+        if (level == null) return;
+        ParticleType<?> type = ForgeRegistries.PARTICLE_TYPES.getValue(particleId);
+        if (type == null) return;
+        ParticleOptions particle = (ParticleOptions) type;
+        for (int i = 0; i < positions.size(); i++) {
+            Vec3 pos = positions.get(i);
+            Vec3 vel = velocities.get(i);
+            level.addParticle(particle, pos.x, pos.y, pos.z, vel.x, vel.y, vel.z);
         }
     }
 

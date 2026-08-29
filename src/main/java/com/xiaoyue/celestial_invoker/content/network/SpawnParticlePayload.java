@@ -1,12 +1,10 @@
 package com.xiaoyue.celestial_invoker.content.network;
 
-import net.minecraft.client.Minecraft;
+import com.xiaoyue.celestial_invoker.content.client.helper.SimpleParticleHelper;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
@@ -64,19 +62,7 @@ public class SpawnParticlePayload {
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            Minecraft mc = Minecraft.getInstance();
-            Level level = mc.level;
-            if (level == null) return;
-            ParticleType<?> type = ForgeRegistries.PARTICLE_TYPES.getValue(particleId);
-            if (type == null) return;
-            ParticleOptions particle = (ParticleOptions) type;
-            for (int i = 0; i < positions.size(); i++) {
-                Vec3 pos = positions.get(i);
-                Vec3 vel = velocities.get(i);
-                level.addParticle(particle, pos.x, pos.y, pos.z, vel.x, vel.y, vel.z);
-            }
-        });
+        ctx.get().enqueueWork(() -> SimpleParticleHelper.spawn(particleId, positions, velocities));
         ctx.get().setPacketHandled(true);
     }
 
