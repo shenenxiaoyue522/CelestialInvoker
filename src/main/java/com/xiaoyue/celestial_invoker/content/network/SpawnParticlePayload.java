@@ -1,15 +1,13 @@
 package com.xiaoyue.celestial_invoker.content.network;
 
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.particles.ParticleOptions;
+import com.xiaoyue.celestial_invoker.content.client.helper.SimpleParticleHelper;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
@@ -57,16 +55,6 @@ public record SpawnParticlePayload(ParticleType<?> particle, List<Vec3> position
     }
 
     public static void handlePacket(SpawnParticlePayload packet, IPayloadContext ctx) {
-        ctx.enqueueWork(() -> {
-            Minecraft mc = Minecraft.getInstance();
-            Level level = mc.level;
-            if (level == null) return;
-            ParticleOptions particle = (ParticleOptions) packet.particle;
-            for (int i = 0; i < packet.positions.size(); i++) {
-                Vec3 pos = packet.positions.get(i);
-                Vec3 vel = packet.velocities.get(i);
-                level.addParticle(particle, pos.x, pos.y, pos.z, vel.x, vel.y, vel.z);
-            }
-        });
+        ctx.enqueueWork(() -> SimpleParticleHelper.spawn(packet));
     }
 }

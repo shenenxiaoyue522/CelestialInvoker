@@ -1,6 +1,7 @@
 package com.xiaoyue.celestial_invoker.content.client.helper;
 
 import com.xiaoyue.celestial_invoker.content.network.SpawnParticlePayload;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
@@ -190,6 +191,18 @@ public class SimpleParticleHelper {
             Vec3 spawnPos = calculateSpawnPosition();
             Vec3 velocity = calculateVelocity(spawnPos);
             serverLevel.sendParticles(particle, spawnPos.x, spawnPos.y, spawnPos.z, 0, velocity.x, velocity.y, velocity.z, 1.0);
+        }
+    }
+
+    public static void spawn(SpawnParticlePayload packet) {
+        Minecraft mc = Minecraft.getInstance();
+        Level level = mc.level;
+        if (level == null) return;
+        ParticleOptions particle = (ParticleOptions) packet.particle();
+        for (int i = 0; i < packet.positions().size(); i++) {
+            Vec3 pos = packet.positions().get(i);
+            Vec3 vel = packet.velocities().get(i);
+            level.addParticle(particle, pos.x, pos.y, pos.z, vel.x, vel.y, vel.z);
         }
     }
 
