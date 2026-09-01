@@ -68,8 +68,8 @@ public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(AirBladeEntity blade) {
-        if (blade.user != null) {
-            return blade.user.getTexture(blade);
+        if (blade.stack.getItem() instanceof IAirBladeUser user) {
+            return user.getTexture(blade);
         }
         return DEF_TEXTURE;
     }
