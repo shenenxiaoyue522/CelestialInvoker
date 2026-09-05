@@ -179,5 +179,8 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityWithCo
     @Override
     public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
         stack = ItemStack.OPTIONAL_STREAM_CODEC.decode(additionalData);
+        if (stack.getItem() instanceof IAirBladeUser clientUser) {
+            setUser(clientUser);
+        }
     }
 }
