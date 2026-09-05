@@ -36,9 +36,8 @@ public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
         matrix.mulPose(Axis.ZP.rotationDegrees(-90f));
         if (entity.user != null) {
             entity.user.renderExtra(entity, matrix, partial, buffer);
-        } else {
-            matrix.scale(0.05625F, 0.05625F, 0.05625F);
         }
+        matrix.scale(0.05625F, 0.05625F, 0.05625F);
         VertexConsumer cons = buffer.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
         PoseStack.Pose entry = matrix.last();
         Matrix4f matrix4f = entry.pose();
