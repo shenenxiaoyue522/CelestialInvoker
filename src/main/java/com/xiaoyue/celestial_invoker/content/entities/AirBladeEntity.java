@@ -177,6 +177,9 @@ public class AirBladeEntity extends ThrowableProjectile implements IEntityAdditi
         zRot = buf.readFloat();
         stack = buf.readItem();
         damage = buf.readFloat();
+        if (stack.getItem() instanceof IAirBladeUser clientUser) {
+            setUser(clientUser);
+        }
     }
 
     @Override

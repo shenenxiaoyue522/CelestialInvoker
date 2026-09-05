@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.xiaoyue.celestial_invoker.CelestialInvoker;
 import com.xiaoyue.celestial_invoker.content.entities.AirBladeEntity;
-import com.xiaoyue.celestial_invoker.content.generic.item.api.IAirBladeUser;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -68,8 +67,8 @@ public class AirBladeEntityRender extends EntityRenderer<AirBladeEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(AirBladeEntity blade) {
-        if (blade.stack.getItem() instanceof IAirBladeUser user) {
-            return user.getTexture(blade);
+        if (blade.user != null) {
+            return blade.user.getTexture(blade);
         }
         return DEF_TEXTURE;
     }
