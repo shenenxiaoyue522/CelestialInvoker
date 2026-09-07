@@ -22,14 +22,28 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.CommonHooks;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 public class Bindings {
+
+    public static <T> T unsafeRunForDist(Supplier<Supplier<T>> clientTarget, Supplier<Supplier<T>> serverTarget) {
+        switch (FMLEnvironment.dist) {
+            case CLIENT -> {
+                return clientTarget.get().get();
+            }
+            case DEDICATED_SERVER -> {
+                return serverTarget.get().get();
+            }
+            default -> throw new IllegalArgumentException("UNSIDED?");
+        }
+    }
 
     public static EquipmentSlot getSlot(ItemStack stack) {
         EquipmentSlot slot = stack.getEquipmentSlot();

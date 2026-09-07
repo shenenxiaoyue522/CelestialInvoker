@@ -1,14 +1,13 @@
 package com.xiaoyue.celestial_invoker.content.generic.item;
 
 import com.tterrag.registrate.util.entry.ItemEntry;
+import com.xiaoyue.celestial_invoker.content.client.helper.ClientHelper;
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.common.registrar.ArmorSetEntry;
 import com.xiaoyue.celestial_invoker.content.generic.item.api.ISetHandler;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.SubscribeTooltip;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipEntry;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -47,8 +46,8 @@ public class CelestialArmorItem extends ArmorItem {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> list, TooltipFlag tooltipFlag) {
         this.addTooltips(stack, list, type.getSlot());
         if (getArmorSet() != null) {
-            if (Screen.hasAltDown() || !requiredAltDown()) {
-                Player player = Minecraft.getInstance().player;
+            if (ClientHelper.hasAltDown() || !requiredAltDown()) {
+                Player player = ClientHelper.getPlayer();
                 list.add(getSetTitle(player));
                 addSetTooltips(stack, list);
                 Set<Type> types = getArmorSet().getSet().keySet();

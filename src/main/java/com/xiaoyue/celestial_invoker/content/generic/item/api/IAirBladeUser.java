@@ -44,7 +44,6 @@ public interface IAirBladeUser {
     }
 
     default void renderExtra(AirBladeEntity blade, PoseStack stack, float partial, MultiBufferSource buffer) {
-        stack.scale(0.05625F, 0.05625F, 0.05625F);
     }
 
     default ResourceLocation getTexture(AirBladeEntity blade) {
