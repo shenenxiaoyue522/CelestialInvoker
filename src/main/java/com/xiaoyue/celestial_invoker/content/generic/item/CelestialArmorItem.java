@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import com.xiaoyue.celestial_invoker.content.client.helper.ClientHelper;
 import com.xiaoyue.celestial_invoker.content.common.Bindings;
 import com.xiaoyue.celestial_invoker.content.common.entry.ArmorSetEntry;
 import com.xiaoyue.celestial_invoker.content.common.entry.AttributeAdder;
@@ -12,8 +13,6 @@ import com.xiaoyue.celestial_invoker.invoker.tooltip.SubscribeTooltip;
 import com.xiaoyue.celestial_invoker.invoker.tooltip.TooltipEntry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
@@ -53,8 +52,8 @@ public class CelestialArmorItem extends ArmorItem {
     public final void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> list, TooltipFlag pIsAdvanced) {
         this.addTooltips(stack, list, type.getSlot());
         if (getArmorSet() != null) {
-            if (Screen.hasAltDown() || !requiredAltDown()) {
-                Player player = Minecraft.getInstance().player;
+            if (ClientHelper.hasAltDown() || !requiredAltDown()) {
+                Player player = ClientHelper.getPlayer();
                 list.add(getSetTitle(player));
                 addSetTooltips(stack, list);
                 Set<Type> types = getArmorSet().getSet().keySet();
