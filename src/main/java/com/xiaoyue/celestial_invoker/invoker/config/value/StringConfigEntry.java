@@ -18,6 +18,6 @@ public class StringConfigEntry extends ConfigHolder<ModConfigSpec.ConfigValue<St
     }
 
     public String get() {
-        return this.value;
+        return readOrDefault(entry, value);
     }
 }

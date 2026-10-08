@@ -33,7 +33,7 @@ public class IntConfigEntry extends ConfigHolder<ModConfigSpec.IntValue> {
         }
 
     public int get() {
-        return this.value;
+        return readOrDefault(entry, value);
     }
 
     public int min() {

@@ -49,7 +49,7 @@ public class DoubleConfigEntry extends ConfigHolder<ModConfigSpec.DoubleValue> {
     }
 
     public double get() {
-        return this.value;
+        return readOrDefault(entry, value);
     }
 
     public double min() {
@@ -61,11 +61,11 @@ public class DoubleConfigEntry extends ConfigHolder<ModConfigSpec.DoubleValue> {
     }
 
     public double perValue() {
-        return this.value * (double) 100.0f;
+        return get() * (double) 100.0f;
     }
 
     public float floatValue() {
-        return (float) this.value;
+        return (float) get();
     }
 
     public float floatMin() {

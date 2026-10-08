@@ -18,6 +18,6 @@ public class BooleanConfigEntry extends ConfigHolder<ModConfigSpec.BooleanValue>
     }
 
     public boolean get() {
-        return this.value;
+        return readOrDefault(entry, value);
     }
 }
