@@ -37,4 +37,15 @@ public class ConfigHolder<C> {
         this.getTexts().forEach(builder::comment);
         this.entry = this.action.apply(builder);
     }
+
+    protected static <T> T readOrDefault(ForgeConfigSpec.ConfigValue<T> entry, T fallback) {
+        if (entry == null) {
+            return fallback;
+        }
+        try {
+            return entry.get();
+        } catch (NullPointerException | IllegalStateException e) {
+            return fallback;
+        }
+    }
 }

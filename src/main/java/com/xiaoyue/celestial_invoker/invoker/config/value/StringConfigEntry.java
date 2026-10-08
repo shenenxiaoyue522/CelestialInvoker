@@ -17,6 +17,6 @@ public class StringConfigEntry extends ConfigHolder<ForgeConfigSpec.ConfigValue<
     }
 
     public String get() {
-        return this.value;
+        return readOrDefault(entry, value);
     }
 }

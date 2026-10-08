@@ -30,7 +30,7 @@ public class IntConfigEntry extends ConfigHolder<ForgeConfigSpec.IntValue> {
         }
 
     public int get() {
-        return this.value;
+        return readOrDefault(entry, value);
     }
 
     public int min() {

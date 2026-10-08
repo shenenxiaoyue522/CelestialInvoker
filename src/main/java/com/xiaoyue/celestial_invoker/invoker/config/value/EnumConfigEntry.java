@@ -17,6 +17,6 @@ public class EnumConfigEntry<T extends Enum<T>> extends ConfigHolder<ForgeConfig
     }
 
     public T get() {
-        return this.value;
+        return readOrDefault(entry, value);
     }
 }

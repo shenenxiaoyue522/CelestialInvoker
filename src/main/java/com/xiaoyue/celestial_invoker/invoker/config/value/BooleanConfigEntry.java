@@ -17,6 +17,6 @@ public class BooleanConfigEntry extends ConfigHolder<ForgeConfigSpec.BooleanValu
     }
 
     public boolean get() {
-        return this.value;
+        return readOrDefault(entry, value);
     }
 }
